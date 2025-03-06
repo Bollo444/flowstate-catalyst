@@ -1,0 +1,85 @@
+.taskListContainer {
+  width: 100%;
+}
+
+.taskList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 2rem;
+  background: #1A1A1A;
+  border-radius: 8px;
+  border: 2px dashed #404040;
+}
+
+.emptyState p {
+  color: #A0A0A0;
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.taskGroup {
+  margin-bottom: 2rem;
+}
+
+.taskGroup:last-child {
+  margin-bottom: 0;
+}
+
+.groupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.groupTitle {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.groupCount {
+  background: #2D2D2D;
+  color: #A0A0A0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+}
+
+/* Animation classes for task transitions */
+.taskEnter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.taskEnterActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.taskExit {
+  opacity: 1;
+}
+
+.taskExitActive {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+@media (max-width: 640px) {
+  .taskListContainer {
+    padding: 0;
+  }
+
+  .taskList {
+    gap: 0.75rem;
+  }
+}

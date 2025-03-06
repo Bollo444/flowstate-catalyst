@@ -1,0 +1,99 @@
+.projectCard {
+  background: #1A1A1A;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.projectCard:hover {
+  transform: translateY(-2px);
+  border-color: #666666;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  margin: 0;
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.editButton,
+.deleteButton {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.editButton {
+  background: transparent;
+  border: 1px solid #404040;
+  color: #E0E0E0;
+}
+
+.editButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.deleteButton {
+  background: transparent;
+  border: 1px solid #FF4C4C;
+  color: #FF4C4C;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: rgba(255, 76, 76, 0.1);
+}
+
+.editButton:disabled,
+.deleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.description {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+}
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #404040;
+  font-size: 0.875rem;
+}
+
+.status,
+.flowScore {
+  color: #A0A0A0;
+}
+
+.status span {
+  color: #E0E0E0;
+  text-transform: capitalize;
+}
+
+.flowScore {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}

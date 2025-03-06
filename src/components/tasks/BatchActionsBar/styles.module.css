@@ -1,0 +1,156 @@
+.batchActionsBar {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2D2D2D;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 100;
+  border: 1px solid #404040;
+  animation: slideUp 0.2s ease-out;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 120px;
+}
+
+.count {
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.clearButton {
+  background: transparent;
+  border: none;
+  color: #A0A0A0;
+  font-size: 0.875rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clearButton:hover {
+  color: #E0E0E0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.assignSection {
+  min-width: 200px;
+  padding-right: 1.5rem;
+  border-right: 1px solid #404040;
+}
+
+.statusActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.actionButton {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: 1px solid #404040;
+  color: #E0E0E0;
+}
+
+.actionButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.actionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.deleteButton {
+  border-color: #FF4C4C;
+  color: #FF4C4C;
+  margin-left: 1rem;
+}
+
+.deleteButton:hover:not(:disabled) {
+  background: rgba(255, 76, 76, 0.1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translate(-50%, 100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .batchActionsBar {
+    flex-direction: column;
+    gap: 1rem;
+    width: calc(100% - 2rem);
+    margin: 0 1rem;
+  }
+
+  .info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .assignSection {
+    width: 100%;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid #404040;
+    padding-bottom: 1rem;
+  }
+
+  .statusActions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .statusActions .actionButton {
+    flex: 1;
+  }
+
+  .deleteButton {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .batchActionsBar {
+    bottom: 1rem;
+  }
+
+  .statusActions {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}

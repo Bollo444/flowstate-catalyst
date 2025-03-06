@@ -1,0 +1,11 @@
+:root {
+  --surface: #ffffff;
+  --flow-optimal-rgb: 46, 213, 115;
+  --flow-moderate-rgb: 255, 110, 66;
+  --flow-low-rgb: 255, 71, 87;
+  --flow-inactive-rgb: 128, 128, 128;
+}
+
+[data-theme="dark"] {
+  --surface: #1e1e1e;
+}

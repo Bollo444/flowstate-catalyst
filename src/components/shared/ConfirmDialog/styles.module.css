@@ -1,0 +1,68 @@
+tt.dialog {
+  /* Override MUI styles */
+}
+
+.dialog :global(.MuiDialog-paper) {
+  background: #2D2D2D;
+  color: #FFFFFF;
+  border-radius: 8px;
+  min-width: 320px;
+}
+
+.title {
+  padding: 1.5rem 1.5rem 1rem;
+}
+
+.title :global(.MuiTypography-root) {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.content {
+  padding: 0 1.5rem 1.5rem;
+}
+
+.message {
+  color: #E0E0E0;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #404040;
+}
+
+.cancelButton {
+  background: transparent !important;
+  border: 1px solid #404040 !important;
+  color: #E0E0E0 !important;
+  text-transform: none !important;
+  padding: 0.5rem 1rem !important;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.confirmButton {
+  background: #4A9EFF !important;
+  color: white !important;
+  text-transform: none !important;
+  padding: 0.5rem 1rem !important;
+  margin-left: 1rem !important;
+}
+
+.confirmButton:hover {
+  background: #3B8DE6 !important;
+}
+
+.confirmButton.destructive {
+  background: #FF4C4C !important;
+}
+
+.confirmButton.destructive:hover {
+  background: #E63939 !important;
+}

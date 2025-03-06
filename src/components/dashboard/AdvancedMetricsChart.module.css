@@ -1,0 +1,52 @@
+/* src/components/dashboard/AdvancedMetricsChart.module.css */
+
+.advancedChartContainer {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.chartControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.metricToggle {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.metricButton {
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 2px solid;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.metricButton.active {
+  background: #2E3192;
+  color: white;
+}
+
+.timeframeZoom {
+  width: 200px;
+}
+
+.chartInsights {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.chartInsights p {
+  margin: 8px 0;
+  font-size: 0.875rem;
+  color: #666;
+}

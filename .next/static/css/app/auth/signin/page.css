@@ -1,0 +1,279 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/auth/Auth.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************/
+.Auth_authContainer__9hpcP {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: var(--background-secondary);
+}
+
+.Auth_authCard__Epfi_ {
+  background-color: var(--background-primary);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.Auth_authCard__Epfi_ h2 {
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.Auth_form__gKX2V {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.Auth_inputGroup__erHY_ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.Auth_inputGroup__erHY_ label {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.Auth_inputGroup__erHY_ input {
+  padding: 0.75rem;
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.Auth_inputGroup__erHY_ input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.Auth_button__WPiy2 {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 6px;
+  background-color: var(--accent);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.Auth_button__WPiy2:hover {
+  background-color: var(--accent-hover);
+}
+
+.Auth_button__WPiy2:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.Auth_error__zLmji {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  background-color: var(--error-muted);
+  color: var(--error);
+  font-size: 0.875rem;
+}
+
+.Auth_switchAuth__f3YH8 {
+  margin-top: 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.Auth_switchAuth__f3YH8 a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.Auth_switchAuth__f3YH8 a:hover {
+  text-decoration: underline;
+}
+
+.Auth_verifyMessage__2OD2S {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: var(--info-muted);
+  border-radius: 6px;
+  color: var(--text-primary);
+}
+
+.Auth_verifyMessage__2OD2S p {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+
+.Auth_verifyMessage__2OD2S p:last-child {
+  margin-bottom: 0;
+}
+
+.Auth_forgotPassword__JxAhV {
+  margin: -0.5rem 0 0.5rem;
+  text-align: right;
+}
+
+.Auth_forgotPassword__JxAhV a {
+  color: var(--accent);
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+.Auth_forgotPassword__JxAhV a:hover {
+  text-decoration: underline;
+}
+
+.Auth_success__lOfpS {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  background-color: var(--success-muted);
+  color: var(--success);
+  font-size: 0.875rem;
+}
+
+.Auth_socialLogin__nRwZb {
+  margin-top: 1.5rem;
+}
+
+.Auth_divider__9OXnK {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.Auth_divider__9OXnK::before,
+.Auth_divider__9OXnK::after {
+  content: '';
+  flex: 1 1;
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.Auth_divider__9OXnK span {
+  padding: 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.Auth_socialButtons__p_BI1 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.Auth_socialButton__JJH2X {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.Auth_socialButton__JJH2X:hover {
+  background-color: var(--background-secondary);
+}
+
+.Auth_socialButton__JJH2X:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.Auth_socialButton__JJH2X.Auth_loading__avxr1 {
+  background-color: var(--background-secondary);
+}
+
+.Auth_socialIcon__KqvI2 {
+  font-size: 1.25rem;
+}
+
+/* Password Strength Styles */
+.Auth_passwordStrength__MNgfo {
+  margin-top: 0.25rem;
+}
+
+.Auth_strengthBars__3sJny {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.Auth_strengthBar__RCHwa {
+  flex: 1 1;
+  height: 4px;
+  background-color: var(--background-secondary);
+  border-radius: 2px;
+  transition: background-color 0.2s ease;
+}
+
+.Auth_strengthBar__RCHwa.Auth_weak__QogYV {
+  background-color: var(--error);
+}
+
+.Auth_strengthBar__RCHwa.Auth_fair__BxmS7 {
+  background-color: var(--warning);
+}
+
+.Auth_strengthBar__RCHwa.Auth_good__w0Ja1 {
+  background-color: var(--info);
+}
+
+.Auth_strengthBar__RCHwa.Auth_strong__pT764 {
+  background-color: var(--success);
+}
+
+.Auth_strengthLabel__SGp9T {
+  display: block;
+  font-size: 0.75rem;
+  text-align: right;
+}
+
+.Auth_strengthLabel__SGp9T.Auth_weak__QogYV {
+  color: var(--error);
+}
+
+.Auth_strengthLabel__SGp9T.Auth_fair__BxmS7 {
+  color: var(--warning);
+}
+
+.Auth_strengthLabel__SGp9T.Auth_good__w0Ja1 {
+  color: var(--info);
+}
+
+.Auth_strengthLabel__SGp9T.Auth_strong__pT764 {
+  color: var(--success);
+}
+
+@media (max-width: 640px) {
+  .Auth_authContainer__9hpcP {
+    padding: 1rem;
+  }
+
+  .Auth_authCard__Epfi_ {
+    padding: 1.5rem;
+  }
+}
+

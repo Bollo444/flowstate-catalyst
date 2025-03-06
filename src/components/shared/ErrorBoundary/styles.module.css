@@ -1,0 +1,60 @@
+.errorContainer {
+  padding: 2rem;
+  margin: 1rem;
+  background: var(--bg-surface-02);
+  border-radius: 12px;
+  border: 1px solid var(--border-error);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.retryButton {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--bg-primary);
+  color: var(--text-inverse);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.retryButton:hover {
+  background: var(--bg-primary-hover);
+  transform: translateY(-1px);
+}
+
+.retryButton:active {
+  transform: translateY(0);
+}
+
+.retryButton:focus {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Dark mode adaptations */
+@media (prefers-color-scheme: dark) {
+  .errorContainer {
+    background: var(--bg-surface-02-dark);
+    border-color: var(--border-error-dark);
+  }
+
+  .retryButton {
+    background: var(--bg-primary-dark);
+  }
+
+  .retryButton:hover {
+    background: var(--bg-primary-hover-dark);
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .errorContainer {
+    margin: 0.5rem;
+    padding: 1.5rem;
+  }
+}

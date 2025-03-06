@@ -1,0 +1,80 @@
+.form {
+  background: #2D2D2D;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #E0E0E0;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  background: #1A1A1A;
+  color: #FFFFFF;
+  font-size: 1rem;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #666666;
+  box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.2);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.submitButton,
+.cancelButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.submitButton {
+  background: #4A9EFF;
+  border: none;
+  color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #3B8DE6;
+}
+
+.submitButton:disabled {
+  background: #2D5A94;
+  cursor: not-allowed;
+}
+
+.cancelButton {
+  background: transparent;
+  border: 1px solid #404040;
+  color: #E0E0E0;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

@@ -1,0 +1,28 @@
+/* src/components/dashboard/DashboardLayout.module.css */
+
+.dashboardLayout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 24px;
+  padding: 24px;
+}
+
+.content {
+  display: grid;
+  gap: 24px;
+}
+
+.sidebar {
+  display: grid;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidebar {
+    order: -1;
+  }
+}

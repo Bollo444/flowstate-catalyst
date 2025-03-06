@@ -1,0 +1,165 @@
+.taskItem {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.taskItem:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.active {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+}
+
+.completed {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.optimal {
+  border-color: rgba(80, 181, 132, 0.5);
+  box-shadow: 0 0 20px rgba(80, 181, 132, 0.2);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+.description {
+  font-size: 14px;
+  color: #9CA3AF;
+  margin-bottom: 16px;
+}
+
+.completeButton {
+  background: none;
+  border: none;
+  padding: 4px;
+  color: #6B7280;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.completeButton:hover {
+  color: #50B584;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metric span:first-child {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.metric span:last-child {
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+}
+
+.high {
+  color: #50B584 !important;
+}
+
+.medium {
+  color: #F59E0B !important;
+}
+
+.low {
+  color: #EF4444 !important;
+}
+
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-radius: 6px;
+  color: #EF4444;
+  font-size: 14px;
+}
+
+.breakSuggestion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border-radius: 6px;
+  color: #F59E0B;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.flowStatus {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 8px;
+}
+
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #3B82F6;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.flowScore {
+  font-size: 14px;
+  color: #3B82F6;
+  font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .flowStatus {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+}

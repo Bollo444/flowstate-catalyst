@@ -1,0 +1,215 @@
+.dialog :global(.MuiDialog-paper) {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.title {
+  padding: 1.5rem;
+  border-bottom: 1px solid #404040;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.content {
+  padding: 1.5rem !important;
+}
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 0.5rem 0;
+}
+
+.timelineItem {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.timelineIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid #404040;
+  background: #2D2D2D;
+}
+
+.timelineIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: #404040;
+}
+
+.timelineContent {
+  flex: 1;
+  min-width: 0;
+  background: #2D2D2D;
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+}
+
+.timelineContent::before {
+  content: '';
+  position: absolute;
+  left: -6px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  background: #2D2D2D;
+  transform: rotate(45deg);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.userName {
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.timestamp {
+  font-size: 0.75rem;
+  color: #808080;
+}
+
+.deleteButton {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  color: #808080;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover {
+  color: #FF4C4C;
+  background: rgba(255, 76, 76, 0.1);
+}
+
+.progressUpdate {
+  margin-bottom: 1rem;
+}
+
+.note {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  border-left: 3px solid #4A9EFF;
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #808080;
+}
+
+.empty {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+/* Animation */
+.timelineItem {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Timeline connector */
+.timelineItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 44px;
+  bottom: -28px;
+  width: 2px;
+  background: #404040;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .timelineItem {
+    gap: 0.75rem;
+  }
+
+  .timelineIcon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .timelineContent::before {
+    top: 12px;
+  }
+
+  .timelineItem:not(:last-child)::before {
+    left: 16px;
+    top: 36px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .deleteButton {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}

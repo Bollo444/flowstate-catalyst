@@ -1,0 +1,58 @@
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--bg-surface-02);
+  border: 2px solid var(--border-primary);
+  transition: transform 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+.initialsAvatar {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--text-inverse);
+  font-weight: 600;
+  border: 2px solid var(--border-primary);
+  transition: all 0.2s ease;
+}
+
+.initialsAvatar:hover {
+  transform: scale(1.05);
+  background-color: var(--color-primary-hover);
+}
+
+/* Dark mode adaptations */
+@media (prefers-color-scheme: dark) {
+  .avatar {
+    border-color: var(--border-primary-dark);
+  }
+
+  .initialsAvatar {
+    border-color: var(--border-primary-dark);
+  }
+}
+
+/* Loading state */
+.avatar.loading,
+.initialsAvatar.loading {
+  animation: pulse 1.5s infinite;
+  background-color: var(--bg-surface-03);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}

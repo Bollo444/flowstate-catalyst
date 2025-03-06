@@ -1,0 +1,73 @@
+.projectListContainer {
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.createButton {
+  background: #4A9EFF;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.createButton:hover {
+  background: #3B8DE6;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.loadingContainer {
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 3rem;
+  background: #1A1A1A;
+  border-radius: 8px;
+  border: 2px dashed #404040;
+}
+
+.emptyState h3 {
+  margin: 0 0 0.5rem 0;
+  color: #FFFFFF;
+  font-size: 1.25rem;
+}
+
+.emptyState p {
+  color: #A0A0A0;
+  margin: 0 0 1.5rem 0;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .createButton {
+    width: 100%;
+  }
+}

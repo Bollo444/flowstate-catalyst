@@ -1,0 +1,248 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.startButton,
+.endButton {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.startButton {
+  background: #4A9EFF;
+  color: white;
+}
+
+.startButton:hover {
+  background: #3B8DE6;
+  transform: translateY(-1px);
+}
+
+.endButton {
+  background: #FF4C4C;
+  color: white;
+}
+
+.endButton:hover {
+  background: #E63B3B;
+  transform: translateY(-1px);
+}
+
+.dialogTitle {
+  padding: 1.5rem !important;
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border-bottom: 1px solid #404040;
+}
+
+.dialogContent {
+  background: #1A1A1A;
+  color: #E0E0E0;
+  padding: 1.5rem !important;
+}
+
+.interruptionTypes {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.interruptionType {
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #E0E0E0;
+}
+
+.interruptionType:hover {
+  transform: translateY(-2px);
+  border-color: var(--impact-color, #666666);
+}
+
+.interruptionType.selected {
+  background: rgba(74, 158, 255, 0.1);
+  border-color: #4A9EFF;
+}
+
+.typeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.typeLabel {
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.impactBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--impact-color, #808080);
+}
+
+.typeDescription {
+  font-size: 0.875rem;
+  color: #A0A0A0;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.4;
+}
+
+.recoveryTime {
+  font-size: 0.75rem;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recoveryTime::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--impact-color, #808080);
+}
+
+.noteInput {
+  width: 100%;
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 6px;
+  padding: 0.75rem;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.noteInput:focus {
+  outline: none;
+  border-color: #4A9EFF;
+}
+
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: transparent;
+  border: 1px solid #404040;
+  color: #E0E0E0;
+}
+
+.cancelButton:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.submitButton {
+  background: #4A9EFF;
+  border: none;
+  color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #3B8DE6;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 640px) {
+  .interruptionTypes {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  .startButton,
+  .endButton {
+    width: 100%;
+  }
+
+  .dialogActions {
+    flex-direction: column-reverse;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .interruptionType {
+    border: 2px solid currentColor;
+  }
+
+  .interruptionType.selected {
+    border: 2px solid currentColor;
+    background: Canvas;
+  }
+
+  .impactBadge {
+    border: 1px solid currentColor;
+  }
+}

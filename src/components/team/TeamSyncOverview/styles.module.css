@@ -1,0 +1,315 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: #1A1A1A;
+  border-radius: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h2 {
+  color: #FFFFFF;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.syncButton {
+  padding: 0.75rem 1.5rem;
+  background: #4A9EFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.syncButton:hover {
+  background: #3B8DE6;
+  transform: translateY(-1px);
+}
+
+.memberGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.memberCard {
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  transition: all 0.2s ease;
+}
+
+.memberCard:hover {
+  transform: translateY(-2px);
+  border-color: #666666;
+}
+
+.avatar {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatarPlaceholder {
+  width: 100%;
+  height: 100%;
+  background: #404040;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.statusIndicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #1A1A1A;
+}
+
+.memberInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.memberInfo h3 {
+  margin: 0 0 0.25rem 0;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statusText {
+  color: #808080;
+  font-size: 0.875rem;
+  text-transform: capitalize;
+}
+
+.activity {
+  color: #E0E0E0;
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.flowIndicator {
+  margin-top: 0.75rem;
+  position: relative;
+  height: 4px;
+  background: #404040;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.flowBar {
+  height: 100%;
+  background: #4A9EFF;
+  transition: width 0.3s ease;
+}
+
+.flowScore {
+  position: absolute;
+  right: 0;
+  top: -18px;
+  font-size: 0.75rem;
+  color: #4A9EFF;
+}
+
+.activeSyncs {
+  border-top: 1px solid #404040;
+  padding-top: 1.5rem;
+}
+
+.activeSyncs h3 {
+  color: #E0E0E0;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+}
+
+.syncSession {
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sessionInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.participants {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+}
+
+.duration {
+  color: #808080;
+  font-size: 0.75rem;
+}
+
+.focusScore {
+  font-size: 0.875rem;
+  color: #4A9EFF;
+  font-weight: 500;
+}
+
+.memberSelection {
+  margin-bottom: 1.5rem;
+}
+
+.memberSelection h4 {
+  color: #E0E0E0;
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0 0 1rem 0;
+}
+
+.memberList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.memberCheckbox {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background: #2D2D2D;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.memberCheckbox:hover {
+  background: #333333;
+}
+
+.memberCheckbox input[type="checkbox"] {
+  margin-right: 1rem;
+}
+
+.memberName {
+  flex: 1;
+  color: #E0E0E0;
+  font-size: 0.875rem;
+}
+
+.memberStatus {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+.timeSlots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.timeSlot {
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: #E0E0E0;
+}
+
+.loading,
+.error {
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .syncButton {
+    width: 100%;
+  }
+
+  .memberGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .memberSelection {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.focusing .flowScore {
+  animation: pulse 2s infinite;
+}

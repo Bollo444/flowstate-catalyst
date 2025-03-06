@@ -1,0 +1,60 @@
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  width: 100%;
+  gap: 1rem;
+  padding: 2rem;
+  background: var(--bg-surface-01);
+  border-radius: 8px;
+}
+
+.message {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  text-align: center;
+  max-width: 300px;
+  margin: 0;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Dark mode adaptations */
+@media (prefers-color-scheme: dark) {
+  .loadingContainer {
+    background: var(--bg-surface-01-dark);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .loadingContainer {
+    min-height: 150px;
+    padding: 1.5rem;
+  }
+  
+  .message {
+    font-size: 0.8125rem;
+    max-width: 250px;
+  }
+}
+
+.fullHeight {
+  min-height: calc(100vh - 200px);
+}
+
+.transparent {
+  background: transparent;
+}

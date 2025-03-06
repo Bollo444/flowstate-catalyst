@@ -1,0 +1,78 @@
+.teamSync {
+  background: var(--background-primary);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.teamSync h3 {
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.memberList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.memberCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.memberCard:hover {
+  transform: translateY(-2px);
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.memberInfo h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.role {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.status {
+  font-size: 0.875rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: var(--accent-muted);
+  color: var(--text-secondary);
+}
+
+.status.flow {
+  background: var(--success-muted);
+  color: var(--success);
+}
+
+.status.rest {
+  background: var(--warning-muted);
+  color: var(--warning);
+}
+
+.status.peak {
+  background: var(--accent-muted);
+  color: var(--accent);
+}
+
+.status.building {
+  background: var(--info-muted);
+  color: var(--info);
+}

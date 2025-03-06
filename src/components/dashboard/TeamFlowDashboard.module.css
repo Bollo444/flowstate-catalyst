@@ -1,0 +1,121 @@
+/* src/components/dashboard/TeamFlowDashboard.module.css */
+
+.dashboardContainer {
+  min-height: 100vh;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+  padding-bottom: 50px; /* prevent content from being cut off by fixed notification bar */
+}
+
+.dashboardContainer.fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: white;
+}
+
+.dashboardHeader {
+  padding: 24px;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.headerControls {
+  display: flex;
+  gap: 12px;
+}
+
+.mainSection {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+}
+
+.sidePanel {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.loadingState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #2E3192;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+
+.notificationContainer {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 1000;
+}
+
+.notification {
+  padding: 12px 24px;
+  border-radius: 8px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  animation: slideIn 0.3s ease;
+}
+
+.notification.success {
+  background: #10B981;
+  color: white;
+}
+
+.notification.error {
+  background: #EF4444;
+  color: white;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dashboardLayout {
+    grid-template-columns: 1fr;
+  }
+  
+  .sidePanel {
+    order: -1;
+  }
+}

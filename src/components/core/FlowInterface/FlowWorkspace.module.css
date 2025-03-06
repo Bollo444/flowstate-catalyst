@@ -1,0 +1,27 @@
+.flowWorkspace {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.optimal {
+  box-shadow: 0 0 20px rgba(var(--flow-optimal-rgb), 0.1);
+  border: 1px solid rgba(var(--flow-optimal-rgb), 0.2);
+}
+
+.moderate {
+  border: 1px solid rgba(var(--flow-moderate-rgb), 0.2);
+}
+
+.low {
+  border: 1px solid rgba(var(--flow-low-rgb), 0.2);
+}
+
+.inactive {
+  opacity: 0.9;
+  border: 1px solid rgba(var(--flow-inactive-rgb), 0.1);
+}
