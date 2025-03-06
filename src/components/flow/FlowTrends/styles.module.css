@@ -1,0 +1,36 @@
+.trends {
+  width: 100%;
+  padding: 1rem;
+  background: #1A1A1A;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.trends h4 {
+  margin: 0 0 1rem 0;
+  color: #E0E0E0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.chart {
+  width: 100%;
+  height: 120px;
+}
+
+.chart :global(.recharts-tooltip-label) {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.chart :global(.recharts-tooltip-item-value) {
+  color: #FFFFFF;
+  font-weight: 500;
+}
+
+.chart :global(.recharts-cartesian-grid-horizontal line),
+.chart :global(.recharts-cartesian-grid-vertical line) {
+  stroke: #404040;
+  stroke-opacity: 0.2;
+}

@@ -1,0 +1,133 @@
+.flowScore {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.scoreContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.scoreCircle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.score {
+  font-size: 36px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.label {
+  font-size: 14px;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status {
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  color: white;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(4px);
+}
+
+.status.peak {
+  background: rgba(80, 181, 132, 0.2);
+  color: #50B584;
+}
+
+.status.flow {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3B82F6;
+}
+
+.status.rest {
+  background: rgba(139, 92, 246, 0.2);
+  color: #8B5CF6;
+}
+
+.status.building {
+  background: rgba(245, 158, 11, 0.2);
+  color: #F59E0B;
+}
+
+.details {
+  overflow: hidden;
+}
+
+.description {
+  font-size: 14px;
+  color: #9CA3AF;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.metric span:first-child {
+  font-size: 12px;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metric span:last-child {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .flowScore {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .scoreCircle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .score {
+    font-size: 32px;
+  }
+
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+}

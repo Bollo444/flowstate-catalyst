@@ -1,0 +1,109 @@
+/* src/components/flow/FlowWhispers/styles.module.css */
+
+.streakManager {
+  background: linear-gradient(135deg, #2E3192, #1BFFFF);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(46, 49, 146, 0.2);
+}
+
+.streakHeader {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.streakCount {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1;
+  margin: 16px 0;
+}
+
+.streakCount span {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-left: 8px;
+}
+
+.streakMetrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metricCard {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.metricCard span {
+  display: block;
+  font-size: 14px;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.metricCard strong {
+  font-size: 24px;
+  display: block;
+}
+
+.flowProgress {
+  margin-top: 24px;
+}
+
+.progressBar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progressFill {
+  height: 100%;
+  background: #fff;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.loadingContainer {
+  text-align: center;
+  padding: 24px;
+}
+
+.loadingSpinner {
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.errorContainer {
+  text-align: center;
+  padding: 24px;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+.errorContainer button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: white;
+  color: #2E3192;
+  cursor: pointer;
+}

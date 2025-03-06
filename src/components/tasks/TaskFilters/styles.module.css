@@ -1,0 +1,123 @@
+.filters {
+  background: #2D2D2D;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.section:last-child {
+  margin-bottom: 0;
+}
+
+.section h3 {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0 0 0.75rem 0;
+}
+
+.select {
+  width: 100%;
+  padding: 0.75rem;
+  background: #1A1A1A;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #666666;
+}
+
+.statusFilters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filterButton {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.filterButton.active {
+  background: #4A9EFF;
+  border-color: #4A9EFF;
+  color: white;
+}
+
+.priorityFilters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.priority {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.priority.high {
+  background: rgba(255, 76, 76, 0.1);
+  color: #FF4C4C;
+}
+
+.priority.medium {
+  background: rgba(255, 170, 76, 0.1);
+  color: #FFAA4C;
+}
+
+.priority.low {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+}
+
+@media (max-width: 640px) {
+  .statusFilters {
+    flex-direction: column;
+  }
+
+  .filterButton {
+    width: 100%;
+    text-align: center;
+  }
+}

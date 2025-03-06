@@ -1,0 +1,116 @@
+.flowContainer {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 2fr) 1fr;
+  gap: 24px;
+  min-height: calc(100vh - 64px); /* Account for header height */
+}
+
+.flowScoreCard {
+  grid-column: 1;
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+.taskStream {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.teamSyncCard {
+  grid-column: 3;
+  position: sticky;
+  top: 24px;
+  height: fit-content;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .flowContainer {
+    grid-template-columns: 1fr minmax(300px, 2fr);
+  }
+
+  .teamSyncCard {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .flowContainer {
+    grid-template-columns: 1fr;
+    padding: 16px;
+  }
+
+  .flowScoreCard {
+    position: static;
+    grid-column: 1;
+  }
+
+  .taskStream {
+    grid-column: 1;
+  }
+
+  .teamSyncCard {
+    display: block;
+    position: static;
+    grid-column: 1;
+  }
+}
+
+/* Dark mode enhancements */
+@media (prefers-color-scheme: dark) {
+  .flowContainer {
+    background: rgba(0, 0, 0, 0.2);
+  }
+  
+  .flowScoreCard,
+  .teamSyncCard {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+}
+
+/* Animation states */
+.enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.enterActive {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.exitActive {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* Glass morphism effects */
+.glassPanel {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.flowScoreCard,
+.teamSyncCard {
+  composes: glassPanel;
+}

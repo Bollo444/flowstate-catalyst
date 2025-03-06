@@ -1,0 +1,212 @@
+.analytics {
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 12px;
+  color: #9CA3AF;
+}
+
+.pulse {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3B82F6;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  50% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.5; }
+}
+
+.error {
+  color: #EF4444;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.metricCard {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metricHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.metricHeader h3 {
+  font-size: 14px;
+  color: #9CA3AF;
+  font-weight: 500;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  color: #6B7280;
+}
+
+.metricValue {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.change {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.positive {
+  color: #50B584;
+}
+
+.negative {
+  color: #EF4444;
+}
+
+.chartsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+/* SimpleChart styles */
+.simpleChart {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.simpleChart h3 {
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.chartContainer {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 40px);
+}
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.barGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.bar {
+  width: 24px;
+  border-radius: 4px;
+  transition: height 0.3s ease;
+}
+
+.barLabel {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+/* SVG Line Chart */
+.chartContainer svg {
+  overflow: visible;
+}
+
+.chartContainer polyline {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .analytics {
+    padding: 16px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricValue {
+    font-size: 20px;
+  }
+
+  .bar {
+    width: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Light mode overrides */
+@media (prefers-color-scheme: light) {
+  .analytics,
+  .metricCard,
+  .simpleChart {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .metricHeader h3 {
+    color: #4B5563;
+  }
+
+  .metricValue {
+    color: #1F2937;
+  }
+
+  .simpleChart h3 {
+    color: #1F2937;
+  }
+
+  .barLabel {
+    color: #4B5563;
+  }
+}

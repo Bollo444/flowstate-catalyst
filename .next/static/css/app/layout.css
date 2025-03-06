@@ -1,0 +1,110 @@
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/components/layout/UserMenu.module.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
+.UserMenu_userMenu__WzTRQ {
+  position: relative;
+}
+
+.UserMenu_menuTrigger__DAA_q {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.UserMenu_menuTrigger__DAA_q:hover {
+  background-color: var(--background-secondary);
+}
+
+.UserMenu_avatar__VXE_r {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.UserMenu_avatarPlaceholder__kSjph {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--accent-muted);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.UserMenu_userName__EJs0_ {
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.UserMenu_menuContent__a_TRq {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 240px;
+  background-color: var(--background-primary);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  z-index: 50;
+}
+
+.UserMenu_menuHeader__Ex0N9 {
+  padding: 1rem;
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.UserMenu_email__2maN8 {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.UserMenu_menuItems___OiYb {
+  padding: 0.5rem;
+}
+
+.UserMenu_menuItem__Ciqdb {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background: none;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  text-align: left;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.UserMenu_menuItem__Ciqdb:hover {
+  background-color: var(--background-secondary);
+}
+
+.UserMenu_signOut__4vNUU {
+  color: var(--error);
+}
+
+.UserMenu_signOut__4vNUU:hover {
+  background-color: var(--error-muted);
+}
+

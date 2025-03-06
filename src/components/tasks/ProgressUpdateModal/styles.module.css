@@ -1,0 +1,171 @@
+.dialog {
+  backdrop-filter: blur(4px);
+}
+
+.dialog :global(.MuiDialog-paper) {
+  background: #1A1A1A;
+  color: #FFFFFF;
+  border-radius: 8px;
+  border: 1px solid #404040;
+}
+
+.title {
+  padding: 1.5rem;
+  border-bottom: 1px solid #404040;
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.content {
+  padding: 1.5rem !important;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.progressSection,
+.noteSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.progressSection label,
+.noteSection label {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.progressControl {
+  padding: 0.5rem 0;
+}
+
+.noteInput {
+  width: 100%;
+  padding: 0.75rem;
+  background: #2D2D2D;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s ease;
+}
+
+.noteInput:focus {
+  outline: none;
+  border-color: #4A9EFF;
+}
+
+.noteHint {
+  color: #808080;
+  font-size: 0.75rem;
+  margin: 0.25rem 0 0 0;
+}
+
+.presets {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.presets label {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.presetButtons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+}
+
+.presetButtons button {
+  padding: 0.75rem;
+  background: transparent;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.presetButtons button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #666666;
+}
+
+.presetButtons button.active {
+  background: #4A9EFF;
+  border-color: #4A9EFF;
+  color: white;
+}
+
+.actions {
+  padding: 1rem 1.5rem !important;
+  border-top: 1px solid #404040;
+}
+
+.cancelButton,
+.submitButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancelButton {
+  background: transparent;
+  border: 1px solid #404040;
+  color: #E0E0E0;
+  margin-right: 0.75rem;
+}
+
+.cancelButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #666666;
+}
+
+.submitButton {
+  background: #4A9EFF;
+  color: white;
+  border: none;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: #3B8DE6;
+}
+
+.cancelButton:disabled,
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .presetButtons {
+    grid-template-columns: 1fr;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    gap: 0.5rem;
+  }
+
+  .cancelButton,
+  .submitButton {
+    width: 100%;
+    margin: 0;
+  }
+}

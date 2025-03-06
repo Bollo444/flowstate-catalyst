@@ -1,0 +1,68 @@
+/* src/components/dashboard/FlowDashboard.module.css */
+
+.dashboardContainer {
+  background: var(--bg-dark);
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  background: rgba(255, 110, 66, 0.1); /* Our orange */
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.flowScore {
+  background: var(--surface-dark);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid rgba(255, 110, 66, 0.2);
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.quickActions {
+  display: flex;
+  gap: 12px;
+}
+
+.quickActions button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.focusMode {
+  background: #ff6e42; /* Our orange */
+  color: white;
+}
+
+.teamSync {
+  background: rgba(46, 49, 146, 0.1); /* Our blue */
+  color: #2E3192;
+}
+
+.activeFlow, 
+.teamMetrics {
+  background: var(--surface-dark);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.activeFlow h2,
+.teamMetrics h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: white;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+}

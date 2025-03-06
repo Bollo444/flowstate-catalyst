@@ -1,0 +1,40 @@
+/* src/components/dashboard/MetricsChart.module.css */
+
+.chartContainer {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.customTooltip {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-size: 0.875rem;
+}
+
+.tooltipLabel {
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.tooltipItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 4px 0;
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    padding: 12px;
+  }
+  
+  .customTooltip {
+    padding: 8px;
+    font-size: 0.875rem;
+  }
+}

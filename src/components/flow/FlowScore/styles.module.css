@@ -1,0 +1,106 @@
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.score {
+  position: absolute;
+  font-weight: 600;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.ring {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.ring svg {
+  transform: rotate(-90deg);
+}
+
+.background {
+  stroke: var(--border-muted);
+  opacity: 0.2;
+}
+
+.progress {
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.flowState {
+  position: absolute;
+  bottom: -1.5rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+/* Size variants */
+.tiny {
+  width: 40px;
+  height: 40px;
+}
+
+.tiny .score {
+  font-size: 0.75rem;
+}
+
+.small {
+  width: 60px;
+  height: 60px;
+}
+
+.small .score {
+  font-size: 1rem;
+}
+
+.medium {
+  width: 80px;
+  height: 80px;
+}
+
+.medium .score {
+  font-size: 1.25rem;
+}
+
+.large {
+  width: 100px;
+  height: 100px;
+}
+
+.large .score {
+  font-size: 1.5rem;
+}
+
+/* Color states */
+.excellent {
+  color: var(--success);
+}
+
+.good {
+  color: var(--success-muted);
+}
+
+.moderate {
+  color: var(--warning);
+}
+
+.poor {
+  color: var(--warning-muted);
+}
+
+.critical {
+  color: var(--error);
+}

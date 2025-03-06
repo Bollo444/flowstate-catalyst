@@ -1,0 +1,185 @@
+.taskSearch {
+  background: #2D2D2D;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.mainSearch {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.advancedButton {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.advancedButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.advancedFilters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #404040;
+  animation: slideDown 0.2s ease-out;
+}
+
+.filterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.filterGroup label {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.filterGroup select {
+  padding: 0.75rem;
+  background: #1A1A1A;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1em;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+.filterGroup select:focus {
+  outline: none;
+  border-color: #4A9EFF;
+}
+
+.dateInputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dateInputs input[type="date"] {
+  padding: 0.75rem;
+  background: #1A1A1A;
+  border: 1px solid #404040;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-size: 0.875rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.dateInputs input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.dateInputs input[type="date"]:focus {
+  outline: none;
+  border-color: #4A9EFF;
+}
+
+.dateInputs span {
+  color: #808080;
+  font-size: 0.875rem;
+}
+
+.progressRange {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.rangeControl {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rangeControl span {
+  color: #808080;
+  font-size: 0.875rem;
+  min-width: 40px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .mainSearch {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .advancedButton {
+    width: 100%;
+  }
+
+  .advancedFilters {
+    grid-template-columns: 1fr;
+  }
+
+  .dateInputs {
+    flex-direction: column;
+  }
+
+  .dateInputs input[type="date"] {
+    width: 100%;
+  }
+
+  .rangeControl {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .rangeControl span {
+    margin-bottom: -0.25rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.filterGroup.hasActiveFilter label {
+  color: #4A9EFF;
+  animation: pulse 2s infinite;
+}

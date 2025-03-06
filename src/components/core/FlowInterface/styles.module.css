@@ -1,0 +1,120 @@
+/* src/components/core/FlowInterface/styles.module.css */
+
+.flowNavigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+}
+
+.navItems {
+  display: flex;
+  gap: 20px;
+}
+
+.flowMenuItem {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.flowMenuItem:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menuIcon {
+  font-size: 1.2rem;
+}
+
+.menuLabel {
+  font-weight: 500;
+}
+
+.flowContent {
+  padding: 24px;
+  flex: 1; /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboardHeader {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.flowWorkspace {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Main content and sidebar layout */
+  gap: 24px;
+}
+
+/* QuickActions styles */
+.quickActions {
+  display: flex;
+  gap: 12px;
+}
+
+.quickActions button {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.flowButton {
+  background: #ff6e42; /* Our orange */
+  color: white;
+}
+
+.teamSyncButton {
+  background: rgba(46, 49, 146, 0.1); /* Our blue */
+  color: #2E3192;
+}
+
+.focusButton {
+    background: rgba(46, 49, 146, 0.1); /* Our blue */
+    color: #2E3192;
+}
+
+/* FlowStateIndicator styles */
+.flowIndicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scoreRing {
+  position: relative;
+  display: inline-flex;
+}
+
+.flowStatus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.flowStatus h3 {
+  margin: 0;
+  font-size: 2rem;
+  color: white;
+}
+
+.flowStatus p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #ddd;
+  text-transform: uppercase;
+}

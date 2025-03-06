@@ -1,0 +1,150 @@
+.chartContainer {
+  position: relative;
+  width: 100%;
+  background: #1A1A1A;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.chartContainer:hover {
+  border-color: #666666;
+}
+
+/* Dark theme overrides for Chart.js tooltips */
+:global(.chartjs-tooltip) {
+  background: #2D2D2D !important;
+  border: 1px solid #404040 !important;
+  border-radius: 4px;
+  padding: 0.75rem !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+:global(.chartjs-tooltip-key) {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 8px;
+  border-radius: 2px;
+}
+
+/* Loading state overlay */
+.loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 26, 26, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  backdrop-filter: blur(2px);
+}
+
+/* Error state */
+.error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 76, 76, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 76, 76, 0.2);
+  color: #FF4C4C;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Empty state */
+.empty {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #808080;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Chart legend customization */
+:global(.chartjs-legend) {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #404040;
+}
+
+:global(.chartjs-legend li) {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  margin-right: 1rem;
+  padding: 0.25rem 0;
+}
+
+/* Animation for data updates */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.chartContainer canvas {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive styles */
+@media (max-width: 640px) {
+  .chartContainer {
+    padding: 1rem;
+  }
+
+  :global(.chartjs-legend) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  :global(.chartjs-legend li) {
+    font-size: 0.75rem;
+    margin: 0.25rem 0.5rem;
+  }
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .chartContainer {
+    border: 2px solid currentColor;
+  }
+
+  :global(.chartjs-tooltip) {
+    border: 2px solid currentColor !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .chartContainer {
+    background: white;
+    border: 1px solid #000;
+  }
+
+  :global(.chartjs-legend li) {
+    color: #000;
+  }
+}

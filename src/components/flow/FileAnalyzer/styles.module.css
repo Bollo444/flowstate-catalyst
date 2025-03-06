@@ -1,0 +1,157 @@
+.analyzerContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.dropZone {
+  border: 2px dashed #404040;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  background: #1A1A1A;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropZone:hover {
+  border-color: #666666;
+  background: #262626;
+}
+
+.analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.analyzing p {
+  color: #E0E0E0;
+  margin: 0;
+}
+
+.instructions h3 {
+  color: #FFFFFF;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.instructions p {
+  color: #A0A0A0;
+  margin: 0;
+}
+
+.results {
+  background: #2D2D2D;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.results h3 {
+  margin: 0 0 1.5rem 0;
+  color: #FFFFFF;
+  font-size: 1.25rem;
+}
+
+.results h4 {
+  margin: 1rem 0 0.5rem 0;
+  color: #E0E0E0;
+  font-size: 1rem;
+}
+
+.results h5 {
+  margin: 0.5rem 0;
+  color: #E0E0E0;
+  font-size: 0.875rem;
+}
+
+.suggestedName {
+  background: #1A1A1A;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.suggestedName p {
+  color: #FFFFFF;
+  margin: 0;
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.projectContext {
+  background: #1A1A1A;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.suggestedTasks ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestedTasks li {
+  color: #E0E0E0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #404040;
+  font-size: 0.875rem;
+}
+
+.suggestedTasks li:last-child {
+  border-bottom: none;
+}
+
+.tags {
+  margin-bottom: 1rem;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tag {
+  background: #1A1A1A;
+  color: #E0E0E0;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  border: 1px solid #404040;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.actionButton {
+  background: #4A9EFF;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #3B8DE6;
+}
+
+.actionButton:disabled {
+  background: #2D5A94;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .actions {
+    flex-direction: column;
+  }
+}

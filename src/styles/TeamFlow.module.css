@@ -1,0 +1,72 @@
+/* src/styles/TeamFlow.module.css */
+
+.teamFlowContainer {
+  background: linear-gradient(135deg, #2E3192, #1BFFFF);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(46, 49, 146, 0.2);
+}
+
+.teamFlowHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.teamFlowScore {
+  font-size: 32px;
+  font-weight: bold;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+}
+
+.syncedSessionContainer {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.activeSession {
+  display: grid;
+  gap: 20px;
+}
+
+.sessionTimer {
+  font-size: 48px;
+  text-align: center;
+  font-weight: bold;
+  color: #2E3192;
+}
+
+.participantsList {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.startButton, .endButton {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.startButton {
+  background: #2E3192;
+  color: white;
+}
+
+.endButton {
+  background: #FF3B3B;
+  color: white;
+}

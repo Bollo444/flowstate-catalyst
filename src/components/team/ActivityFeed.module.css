@@ -1,0 +1,74 @@
+/* src/components/team/ActivityFeed.module.css */
+
+.activityFeed {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-y: auto; /* For long feeds */
+  max-height: 400px; /* Adjust as needed */
+}
+
+.feedHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.feedHeader h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.filterControls {
+  /* Styles for filter controls if needed */
+}
+
+.feedContent {
+  /* Content container */
+}
+
+.activityItem {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.activityItem:last-child {
+  border-bottom: none;
+}
+
+.activityIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.activityIcon svg {
+  width: 24px;
+  height: 24px;
+  color: #666;
+}
+
+.activityContent {
+  flex: 1;
+}
+
+.activityContent p {
+  margin: 0 0 4px;
+  font-weight: 500;
+  color: #333;
+}
+
+.timestamp {
+  font-size: 0.8em;
+  color: #777;
+}

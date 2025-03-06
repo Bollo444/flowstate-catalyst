@@ -1,0 +1,142 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.progressBar {
+  position: relative;
+  width: 100%;
+  background: #2D2D2D;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress {
+  height: 100%;
+  background: var(--progress-color, #4A9EFF);
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+/* Size variants */
+.small {
+  height: 4px;
+}
+
+.medium {
+  height: 6px;
+}
+
+.large {
+  height: 8px;
+}
+
+.percentage {
+  color: #E0E0E0;
+  font-size: 0.875rem;
+  min-width: 3.5rem;
+  text-align: right;
+}
+
+/* Interactive styles */
+.interactive {
+  cursor: pointer;
+}
+
+.interactive:hover {
+  background: #404040;
+}
+
+.interactive:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(74, 158, 255, 0.4);
+}
+
+.interactive .progress::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+}
+
+.handle {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.handle:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.handle:active {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.interactive:focus .handle {
+  box-shadow: 0 0 0 2px var(--progress-color), 0 0 0 4px rgba(74, 158, 255, 0.4);
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .progress {
+    border: 1px solid currentColor;
+  }
+
+  .handle {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Mobile touch optimization */
+@media (pointer: coarse) {
+  .handle {
+    width: 16px;
+    height: 16px;
+  }
+
+  .interactive {
+    height: 12px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .progress {
+    transition: none;
+  }
+
+  .interactive .progress::after {
+    animation: none;
+  }
+
+  .handle {
+    transition: none;
+  }
+}
