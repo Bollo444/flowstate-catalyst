@@ -55,8 +55,11 @@ export interface Database {
   public: Tables;
 }
 
+<<<<<<< HEAD
 export type Json = any;
 
+=======
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
 export interface SupabaseSession {
   user: {
     id: string;

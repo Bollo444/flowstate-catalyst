@@ -3,10 +3,15 @@ import { FlowStatus } from './supabase';
 export interface FlowState {
   userId: string;
   score: number;
+<<<<<<< HEAD
   intensity: number;
   status: FlowStatus;
   activeTime: number;
   sessionStart?: string;
+=======
+  status: FlowStatus;
+  activeTime: number;
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
   lastUpdated: string;
 }
 

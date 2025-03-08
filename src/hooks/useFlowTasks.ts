@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useFlowContext } from '@/context/FlowContext';
+<<<<<<< HEAD
 import { 
   calculateContextSwitch,
   suggestBreak,
@@ -13,6 +14,10 @@ import {
 import { supabase } from '@/lib/supabaseClient';
 import { Task } from '@/types/taskFlow';
 import { FlowState } from '@/types/flow'; // ADDED FlowState import
+=======
+import { TaskFlowService, Task } from '@/services/taskFlow';
+import { supabase } from '@/lib/supabaseClient';
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
 
 interface UseFlowTasksOptions {
   userId: string;
@@ -33,7 +38,11 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
     const fetchTasks = async () => {
       try {
         setLoading(true);
+<<<<<<< HEAD
         const tasks = await getOptimalTasks(userId, flowState);
+=======
+        const tasks = await TaskFlowService.getOptimalTasks(userId, flowState);
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
         if (mounted) {
           setTasks(tasks);
           setLoading(false);
@@ -81,7 +90,11 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
     try {
       if (activeTaskId) {
         // Record context switch
+<<<<<<< HEAD
         const switchCost = calculateContextSwitch(
+=======
+        const switchCost = TaskFlowService.calculateContextSwitch(
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
           activeTaskId,
           taskId,
           flowState
@@ -108,7 +121,11 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
   const completeTask = useCallback(async (taskId: string) => {
     try {
       // Update task completion metrics
+<<<<<<< HEAD
       await updateTaskFlowMetrics(
+=======
+      await TaskFlowService.updateTaskFlowMetrics(
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
         taskId,
         flowState.activeTime,
         flowState.score
@@ -130,7 +147,11 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
   }, [flowState, activeTaskId]);
 
   // Create a new task
+<<<<<<< HEAD
   const createTask = useCallback(async (task: Omit<Task, 'id'>) => {
+=======
+  const createTask = useCallback(async (task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>) => {
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
     try {
       const { data, error } = await supabase
         .from('tasks')
@@ -146,11 +167,16 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
       return data;
 
     } catch (err) {
+<<<<<<< HEAD
       console.error('Error creating task:', error);
+=======
+      console.error('Error creating task:', err);
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
       throw err;
     }
   }, [userId, teamId]);
 
+<<<<<<< HEAD
   // Update an existing task
   const updateTask = useCallback(async (taskId: string, updates: Partial<Task>) => {
     try {
@@ -184,20 +210,30 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
     }
   }, []);
 
+=======
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
   // Get optimal task suggestions
   const getTaskSuggestions = useCallback(() => {
     return tasks
       .filter(task => !task.completed)
       .map(task => ({
         ...task,
+<<<<<<< HEAD
         successProbability: predictTaskSuccess(task, flowState)
+=======
+        successProbability: TaskFlowService.predictTaskSuccess(task, flowState)
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
       }))
       .sort((a, b) => b.successProbability - a.successProbability);
   }, [tasks, flowState]);
 
   // Check if a break is recommended
   const shouldTakeBreak = useCallback(() => {
+<<<<<<< HEAD
     return suggestBreak(flowState);
+=======
+    return TaskFlowService.suggestBreak(flowState);
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
   }, [flowState]);
 
   return {
@@ -208,8 +244,11 @@ export function useFlowTasks({ userId, teamId }: UseFlowTasksOptions) {
     switchTask,
     completeTask,
     createTask,
+<<<<<<< HEAD
     updateTask,
     deleteTask, // <--- ADDED deleteTask
+=======
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
     getTaskSuggestions,
     shouldTakeBreak
   };

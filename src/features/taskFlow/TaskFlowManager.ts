@@ -23,19 +23,25 @@ interface DependencyAnalysis {
 }
 
 export class TaskFlowManager {
+<<<<<<< HEAD
   private taskPriorityCache: Map<string, TaskPriorityScore> = new Map();
 
+=======
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
   constructor(private userId: string) {}
 
   /**
    * Calculate task priority based on multiple factors
    */
   async calculateTaskPriority(task: Task, userFlowState: TeamMemberStatus): Promise<TaskPriorityScore> {
+<<<<<<< HEAD
     const cacheKey = `${task.id}-${this.userId}`; // Unique key for cache
     if (this.taskPriorityCache.has(cacheKey)) {
       return this.taskPriorityCache.get(cacheKey)!; // Return cached value if available
     }
 
+=======
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
     const factors: TaskPriorityFactors = {
       urgency: this.calculateUrgency(task),
       importance: task.priority === 'high' ? 1 : task.priority === 'medium' ? 0.6 : 0.3,
@@ -43,9 +49,14 @@ export class TaskFlowManager {
       complexity: this.estimateComplexity(task)
     };
     
+<<<<<<< HEAD
     const priorityScore = { score: 0, factors }; // Calculate priority score
     this.taskPriorityCache.set(cacheKey, priorityScore); // Store in cache
     return priorityScore;
+=======
+    // Implementation
+    return { score: 0, factors };
+>>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
   }
 
   /**
