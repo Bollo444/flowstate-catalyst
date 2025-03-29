@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { SignUp } from '@/components/auth/SignUp';
-import { useSupabase } from '@/lib/supabaseClient';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { SignUp } from "@/components/auth/SignUp";
+import { useSupabase } from "@/lib/supabaseClient";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function SignUpPage() {
 
   useEffect(() => {
     if (session) {
-      router.push('/');
+      router.push("/");
     }
   }, [session, router]);
 

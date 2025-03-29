@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import styles from './styles.module.css';
-import { motion } from 'framer-motion';
-import { WhisperProps } from '../../features/flowWhispers/types';
-import { whisperAnimations } from '../../features/flowWhispers/animations';
+import React, { useState } from "react";
+import styles from "./styles.module.css";
+import { motion } from "framer-motion";
+import { WhisperProps } from "../../features/flowWhispers/types";
+import { whisperAnimations } from "../../features/flowWhispers/animations";
 
-const FlowWhisperCard: React.FC<WhisperProps> = ({ 
-  message, 
-  animation = 'fadeFloat', // Default animation
-  interaction 
+const FlowWhisperCard: React.FC<WhisperProps> = ({
+  message,
+  animation = "fadeFloat", // Default animation
+  interaction,
 }) => {
   const [interacted, setInteracted] = useState(false);
 
@@ -27,10 +27,10 @@ const FlowWhisperCard: React.FC<WhisperProps> = ({
     >
       <div className={styles.whisperContent}>
         <p>{message}</p>
-        
-        {interaction === 'emoji' && (
+
+        {interaction === "emoji" && (
           <div className={styles.emojiInteraction}>
-            {['🌊', '⚡', '🚀', '✨'].map((emoji) => (
+            {["🌊", "⚡", "🚀", "✨"].map((emoji) => (
               <motion.button
                 key={emoji}
                 className={styles.emojiButton}

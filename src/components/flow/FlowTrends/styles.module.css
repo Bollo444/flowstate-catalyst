@@ -1,14 +1,14 @@
 .trends {
   width: 100%;
   padding: 1rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 8px;
   margin-top: 1rem;
 }
 
 .trends h4 {
   margin: 0 0 1rem 0;
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -19,13 +19,13 @@
 }
 
 .chart :global(.recharts-tooltip-label) {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   margin-bottom: 0.25rem;
 }
 
 .chart :global(.recharts-tooltip-item-value) {
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 500;
 }
 

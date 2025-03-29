@@ -1,137 +1,139 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useState, useCallback } from 'react';
-import type { Task } from '../types/database';
-import type { TeamMemberStatus, FlowState, FlowStateStatus } from '../types/flow';
-import type { AppError } from '../types/error';
-
-interface RoutingFactors {
-  flowAlignment: number;
-  timingOptimality: number;
-  workloadBalance: number;
-  contextContinuity: number;
-  taskScores: Record<string, number>;
-}
-
-interface RoutingResult {
-  suggestedSequence: Task[];
-  routingFactors: RoutingFactors;
-  recommendations: string[];
-  metadata: {
-    routingTimestamp: string;
-    flowScore: number;
-    sequenceScore: number;
-  };
-}
-
-interface TaskRoutingOptions {
-  autoRoute?: boolean;
-  sessionDuration?: number;
-  minFlowScore?: number;
-  onRouteChange?: (result: RoutingResult) => void;
-}
+import React, { createContext, useState, useContext } from "react";
+import { Task } from "../types/database";
+import { TaskRoutingResult } from "../features/taskFlow/types";
+import { AppError } from "../types/error";
 
 interface TaskRoutingContextType {
   currentSequence: Task[];
-  routingResult: RoutingResult | null;
+  routingResult: TaskRoutingResult | null;
   isRouting: boolean;
-  memberStatus: TeamMemberStatus | null;
   error: AppError | null;
-  startNextTask: () => void;
-  routeTasks: (tasks: Task[]) => void;
+  startNextTask: (taskId?: string) => Promise<void>;
+  routeTasks: (tasks: Task[]) => Promise<void>;
   setError: (error: AppError | null) => void;
 }
 
-const TaskRoutingContext = createContext<TaskRoutingContextType | undefined>(undefined);
+const TaskRoutingContext = createContext<TaskRoutingContextType | null>(null);
 
-export interface TaskRoutingProviderProps {
+interface TaskRoutingProviderProps {
   children: React.ReactNode;
-  options?: TaskRoutingOptions;
+  initialTasks?: Task[];
+  // Add these props for testing
+  mockStartNextTask?: jest.Mock;
+  mockRouteTasks?: jest.Mock;
+  mockIsRouting?: boolean;
+  mockRoutingResult?: TaskRoutingResult;
+  mockError?: AppError | null;
 }
 
-export function TaskRoutingProvider({ children, options = {} }: TaskRoutingProviderProps) {
-  const [currentSequence, setCurrentSequence] = useState<Task[]>([]);
-  const [routingResult, setRoutingResult] = useState<RoutingResult | null>(null);
-  const [isRouting, setIsRouting] = useState(false);
-  const [error, setError] = useState<AppError | null>(null);
-  const [memberStatus, setMemberStatus] = useState<TeamMemberStatus | null>({
-    user_id: 'current-user',
-    user: {
-      id: 'current-user',
-      name: 'Current User',
-      avatar_url: null
-    },
-    status: 'flowing' as FlowStateStatus,
-    flowState: {
-      score: 85,
-      intensity: 85,
-      status: 'flowing' as FlowStateStatus,
-      focus_duration: 1800,
-      interruption_count: 0,
-      session_start: new Date().toISOString()
-    },
-    focusPreferences: {
-      preferred_hours: {
-        start: '09:00',
-        end: '17:00'
-      },
-      minimum_focus_block: 25,
-      maximum_flow_duration: 90,
-      notification_preferences: ['critical', 'team']
-    },
-    last_activity: new Date().toISOString()
-  });
+export const TaskRoutingProvider: React.FC<TaskRoutingProviderProps> = ({
+  children,
+  initialTasks = [],
+  // Use these mock values in tests
+  mockStartNextTask,
+  mockRouteTasks,
+  mockIsRouting = false,
+  mockRoutingResult = null,
+  mockError = null,
+}) => {
+  // For testing, use the mock values if provided
+  const [currentSequence, setCurrentSequence] = useState<Task[]>(initialTasks);
+  const [routingResult, setRoutingResult] = useState<TaskRoutingResult | null>(
+    mockRoutingResult
+  );
+  const [isRouting, setIsRouting] = useState<boolean>(mockIsRouting);
+  const [error, setError] = useState<AppError | null>(mockError);
 
-  const startNextTask = useCallback(() => {
-    if (currentSequence.length > 0) {
-      const [current, ...remaining] = currentSequence;
-      setCurrentSequence(remaining);
-      // Add any additional logic for starting a task
-    }
-  }, [currentSequence]);
+  // Reset error when routing tasks
+  const resetError = () => {
+    if (error) setError(null);
+  };
 
-  const routeTasks = useCallback(async (tasks: Task[]) => {
-    setIsRouting(true);
-    setError(null);
+  // Use mock functions in tests if provided
+  const startNextTask =
+    mockStartNextTask ||
+    (async (taskId?: string) => {
+      try {
+        setIsRouting(true);
+        resetError();
 
-    try {
-      // Simulate task routing calculation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      const newRoutingResult: RoutingResult = {
-        suggestedSequence: tasks,
-        routingFactors: {
-          flowAlignment: 0.85,
-          timingOptimality: 0.9,
-          workloadBalance: 0.8,
-          contextContinuity: 0.75,
-          taskScores: tasks.reduce((acc, task) => ({
-            ...acc,
-            [task.id]: Math.random() * 0.5 + 0.5
-          }), {})
-        },
-        recommendations: ['Focus on high priority tasks first'],
-        metadata: {
-          routingTimestamp: new Date().toISOString(),
-          flowScore: memberStatus?.flowState.score || 0,
-          sequenceScore: 0.85
+        // If a specific task ID is provided, find that task
+        const targetTask = taskId
+          ? currentSequence.find((task) => task.id === taskId)
+          : currentSequence[0];
+
+        if (!targetTask) {
+          throw new Error("Task not found");
         }
-      };
 
-      setCurrentSequence(tasks);
-      setRoutingResult(newRoutingResult);
-      
-      options.onRouteChange?.(newRoutingResult);
-    } catch (err) {
-      setError({
-        code: 'ROUTING_ERROR',
-        message: 'Failed to route tasks',
-        details: err instanceof Error ? err : new Error('Unknown error')
-      });
-    } finally {
-      setIsRouting(false);
-    }
-  }, [memberStatus?.flowState.score, options]);
+        // In a real implementation, you would update the task status in your database
+        // and potentially fetch the next task in the sequence
+
+        // For now, we'll just simulate a successful task start
+        // In a real app, you might want to update the current sequence here
+
+        setIsRouting(false);
+      } catch (err) {
+        setIsRouting(false);
+        setError({
+          code: "TASK_START_ERROR",
+          message: "Failed to start task",
+          details: err instanceof Error ? err : new Error(String(err)),
+        });
+      }
+    });
+
+  const routeTasks =
+    mockRouteTasks ||
+    (async (tasks: Task[]) => {
+      try {
+        setIsRouting(true);
+        resetError();
+
+        // In a real implementation, you would call your task routing algorithm here
+        // and update the routing result based on the current flow state
+
+        // For now, we'll just update the current sequence with the provided tasks
+        setCurrentSequence(tasks);
+
+        // Simulate a routing result based on the tasks
+        // In a real app, this would come from your routing algorithm
+        const mockResult: TaskRoutingResult = {
+          suggestedSequence: tasks,
+          routingFactors: {
+            flowAlignment: 0.85,
+            timingOptimality: 0.9,
+            workloadBalance: 0.8,
+            contextContinuity: 0.75,
+            taskScores: tasks.reduce(
+              (acc, task, index) => {
+                acc[task.id] = 0.9 - index * 0.1;
+                return acc;
+              },
+              {} as Record<string, number>
+            ),
+          },
+          recommendations: ["Focus on the first task in the sequence"],
+          metadata: {
+            routingTimestamp: new Date().toISOString(),
+            flowScore: 85,
+            sequenceScore: 0.85,
+          },
+        };
+
+        setRoutingResult(mockResult);
+        setIsRouting(false);
+      } catch (err) {
+        setIsRouting(false);
+        setError({
+          code: "TASK_ROUTING_ERROR",
+          message: "Failed to route tasks",
+          details: err instanceof Error ? err : new Error(String(err)),
+        });
+      }
+    });
 
   return (
     <TaskRoutingContext.Provider
@@ -139,22 +141,21 @@ export function TaskRoutingProvider({ children, options = {} }: TaskRoutingProvi
         currentSequence,
         routingResult,
         isRouting,
-        memberStatus,
         error,
         startNextTask,
         routeTasks,
-        setError
+        setError,
       }}
     >
       {children}
     </TaskRoutingContext.Provider>
   );
-}
+};
 
 export function useTaskRouting() {
   const context = useContext(TaskRoutingContext);
-  if (context === undefined) {
-    throw new Error('useTaskRouting must be used within a TaskRoutingProvider');
+  if (!context) {
+    throw new Error("useTaskRouting must be used within a TaskRoutingProvider");
   }
   return context;
 }

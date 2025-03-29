@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useTeamSync } from '@/context/TeamSyncContext';
-import { motion } from 'framer-motion';
-import { Play, X, Users, AlertCircle } from 'lucide-react';
+import { useState } from "react";
+import { useTeamSync } from "@/context/TeamSyncContext";
+import { motion } from "framer-motion";
+import { Play, X, Users, AlertCircle } from "lucide-react";
 
 interface TeamSyncControlsProps {
   availableParticipants: Array<{
@@ -13,9 +13,13 @@ interface TeamSyncControlsProps {
   }>;
 }
 
-export function TeamSyncControls({ availableParticipants }: TeamSyncControlsProps) {
+export function TeamSyncControls({
+  availableParticipants,
+}: TeamSyncControlsProps) {
   const { startSync, endSync, syncState, error } = useTeamSync();
-  const [selectedParticipants, setSelectedParticipants] = useState<string[]>([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<string[]>(
+    []
+  );
 
   const handleStartSync = async () => {
     if (selectedParticipants.length < 2) {
@@ -29,7 +33,7 @@ export function TeamSyncControls({ availableParticipants }: TeamSyncControlsProp
     await endSync(syncState.averageFlowScore);
   };
 
-  if (syncState?.status === 'active' || syncState?.status === 'paused') {
+  if (syncState?.status === "active" || syncState?.status === "paused") {
     return (
       <motion.button
         onClick={handleEndSync}
@@ -61,16 +65,16 @@ export function TeamSyncControls({ availableParticipants }: TeamSyncControlsProp
             <motion.button
               key={participant.id}
               onClick={() => {
-                setSelectedParticipants(prev =>
+                setSelectedParticipants((prev) =>
                   prev.includes(participant.id)
-                    ? prev.filter(id => id !== participant.id)
+                    ? prev.filter((id) => id !== participant.id)
                     : [...prev, participant.id]
                 );
               }}
               className={`flex items-center gap-2 p-2 rounded-lg border ${
                 selectedParticipants.includes(participant.id)
-                  ? 'border-blue-500 bg-blue-50'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -95,8 +99,8 @@ export function TeamSyncControls({ availableParticipants }: TeamSyncControlsProp
         disabled={selectedParticipants.length < 2}
         className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg ${
           selectedParticipants.length < 2
-            ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-            : 'bg-blue-500 text-white hover:bg-blue-600'
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "bg-blue-500 text-white hover:bg-blue-600"
         }`}
         whileTap={selectedParticipants.length >= 2 ? { scale: 0.95 } : {}}
       >

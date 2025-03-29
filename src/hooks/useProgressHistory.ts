@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { ProgressUpdate } from '../types/database';
-import { handleSupabaseError } from '../utils/errorHandling';
+import { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { ProgressUpdate } from "../types/database";
+import { handleSupabaseError } from "../utils/errorHandling";
 
 export interface ProgressHistoryFilters {
   startDate?: string;
@@ -22,27 +22,29 @@ export const useProgressHistory = (taskId: string) => {
 
     try {
       let query = supabase
-        .from('progress_updates')
-        .select(`
+        .from("progress_updates")
+        .select(
+          `
           *,
           user:users(id, full_name, email, avatar_url)
-        `)
-        .eq('task_id', taskId)
-        .order('created_at', { ascending: false });
+        `
+        )
+        .eq("task_id", taskId)
+        .order("created_at", { ascending: false });
 
       // Apply filters
       if (filters) {
         if (filters.startDate) {
-          query = query.gte('created_at', filters.startDate);
+          query = query.gte("created_at", filters.startDate);
         }
         if (filters.endDate) {
-          query = query.lte('created_at', filters.endDate);
+          query = query.lte("created_at", filters.endDate);
         }
         if (filters.minProgress) {
-          query = query.gte('progress', filters.minProgress);
+          query = query.gte("progress", filters.minProgress);
         }
         if (filters.maxProgress) {
-          query = query.lte('progress', filters.maxProgress);
+          query = query.lte("progress", filters.maxProgress);
         }
       }
 
@@ -55,7 +57,7 @@ export const useProgressHistory = (taskId: string) => {
       setHistory(data as ProgressUpdate[]);
     } catch (err) {
       setError(err as Error);
-      console.error('Failed to fetch progress history:', err);
+      console.error("Failed to fetch progress history:", err);
     } finally {
       setLoading(false);
     }
@@ -65,10 +67,12 @@ export const useProgressHistory = (taskId: string) => {
     fetchHistory();
   }, [taskId]);
 
-  const addProgressUpdate = async (update: Omit<ProgressUpdate, 'id' | 'created_at'>) => {
+  const addProgressUpdate = async (
+    update: Omit<ProgressUpdate, "id" | "created_at">
+  ) => {
     try {
       const { data, error } = await supabase
-        .from('progress_updates')
+        .from("progress_updates")
         .insert(update)
         .select()
         .single();
@@ -78,11 +82,11 @@ export const useProgressHistory = (taskId: string) => {
       }
 
       // Update local state with new entry
-      setHistory(prev => [data as ProgressUpdate, ...prev]);
+      setHistory((prev) => [data as ProgressUpdate, ...prev]);
 
       return data;
     } catch (err) {
-      console.error('Failed to add progress update:', err);
+      console.error("Failed to add progress update:", err);
       throw err;
     }
   };
@@ -90,18 +94,18 @@ export const useProgressHistory = (taskId: string) => {
   const deleteProgressUpdate = async (updateId: string) => {
     try {
       const { error } = await supabase
-        .from('progress_updates')
+        .from("progress_updates")
         .delete()
-        .eq('id', updateId);
+        .eq("id", updateId);
 
       if (error) {
         throw handleSupabaseError(error);
       }
 
       // Update local state
-      setHistory(prev => prev.filter(update => update.id !== updateId));
+      setHistory((prev) => prev.filter((update) => update.id !== updateId));
     } catch (err) {
-      console.error('Failed to delete progress update:', err);
+      console.error("Failed to delete progress update:", err);
       throw err;
     }
   };

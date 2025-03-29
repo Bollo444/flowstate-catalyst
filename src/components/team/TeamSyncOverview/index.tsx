@@ -1,15 +1,17 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { useTeamSync, TeamMemberStatus } from '../../../hooks/useTeamSync';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import { ErrorDisplay } from '../../shared/ErrorDisplay';
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
-import styles from './styles.module.css';
+import React, { useState, useCallback, useMemo } from "react";
+import { useTeamSync, TeamMemberStatus } from "../../../hooks/useTeamSync";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import { ErrorDisplay } from "../../shared/ErrorDisplay";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import styles from "./styles.module.css";
 
 interface TeamSyncOverviewProps {
   teamId: string;
 }
 
-export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) => {
+export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({
+  teamId,
+}) => {
   const {
     teamMembers,
     activeSyncs,
@@ -17,37 +19,37 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
     error,
     startTeamSync,
     checkTeamAvailability,
-    getOptimalSyncTimes
+    getOptimalSyncTimes,
   } = useTeamSync(teamId);
 
   const [showSyncDialog, setShowSyncDialog] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [syncDuration, setSyncDuration] = useState(60); // minutes
 
-  const getStatusColor = useCallback((status: TeamMemberStatus['status']) => {
+  const getStatusColor = useCallback((status: TeamMemberStatus["status"]) => {
     switch (status) {
-      case 'available':
-        return '#4CAF50';
-      case 'focusing':
-        return '#4A9EFF';
-      case 'busy':
-        return '#FF4C4C';
-      case 'away':
-        return '#FFAA4C';
+      case "available":
+        return "#4CAF50";
+      case "focusing":
+        return "#4A9EFF";
+      case "busy":
+        return "#FF4C4C";
+      case "away":
+        return "#FFAA4C";
       default:
-        return '#808080';
+        return "#808080";
     }
   }, []);
 
   const getFlowIndicator = (member: TeamMemberStatus) => {
-    if (member.status !== 'focusing') return null;
+    if (member.status !== "focusing") return null;
 
     return (
-      <div 
+      <div
         className={styles.flowIndicator}
         title={`Flow Score: ${member.flowState.score}`}
       >
-        <div 
+        <div
           className={styles.flowBar}
           style={{ width: `${member.flowState.score}%` }}
         />
@@ -61,7 +63,7 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
   const optimalTimeRanges = useMemo(() => {
     if (selectedMembers.length === 0) return [];
     return getOptimalSyncTimes(selectedMembers).filter(
-      range => range.duration >= syncDuration / 60
+      (range) => range.duration >= syncDuration / 60
     );
   }, [selectedMembers, syncDuration, getOptimalSyncTimes]);
 
@@ -69,7 +71,7 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
     try {
       const availability = checkTeamAvailability(selectedMembers);
       if (!availability.available) {
-        alert('Not all selected members are currently available');
+        alert("Not all selected members are currently available");
         return;
       }
 
@@ -77,7 +79,7 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
       setShowSyncDialog(false);
       setSelectedMembers([]);
     } catch (error) {
-      console.error('Failed to start team sync:', error);
+      console.error("Failed to start team sync:", error);
     }
   };
 
@@ -93,12 +95,12 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
     return (
       <ErrorDisplay
         error={{
-          code: error.code || 'TEAM_SYNC_ERROR',
-          message: error.message || 'Failed to load team sync data',
+          code: error.code || "TEAM_SYNC_ERROR",
+          message: error.message || "Failed to load team sync data",
           details: error,
           retry: () => {
             // Add retry logic here
-          }
+          },
         }}
       />
     );
@@ -117,17 +119,22 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
       </div>
 
       <div className={styles.memberGrid}>
-        {teamMembers.map(member => (
+        {teamMembers.map((member) => (
           <div key={member.id} className={styles.memberCard}>
             <div className={styles.avatar}>
               {member.user.avatar_url ? (
-                <img src={member.user.avatar_url} alt={member.user.full_name || ''} />
+                <img
+                  src={member.user.avatar_url}
+                  alt={member.user.full_name || ""}
+                />
               ) : (
                 <div className={styles.avatarPlaceholder}>
-                  {(member.user.full_name || member.user.email).charAt(0).toUpperCase()}
+                  {(member.user.full_name || member.user.email)
+                    .charAt(0)
+                    .toUpperCase()}
                 </div>
               )}
-              <div 
+              <div
                 className={styles.statusIndicator}
                 style={{ backgroundColor: getStatusColor(member.status) }}
               />
@@ -138,7 +145,9 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
               <div className={styles.status}>
                 <span className={styles.statusText}>{member.status}</span>
                 {member.currentActivity && (
-                  <span className={styles.activity}>{member.currentActivity}</span>
+                  <span className={styles.activity}>
+                    {member.currentActivity}
+                  </span>
                 )}
               </div>
               {getFlowIndicator(member)}
@@ -150,14 +159,14 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
       {activeSyncs.length > 0 && (
         <div className={styles.activeSyncs}>
           <h3>Active Sync Sessions</h3>
-          {activeSyncs.map(sync => (
+          {activeSyncs.map((sync) => (
             <div key={sync.id} className={styles.syncSession}>
               <div className={styles.sessionInfo}>
                 <span className={styles.participants}>
                   {teamMembers
-                    .filter(m => sync.participants.includes(m.user.id))
-                    .map(m => m.user.full_name || m.user.email)
-                    .join(', ')}
+                    .filter((m) => sync.participants.includes(m.user.id))
+                    .map((m) => m.user.full_name || m.user.email)
+                    .join(", ")}
                 </span>
                 <span className={styles.duration}>
                   Started {new Date(sync.start_time).toLocaleTimeString()}
@@ -183,16 +192,16 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
             <div className={styles.memberSelection}>
               <h4>Select Team Members</h4>
               <div className={styles.memberList}>
-                {teamMembers.map(member => (
+                {teamMembers.map((member) => (
                   <label key={member.id} className={styles.memberCheckbox}>
                     <input
                       type="checkbox"
                       checked={selectedMembers.includes(member.user.id)}
                       onChange={(e) => {
-                        setSelectedMembers(prev =>
+                        setSelectedMembers((prev) =>
                           e.target.checked
                             ? [...prev, member.user.id]
-                            : prev.filter(id => id !== member.user.id)
+                            : prev.filter((id) => id !== member.user.id)
                         );
                       }}
                     />
@@ -231,8 +240,8 @@ export const TeamSyncOverview: React.FC<TeamSyncOverviewProps> = ({ teamId }) =>
                   <div className={styles.timeSlots}>
                     {optimalTimeRanges.map((range, index) => (
                       <div key={index} className={styles.timeSlot}>
-                        {range.start}:00 - {range.end}:00
-                        ({range.duration} hours)
+                        {range.start}:00 - {range.end}:00 ({range.duration}{" "}
+                        hours)
                       </div>
                     ))}
                   </div>

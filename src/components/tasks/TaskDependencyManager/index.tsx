@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Task } from '../../../types/database';
-import { useTasks } from '../../../hooks/useTasks';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { Task } from "../../../types/database";
+import { useTasks } from "../../../hooks/useTasks";
+import styles from "./styles.module.css";
 
 interface TaskDependencyManagerProps {
   task: Task;
@@ -12,19 +12,20 @@ interface TaskDependencyManagerProps {
 export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
   task,
   projectTasks,
-  onUpdate
+  onUpdate,
 }) => {
   const { updateTask } = useTasks();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const availableTasks = projectTasks.filter(t => 
-    t.id !== task.id && // Can't depend on itself
-    !task.dependencies?.includes(t.id) && // Not already a dependency
-    t.status !== 'completed' // Don't show completed tasks
+  const availableTasks = projectTasks.filter(
+    (t) =>
+      t.id !== task.id && // Can't depend on itself
+      !task.dependencies?.includes(t.id) && // Not already a dependency
+      t.status !== "completed" // Don't show completed tasks
   );
 
-  const dependentTasks = projectTasks.filter(t =>
+  const dependentTasks = projectTasks.filter((t) =>
     task.dependencies?.includes(t.id)
   );
 
@@ -33,11 +34,11 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
     try {
       const newDependencies = [...(task.dependencies || []), dependencyId];
       await updateTask(task.id, {
-        dependencies: newDependencies
+        dependencies: newDependencies,
       });
       onUpdate();
     } catch (error) {
-      console.error('Failed to add dependency:', error);
+      console.error("Failed to add dependency:", error);
     } finally {
       setIsUpdating(false);
     }
@@ -46,20 +47,22 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
   const handleRemoveDependency = async (dependencyId: string) => {
     setIsUpdating(true);
     try {
-      const newDependencies = task.dependencies?.filter(id => id !== dependencyId);
+      const newDependencies = task.dependencies?.filter(
+        (id) => id !== dependencyId
+      );
       await updateTask(task.id, {
-        dependencies: newDependencies?.length ? newDependencies : null
+        dependencies: newDependencies?.length ? newDependencies : null,
       });
       onUpdate();
     } catch (error) {
-      console.error('Failed to remove dependency:', error);
+      console.error("Failed to remove dependency:", error);
     } finally {
       setIsUpdating(false);
     }
   };
 
   const getDependencyStatus = (dependencyTask: Task) => {
-    return dependencyTask.status === 'completed' ? 'complete' : 'pending';
+    return dependencyTask.status === "completed" ? "complete" : "pending";
   };
 
   return (
@@ -71,7 +74,7 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
       >
         Dependencies ({dependentTasks.length})
         <svg
-          className={`${styles.arrow} ${isExpanded ? styles.expanded : ''}`}
+          className={`${styles.arrow} ${isExpanded ? styles.expanded : ""}`}
           width="12"
           height="12"
           viewBox="0 0 12 12"
@@ -90,8 +93,8 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
         <div className={styles.content}>
           {dependentTasks.length > 0 ? (
             <ul className={styles.dependencyList}>
-              {dependentTasks.map(depTask => (
-                <li 
+              {dependentTasks.map((depTask) => (
+                <li
                   key={depTask.id}
                   className={`${styles.dependency} ${styles[getDependencyStatus(depTask)]}`}
                 >
@@ -118,8 +121,10 @@ export const TaskDependencyManager: React.FC<TaskDependencyManagerProps> = ({
                 disabled={isUpdating}
                 value=""
               >
-                <option value="" disabled>Add dependency...</option>
-                {availableTasks.map(t => (
+                <option value="" disabled>
+                  Add dependency...
+                </option>
+                {availableTasks.map((t) => (
                   <option key={t.id} value={t.id}>
                     {t.title}
                   </option>

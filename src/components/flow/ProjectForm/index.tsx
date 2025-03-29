@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Project } from '../../../types/database';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import { Project } from "../../../types/database";
+import styles from "./styles.module.css";
 
 interface ProjectFormProps {
   initialData?: Project;
@@ -8,19 +8,21 @@ interface ProjectFormProps {
   onCancel: () => void;
 }
 
-export const ProjectForm: React.FC<ProjectFormProps> = ({ 
+export const ProjectForm: React.FC<ProjectFormProps> = ({
   initialData,
   onSubmit,
-  onCancel 
+  onCancel,
 }) => {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title);
-      setDescription(initialData.description || '');
+      setDescription(initialData.description || "");
     }
   }, [initialData]);
 
@@ -33,11 +35,11 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       await onSubmit({ title, description });
       if (!initialData) {
         // Only clear form if creating new project
-        setTitle('');
-        setDescription('');
+        setTitle("");
+        setDescription("");
       }
     } catch (error) {
-      console.error('Failed to save project:', error);
+      console.error("Failed to save project:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -57,7 +59,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
           className={styles.input}
         />
       </div>
-      
+
       <div className={styles.field}>
         <label htmlFor="description">Description</label>
         <textarea
@@ -71,18 +73,21 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       </div>
 
       <div className={styles.buttons}>
-        <button 
-          type="submit" 
-          disabled={isSubmitting || !title.trim()} 
+        <button
+          type="submit"
+          disabled={isSubmitting || !title.trim()}
           className={styles.submitButton}
         >
-          {isSubmitting 
-            ? (initialData ? 'Updating...' : 'Creating...') 
-            : (initialData ? 'Update Project' : 'Create Project')
-          }
+          {isSubmitting
+            ? initialData
+              ? "Updating..."
+              : "Creating..."
+            : initialData
+              ? "Update Project"
+              : "Create Project"}
         </button>
-        <button 
-          type="button" 
+        <button
+          type="button"
           onClick={onCancel}
           className={styles.cancelButton}
         >

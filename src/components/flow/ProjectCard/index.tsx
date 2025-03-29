@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
-import { Project } from '../../../types/database';
-import { useProjects } from '../../../hooks/useProjects';
-import { ProjectForm } from '../ProjectForm';
-import { ConfirmDialog } from '../../shared/ConfirmDialog';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { Project } from "../../../types/database";
+import { useProjects } from "../../../hooks/useProjects";
+import { ProjectForm } from "../ProjectForm";
+import { ConfirmDialog } from "../../shared/ConfirmDialog";
+import styles from "./styles.module.css";
 
 interface ProjectCardProps {
   project: Project;
   onUpdate: () => void;
 }
 
-export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onUpdate }) => {
+export const ProjectCard: React.FC<ProjectCardProps> = ({
+  project,
+  onUpdate,
+}) => {
   const { updateProject, deleteProject } = useProjects();
   const [isEditing, setIsEditing] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
@@ -20,17 +23,20 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onUpdate }) =
     setIsEditing(true);
   };
 
-  const handleUpdate = async (updates: { title: string; description: string }) => {
+  const handleUpdate = async (updates: {
+    title: string;
+    description: string;
+  }) => {
     setIsLoading(true);
     try {
       await updateProject(project.id, {
         ...updates,
-        flow_state_data: project.flow_state_data
+        flow_state_data: project.flow_state_data,
       });
       setIsEditing(false);
       onUpdate();
     } catch (error) {
-      console.error('Failed to update project:', error);
+      console.error("Failed to update project:", error);
     } finally {
       setIsLoading(false);
     }
@@ -42,7 +48,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onUpdate }) =
       await deleteProject(project.id);
       onUpdate();
     } catch (error) {
-      console.error('Failed to delete project:', error);
+      console.error("Failed to delete project:", error);
     } finally {
       setIsLoading(false);
       setShowDeleteConfirm(false);

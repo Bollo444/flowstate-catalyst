@@ -1,9 +1,11 @@
 .projectCard {
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 8px;
   padding: 1.5rem;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .projectCard:hover {
@@ -20,7 +22,7 @@
 
 .header h3 {
   margin: 0;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.25rem;
   font-weight: 600;
 }
@@ -43,7 +45,7 @@
 .editButton {
   background: transparent;
   border: 1px solid #404040;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .editButton:hover:not(:disabled) {
@@ -52,8 +54,8 @@
 
 .deleteButton {
   background: transparent;
-  border: 1px solid #FF4C4C;
-  color: #FF4C4C;
+  border: 1px solid #ff4c4c;
+  color: #ff4c4c;
 }
 
 .deleteButton:hover:not(:disabled) {
@@ -67,7 +69,7 @@
 }
 
 .description {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   line-height: 1.5;
   margin: 0 0 1rem 0;
@@ -84,11 +86,11 @@
 
 .status,
 .flowScore {
-  color: #A0A0A0;
+  color: #a0a0a0;
 }
 
 .status span {
-  color: #E0E0E0;
+  color: #e0e0e0;
   text-transform: capitalize;
 }
 

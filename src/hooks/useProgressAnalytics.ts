@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Task, ProgressUpdate } from '../types/database';
-import { handleSupabaseError } from '../utils/errorHandling';
+import { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Task, ProgressUpdate } from "../types/database";
+import { handleSupabaseError } from "../utils/errorHandling";
 
 export interface ProgressAnalytics {
   completionRate: number;
@@ -47,32 +47,40 @@ export const useProgressAnalytics = () => {
     filters: AnalyticsFilters
   ): ProgressAnalytics => {
     const now = new Date();
-    const startDate = filters.startDate ? new Date(filters.startDate) : new Date(now.setMonth(now.getMonth() - 1));
+    const startDate = filters.startDate
+      ? new Date(filters.startDate)
+      : new Date(now.setMonth(now.getMonth() - 1));
     const endDate = filters.endDate ? new Date(filters.endDate) : new Date();
 
     // Filter data by date range
-    const filteredTasks = tasks.filter(task => {
+    const filteredTasks = tasks.filter((task) => {
       const taskDate = new Date(task.created_at);
       return taskDate >= startDate && taskDate <= endDate;
     });
 
-    const filteredUpdates = updates.filter(update => {
+    const filteredUpdates = updates.filter((update) => {
       const updateDate = new Date(update.created_at);
       return updateDate >= startDate && updateDate <= endDate;
     });
 
     // Calculate completion rate
-    const completedTasks = filteredTasks.filter(task => task.status === 'completed');
-    const completionRate = (completedTasks.length / filteredTasks.length) * 100 || 0;
+    const completedTasks = filteredTasks.filter(
+      (task) => task.status === "completed"
+    );
+    const completionRate =
+      (completedTasks.length / filteredTasks.length) * 100 || 0;
 
     // Calculate average progress
-    const totalProgress = filteredTasks.reduce((sum, task) => sum + (task.progress || 0), 0);
+    const totalProgress = filteredTasks.reduce(
+      (sum, task) => sum + (task.progress || 0),
+      0
+    );
     const averageProgress = totalProgress / filteredTasks.length || 0;
 
     // Calculate progress trend
     const progressByDate = new Map<string, number[]>();
-    filteredUpdates.forEach(update => {
-      const date = new Date(update.created_at).toISOString().split('T')[0];
+    filteredUpdates.forEach((update) => {
+      const date = new Date(update.created_at).toISOString().split("T")[0];
       const current = progressByDate.get(date) || [];
       progressByDate.set(date, [...current, update.progress]);
     });
@@ -80,30 +88,35 @@ export const useProgressAnalytics = () => {
     const progressTrend = Array.from(progressByDate.entries())
       .map(([date, progressValues]) => ({
         date,
-        progress: progressValues.reduce((sum, val) => sum + val, 0) / progressValues.length
+        progress:
+          progressValues.reduce((sum, val) => sum + val, 0) /
+          progressValues.length,
       }))
       .sort((a, b) => a.date.localeCompare(b.date));
 
     // Calculate progress by user
-    const userProgress = new Map<string, { 
-      progress: number[],
-      completed: number,
-      name: string 
-    }>();
+    const userProgress = new Map<
+      string,
+      {
+        progress: number[];
+        completed: number;
+        name: string;
+      }
+    >();
 
-    filteredUpdates.forEach(update => {
+    filteredUpdates.forEach((update) => {
       const userId = update.user_id;
-      const current = userProgress.get(userId) || { 
+      const current = userProgress.get(userId) || {
         progress: [],
         completed: 0,
-        name: update.user?.full_name || update.user?.email || 'Unknown User'
+        name: update.user?.full_name || update.user?.email || "Unknown User",
       };
-      
+
       current.progress.push(update.progress);
       userProgress.set(userId, current);
     });
 
-    completedTasks.forEach(task => {
+    completedTasks.forEach((task) => {
       const userId = task.user_id;
       const current = userProgress.get(userId);
       if (current) {
@@ -111,26 +124,32 @@ export const useProgressAnalytics = () => {
       }
     });
 
-    const progressByUser = Array.from(userProgress.entries()).map(([userId, data]) => ({
-      userId,
-      userName: data.name,
-      averageProgress: data.progress.reduce((sum, val) => sum + val, 0) / data.progress.length || 0,
-      tasksCompleted: data.completed
-    }));
+    const progressByUser = Array.from(userProgress.entries()).map(
+      ([userId, data]) => ({
+        userId,
+        userName: data.name,
+        averageProgress:
+          data.progress.reduce((sum, val) => sum + val, 0) /
+            data.progress.length || 0,
+        tasksCompleted: data.completed,
+      })
+    );
 
     // Calculate time to completion metrics
     const completionTimes = completedTasks
-      .map(task => {
+      .map((task) => {
         const createDate = new Date(task.created_at).getTime();
         const completeDate = new Date(task.updated_at).getTime();
         return (completeDate - createDate) / (1000 * 60 * 60 * 24); // Days
       })
-      .filter(time => time > 0);
+      .filter((time) => time > 0);
 
     const timeToCompletion = {
-      average: completionTimes.reduce((sum, time) => sum + time, 0) / completionTimes.length || 0,
+      average:
+        completionTimes.reduce((sum, time) => sum + time, 0) /
+          completionTimes.length || 0,
       fastest: Math.min(...completionTimes) || 0,
-      slowest: Math.max(...completionTimes) || 0
+      slowest: Math.max(...completionTimes) || 0,
     };
 
     // Calculate task velocity
@@ -140,15 +159,17 @@ export const useProgressAnalytics = () => {
     const now_ts = now.getTime();
 
     const taskVelocity = {
-      daily: completedTasks.filter(task => 
-        (now_ts - new Date(task.updated_at).getTime()) <= dayMs
+      daily: completedTasks.filter(
+        (task) => now_ts - new Date(task.updated_at).getTime() <= dayMs
       ).length,
-      weekly: completedTasks.filter(task => 
-        (now_ts - new Date(task.updated_at).getTime()) <= weekMs
-      ).length / 7,
-      monthly: completedTasks.filter(task => 
-        (now_ts - new Date(task.updated_at).getTime()) <= monthMs
-      ).length / 30
+      weekly:
+        completedTasks.filter(
+          (task) => now_ts - new Date(task.updated_at).getTime() <= weekMs
+        ).length / 7,
+      monthly:
+        completedTasks.filter(
+          (task) => now_ts - new Date(task.updated_at).getTime() <= monthMs
+        ).length / 30,
     };
 
     return {
@@ -157,7 +178,7 @@ export const useProgressAnalytics = () => {
       progressTrend,
       progressByUser,
       timeToCompletion,
-      taskVelocity
+      taskVelocity,
     };
   };
 
@@ -167,35 +188,31 @@ export const useProgressAnalytics = () => {
 
     try {
       // Fetch tasks
-      let tasksQuery = supabase
-        .from('tasks')
-        .select('*');
+      let tasksQuery = supabase.from("tasks").select("*");
 
       if (filters.projectId) {
-        tasksQuery = tasksQuery.eq('project_id', filters.projectId);
+        tasksQuery = tasksQuery.eq("project_id", filters.projectId);
       }
       if (filters.userId) {
-        tasksQuery = tasksQuery.eq('user_id', filters.userId);
+        tasksQuery = tasksQuery.eq("user_id", filters.userId);
       }
 
       // Fetch progress updates
-      let updatesQuery = supabase
-        .from('progress_updates')
-        .select(`
+      let updatesQuery = supabase.from("progress_updates").select(`
           *,
           user:users (id, full_name, email)
         `);
 
       if (filters.projectId) {
-        updatesQuery = updatesQuery.eq('project_id', filters.projectId);
+        updatesQuery = updatesQuery.eq("project_id", filters.projectId);
       }
       if (filters.userId) {
-        updatesQuery = updatesQuery.eq('user_id', filters.userId);
+        updatesQuery = updatesQuery.eq("user_id", filters.userId);
       }
 
       const [tasksResult, updatesResult] = await Promise.all([
         tasksQuery,
-        updatesQuery
+        updatesQuery,
       ]);
 
       if (tasksResult.error) throw handleSupabaseError(tasksResult.error);

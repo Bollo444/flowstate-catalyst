@@ -1,4 +1,4 @@
-import { AnalysisResult } from './types';
+import { AnalysisResult } from "./types";
 
 export class FileOrganizer {
   async renameFile(file: File, newName: string): Promise<File> {
@@ -21,7 +21,7 @@ export class FileOrganizer {
   }
 
   generateFileName(suggestion: AnalysisResult): string {
-    const extension = suggestion.originalName.split('.').pop() || '';
+    const extension = suggestion.originalName.split(".").pop() || "";
     return `${suggestion.suggestedName}.${extension}`;
   }
 }

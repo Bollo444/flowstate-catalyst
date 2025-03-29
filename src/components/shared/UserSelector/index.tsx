@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { User } from '../../../types/database';
-import { LoadingSpinner } from '../LoadingSpinner';
-import { ErrorDisplay } from '../ErrorDisplay';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { User } from "../../../types/database";
+import { LoadingSpinner } from "../LoadingSpinner";
+import { ErrorDisplay } from "../ErrorDisplay";
+import styles from "./styles.module.css";
 
 interface BaseUserSelectorProps {
   teamId?: string;
@@ -28,7 +28,7 @@ type UserSelectorProps = SingleUserSelectorProps | MultiUserSelectorProps;
 
 export const UserSelector: React.FC<UserSelectorProps> = ({
   teamId,
-  label = 'Assign to',
+  label = "Assign to",
   error,
   disabled,
   multiple,
@@ -44,10 +44,10 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
       setLoading(true);
       setLoadError(null);
       try {
-        let query = supabase.from('users').select('*');
-        
+        let query = supabase.from("users").select("*");
+
         if (teamId) {
-          query = query.eq('team_id', teamId);
+          query = query.eq("team_id", teamId);
         }
 
         const { data, error } = await query;
@@ -55,8 +55,8 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
         if (error) throw error;
         setUsers(data as User[]);
       } catch (error) {
-        console.error('Error loading users:', error);
-        setLoadError('Failed to load users');
+        console.error("Error loading users:", error);
+        setLoadError("Failed to load users");
       } finally {
         setLoading(false);
       }
@@ -73,20 +73,20 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
     return (
       <ErrorDisplay
         error={{
-          code: 'USER_LOAD_ERROR',
+          code: "USER_LOAD_ERROR",
           message: loadError,
-          details: 'Unable to load user list'
+          details: "Unable to load user list",
         }}
       />
     );
   }
 
-  if (multiple && 'selectedUserIds' in props && 'onMultiChange' in props) {
+  if (multiple && "selectedUserIds" in props && "onMultiChange" in props) {
     return (
       <div className={styles.container}>
         {label && <label className={styles.label}>{label}</label>}
         <div className={styles.userList}>
-          {users.map(user => (
+          {users.map((user) => (
             <label key={user.id} className={styles.userCheckbox}>
               <input
                 type="checkbox"
@@ -94,14 +94,18 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
                 onChange={(e) => {
                   const newSelection = e.target.checked
                     ? [...props.selectedUserIds, user.id]
-                    : props.selectedUserIds.filter(id => id !== user.id);
+                    : props.selectedUserIds.filter((id) => id !== user.id);
                   props.onMultiChange(newSelection);
                 }}
                 disabled={disabled}
               />
               <div className={styles.userInfo}>
                 {user.avatar_url ? (
-                  <img src={user.avatar_url} alt={user.full_name || ''} className={styles.avatar} />
+                  <img
+                    src={user.avatar_url}
+                    alt={user.full_name || ""}
+                    className={styles.avatar}
+                  />
                 ) : (
                   <div className={styles.avatarPlaceholder}>
                     {(user.full_name || user.email).charAt(0).toUpperCase()}
@@ -118,18 +122,18 @@ export const UserSelector: React.FC<UserSelectorProps> = ({
   }
 
   // Single user selector
-  if ('selectedUserId' in props && 'onChange' in props) {
+  if ("selectedUserId" in props && "onChange" in props) {
     return (
       <div className={styles.container}>
         {label && <label className={styles.label}>{label}</label>}
         <select
-          value={props.selectedUserId || ''}
+          value={props.selectedUserId || ""}
           onChange={(e) => props.onChange(e.target.value || null)}
           className={styles.select}
           disabled={disabled}
         >
           <option value="">Unassigned</option>
-          {users.map(user => (
+          {users.map((user) => (
             <option key={user.id} value={user.id}>
               {user.full_name || user.email}
             </option>

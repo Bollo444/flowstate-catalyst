@@ -10,7 +10,7 @@
   border-radius: 8px;
   padding: 2rem;
   text-align: center;
-  background: #1A1A1A;
+  background: #1a1a1a;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -28,61 +28,61 @@
 }
 
 .analyzing p {
-  color: #E0E0E0;
+  color: #e0e0e0;
   margin: 0;
 }
 
 .instructions h3 {
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0 0 0.5rem 0;
   font-size: 1.25rem;
 }
 
 .instructions p {
-  color: #A0A0A0;
+  color: #a0a0a0;
   margin: 0;
 }
 
 .results {
-  background: #2D2D2D;
+  background: #2d2d2d;
   border-radius: 8px;
   padding: 1.5rem;
 }
 
 .results h3 {
   margin: 0 0 1.5rem 0;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1.25rem;
 }
 
 .results h4 {
   margin: 1rem 0 0.5rem 0;
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 1rem;
 }
 
 .results h5 {
   margin: 0.5rem 0;
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
 }
 
 .suggestedName {
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 4px;
   padding: 1rem;
   margin-bottom: 1rem;
 }
 
 .suggestedName p {
-  color: #FFFFFF;
+  color: #ffffff;
   margin: 0;
   font-family: monospace;
   font-size: 0.875rem;
 }
 
 .projectContext {
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 4px;
   padding: 1rem;
   margin-bottom: 1rem;
@@ -95,7 +95,7 @@
 }
 
 .suggestedTasks li {
-  color: #E0E0E0;
+  color: #e0e0e0;
   padding: 0.5rem 0;
   border-bottom: 1px solid #404040;
   font-size: 0.875rem;
@@ -116,8 +116,8 @@
 }
 
 .tag {
-  background: #1A1A1A;
-  color: #E0E0E0;
+  background: #1a1a1a;
+  color: #e0e0e0;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -131,7 +131,7 @@
 }
 
 .actionButton {
-  background: #4A9EFF;
+  background: #4a9eff;
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -142,11 +142,11 @@
 }
 
 .actionButton:hover {
-  background: #3B8DE6;
+  background: #3b8de6;
 }
 
 .actionButton:disabled {
-  background: #2D5A94;
+  background: #2d5a94;
   cursor: not-allowed;
 }
 

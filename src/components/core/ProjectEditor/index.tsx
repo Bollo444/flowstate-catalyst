@@ -1,18 +1,18 @@
 // src/components/core/ProjectEditor/index.tsx
-import React from 'react';
-import styles from './styles.module.css'; // Create ProjectEditor.module.css
-import { MarkdownEditor } from '../../shared/MarkdownEditor';
-import TaskList from '../TaskList'; // Assuming TaskList component is in the same directory
+import React from "react";
+import styles from "./styles.module.css"; // Create ProjectEditor.module.css
+import { MarkdownEditor } from "../../shared/MarkdownEditor";
+import TaskList from "../TaskList"; // Assuming TaskList component is in the same directory
 
 export const ProjectEditor: React.FC = () => {
   const handleTitleChange = (value: string) => {
     // Handle project title change
-    console.log('Project title changed to:', value);
+    console.log("Project title changed to:", value);
   };
 
   const handleDescriptionChange = (value: string) => {
     // Handle project description change
-    console.log('Project description changed to:', value);
+    console.log("Project description changed to:", value);
   };
 
   return (
@@ -23,7 +23,7 @@ export const ProjectEditor: React.FC = () => {
           onChange={handleTitleChange}
         />
       </header>
-      
+
       <div className={styles.editorContent}>
         <div className={styles.description}>
           <MarkdownEditor
@@ -31,7 +31,7 @@ export const ProjectEditor: React.FC = () => {
             onChange={handleDescriptionChange}
           />
         </div>
-        
+
         <div className={styles.tasks}>
           <TaskList />
         </div>

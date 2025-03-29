@@ -1,9 +1,9 @@
 // src/components/shared/MarkdownEditor/index.tsx
 
-import React, { useState } from 'react';
-import ReactMarkdown from 'react-markdown';
-import styles from './styles.module.css';
-import CommandMenu from './CommandMenu'; // Import CommandMenu
+import React, { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import styles from "./styles.module.css";
+import CommandMenu from "./CommandMenu"; // Import CommandMenu
 
 interface MarkdownEditorProps {
   initialValue?: string;
@@ -12,15 +12,15 @@ interface MarkdownEditorProps {
 }
 
 export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
-  initialValue = '',
+  initialValue = "",
   onChange,
-  placeholder = 'Type / for commands...'
+  placeholder = "Type / for commands...",
 }) => {
   const [value, setValue] = useState(initialValue);
   const [isEditing, setIsEditing] = useState(false);
   const [commandMenu, setCommandMenu] = useState({
     isOpen: false,
-    position: { x: 0, y: 0 }
+    position: { x: 0, y: 0 },
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,17 +29,17 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
     onChange?.(newValue);
 
     // Check for command menu trigger
-    if (newValue.endsWith('/')) {
+    if (newValue.endsWith("/")) {
       const rect = e.target.getBoundingClientRect();
       setCommandMenu({
         isOpen: true,
         position: {
           x: rect.left,
-          y: rect.bottom
-        }
+          y: rect.bottom,
+        },
       });
     } else {
-      setCommandMenu(prev => ({ ...prev, isOpen: false }));
+      setCommandMenu((prev) => ({ ...prev, isOpen: false }));
     }
   };
 
@@ -61,10 +61,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           autoFocus
         />
       ) : (
-        <div 
-          onClick={() => setIsEditing(true)}
-          className={styles.preview}
-        >
+        <div onClick={() => setIsEditing(true)} className={styles.preview}>
           {value ? (
             <ReactMarkdown>{value}</ReactMarkdown>
           ) : (

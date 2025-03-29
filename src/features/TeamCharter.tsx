@@ -1,40 +1,48 @@
-'use client'
-import { useState } from 'react'
-import { Plus, Trash } from 'lucide-react'
+"use client";
+import { useState } from "react";
+import { Plus, Trash } from "lucide-react";
 
 interface TeamMember {
-  id: string
-  name: string
-  role: string
-  avatarUrl?: string
+  id: string;
+  name: string;
+  role: string;
+  avatarUrl?: string;
 }
 
 export default function TeamCharter() {
   const [members, setMembers] = useState<TeamMember[]>([
-    { id: '1', name: 'Alex Chen', role: 'Project Lead', avatarUrl: 'https://picsum.photos/100' }
-  ])
-  const [newMember, setNewMember] = useState('')
+    {
+      id: "1",
+      name: "Alex Chen",
+      role: "Project Lead",
+      avatarUrl: "https://picsum.photos/100",
+    },
+  ]);
+  const [newMember, setNewMember] = useState("");
 
   const addMember = () => {
     if (newMember.trim()) {
-      setMembers([...members, {
-        id: Date.now().toString(),
-        name: newMember,
-        role: 'Contributor',
-        avatarUrl: `https://picsum.photos/100?${Date.now()}`
-      }])
-      setNewMember('')
+      setMembers([
+        ...members,
+        {
+          id: Date.now().toString(),
+          name: newMember,
+          role: "Contributor",
+          avatarUrl: `https://picsum.photos/100?${Date.now()}`,
+        },
+      ]);
+      setNewMember("");
     }
-  }
+  };
 
   const removeMember = (id: string) => {
-    setMembers(members.filter(member => member.id !== id))
-  }
+    setMembers(members.filter((member) => member.id !== id));
+  };
 
   return (
     <div className="space-y-6 p-6 bg-white/10 rounded-lg border border-[#2D2D2D]">
       <h2 className="text-2xl font-bold text-[#50B584]">Team Charter</h2>
-      
+
       <div className="space-y-4">
         <div className="flex gap-4">
           <Input
@@ -43,7 +51,10 @@ export default function TeamCharter() {
             placeholder="Add team member..."
             className="bg-[#1E1E1E] border-[#2D2D2D] text-white"
           />
-          <Button onClick={addMember} className="bg-[#50B584] hover:bg-[#409C74]">
+          <Button
+            onClick={addMember}
+            className="bg-[#50B584] hover:bg-[#409C74]"
+          >
             <Plus className="mr-2 h-4 w-4" />
             Add Member
           </Button>
@@ -51,7 +62,10 @@ export default function TeamCharter() {
 
         <div className="space-y-3">
           {members.map((member) => (
-            <div key={member.id} className="flex items-center justify-between p-3 bg-[#1E1E1E] rounded-lg">
+            <div
+              key={member.id}
+              className="flex items-center justify-between p-3 bg-[#1E1E1E] rounded-lg"
+            >
               <div className="flex items-center gap-4">
                 <Avatar>
                   <AvatarImage src={member.avatarUrl} />
@@ -74,5 +88,5 @@ export default function TeamCharter() {
         </div>
       </div>
     </div>
-  )
+  );
 }

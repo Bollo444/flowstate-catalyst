@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import React from 'react';
-import styles from './TeamSync.module.css';
+import React from "react";
+import styles from "./TeamSync.module.css";
 
 interface TeamMember {
   id: string;
@@ -14,25 +14,15 @@ interface TeamSyncProps {
   members: TeamMember[];
 }
 
-export const TeamSync: React.FC<TeamSyncProps> = ({ members }) => {
+export const TeamSync: React.FC = () => {
+  const { team, syncStatus } = useTeamSync();
+
   return (
-    <div className={styles.teamSync}>
-      <h3>Team Status</h3>
-      <div className={styles.memberList}>
-        {members.map(member => (
-          <div key={member.id} className={styles.memberCard}>
-            <div className={styles.memberInfo}>
-              <h4>{member.name}</h4>
-              <span className={styles.role}>{member.role}</span>
-            </div>
-            <span className={`${styles.status} ${styles[member.status.toLowerCase()]}`}>
-              {member.status}
-            </span>
-          </div>
-        ))}
-      </div>
+    <div className="team-sync">
+      <TeamMembers members={team} />
+      <SyncStatus status={syncStatus} />
+      <CollaborationTools />
     </div>
   );
 };
-
 export default TeamSync;

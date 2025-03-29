@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import styles from './TeamSyncButton.module.css';
-import { useFlowStore } from '../../../stores/flowStore';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import styles from "./TeamSyncButton.module.css";
+import { useFlowStore } from "../../../stores/flowStore";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
 
 export const TeamSyncButton: React.FC = () => {
   const { teamSync, startTeamSync } = useFlowStore();
@@ -13,7 +13,7 @@ export const TeamSyncButton: React.FC = () => {
     try {
       await startTeamSync();
     } catch (error) {
-      console.error('Sync failed:', error);
+      console.error("Sync failed:", error);
     } finally {
       setSyncing(false);
     }
@@ -21,7 +21,7 @@ export const TeamSyncButton: React.FC = () => {
 
   return (
     <motion.button
-      className={`${styles.syncButton} ${teamSync.active ? styles.active : ''}`}
+      className={`${styles.syncButton} ${teamSync.active ? styles.active : ""}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleSync}
@@ -35,9 +35,7 @@ export const TeamSyncButton: React.FC = () => {
         ) : (
           <>
             <span className={styles.syncIcon}>🌊</span>
-            <span>
-              {teamSync.active ? 'In Sync' : 'Start Team Sync'}
-            </span>
+            <span>{teamSync.active ? "In Sync" : "Start Team Sync"}</span>
           </>
         )}
       </div>

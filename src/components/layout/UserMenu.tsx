@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useSupabase } from '@/lib/supabaseClient';
-import styles from './UserMenu.module.css';
+import { useState } from "react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSupabase } from "@/lib/supabaseClient";
+import { styled } from "@emotion/react";
+import styles from "./UserMenu.module.css";
+
+const MenuContainer = styled.div`
+  // your styles
+`;
 
 export function UserMenu() {
   const router = useRouter();
@@ -17,18 +22,15 @@ export function UserMenu() {
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
-      router.push('/auth/signin');
+      router.push("/auth/signin");
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error("Error signing out:", error);
     }
   };
 
   return (
     <div className={styles.userMenu}>
-      <button 
-        className={styles.menuTrigger}
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button className={styles.menuTrigger} onClick={() => setIsOpen(!isOpen)}>
         {session.user.user_metadata.avatar_url ? (
           <Image
             src={session.user.user_metadata.avatar_url}
@@ -39,7 +41,7 @@ export function UserMenu() {
           />
         ) : (
           <div className={styles.avatarPlaceholder}>
-            {session.user.email?.[0].toUpperCase() || '?'}
+            {session.user.email?.[0].toUpperCase() || "?"}
           </div>
         )}
         <span className={styles.userName}>
@@ -52,10 +54,10 @@ export function UserMenu() {
           <div className={styles.menuHeader}>
             <span className={styles.email}>{session.user.email}</span>
           </div>
-          
+
           <div className={styles.menuItems}>
-            <Link 
-              href="/profile" 
+            <Link
+              href="/profile"
               className={styles.menuItem}
               onClick={() => setIsOpen(false)}
             >

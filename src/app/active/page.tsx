@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const ActivePage = () => {
-  return (
-    <div>
-      Active Page
-    </div>
-  );
+  return <div>Active Page</div>;
 };
 
 export default ActivePage;

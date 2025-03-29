@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const CreatedByMePage = () => {
-  return (
-    <div>
-      Created By Me Page
-    </div>
-  );
+  return <div>Created By Me Page</div>;
 };
 
 export default CreatedByMePage;

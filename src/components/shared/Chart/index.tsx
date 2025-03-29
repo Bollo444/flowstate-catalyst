@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,10 +10,10 @@ import {
   Tooltip,
   Legend,
   ChartData,
-  ChartOptions
-} from 'chart.js';
-import { Chart as ChartComponent } from 'react-chartjs-2';
-import styles from './styles.module.css';
+  ChartOptions,
+} from "chart.js";
+import { Chart as ChartComponent } from "react-chartjs-2";
+import styles from "./styles.module.css";
 
 // Register ChartJS components
 ChartJS.register(
@@ -27,7 +27,7 @@ ChartJS.register(
   Legend
 );
 
-export type ChartType = 'line' | 'bar';
+export type ChartType = "line" | "bar";
 
 interface ChartProps<T extends ChartType> {
   type: T;
@@ -37,12 +37,12 @@ interface ChartProps<T extends ChartType> {
   width?: number;
 }
 
-export const Chart = <T extends ChartType>({ 
-  type, 
-  data, 
-  options, 
-  height, 
-  width 
+export const Chart = <T extends ChartType>({
+  type,
+  data,
+  options,
+  height,
+  width,
 }: ChartProps<T>): JSX.Element => {
   const chartRef = useRef<ChartJS>(null);
 

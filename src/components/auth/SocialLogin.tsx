@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Provider } from '@supabase/supabase-js';
-import { supabase } from '@/lib/supabaseClient';
-import styles from './Auth.module.css';
+import { useState } from "react";
+import { Provider } from "@supabase/supabase-js";
+import { supabase } from "@/lib/supabaseClient";
+import styles from "./Auth.module.css";
 
 const providers = [
-  { id: 'google', name: 'Google', icon: '🔍' },
-  { id: 'github', name: 'GitHub', icon: '🐱' },
-  { id: 'discord', name: 'Discord', icon: '💬' }
+  { id: "google", name: "Google", icon: "🔍" },
+  { id: "github", name: "GitHub", icon: "🐱" },
+  { id: "discord", name: "Discord", icon: "💬" },
 ] as const;
 
 interface SocialLoginProps {
   redirectTo?: string;
 }
 
-export function SocialLogin({ redirectTo = '/' }: SocialLoginProps) {
+export function SocialLogin({ redirectTo = "/" }: SocialLoginProps) {
   const [loading, setLoading] = useState<Provider | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -29,15 +29,15 @@ export function SocialLogin({ redirectTo = '/' }: SocialLoginProps) {
         options: {
           redirectTo: `${location.origin}/auth/callback?next=${redirectTo}`,
           queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
+            access_type: "offline",
+            prompt: "consent",
           },
         },
       });
 
       if (error) throw error;
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(null);
     }
@@ -56,11 +56,11 @@ export function SocialLogin({ redirectTo = '/' }: SocialLoginProps) {
             onClick={() => handleSocialLogin(provider.id as Provider)}
             disabled={loading !== null}
             className={`${styles.socialButton} ${
-              loading === provider.id ? styles.loading : ''
+              loading === provider.id ? styles.loading : ""
             }`}
           >
             <span className={styles.socialIcon}>{provider.icon}</span>
-            {loading === provider.id ? 'Connecting...' : provider.name}
+            {loading === provider.id ? "Connecting..." : provider.name}
           </button>
         ))}
       </div>

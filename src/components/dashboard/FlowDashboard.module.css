@@ -49,10 +49,10 @@
 
 .teamSync {
   background: rgba(46, 49, 146, 0.1); /* Our blue */
-  color: #2E3192;
+  color: #2e3192;
 }
 
-.activeFlow, 
+.activeFlow,
 .teamMetrics {
   background: var(--surface-dark);
   border-radius: 12px;

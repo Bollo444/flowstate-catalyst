@@ -1,14 +1,17 @@
-'use client';
+"use client";
 
-import { createContext, useContext, ReactNode } from 'react';
-import { useTeamFlowSync, UseTeamFlowSyncResult } from '../hooks/useTeamFlowSync';
+import { createContext, useContext, ReactNode } from "react";
+import {
+  useTeamFlowSync,
+  UseTeamFlowSyncResult,
+} from "../hooks/useTeamFlowSync";
 
 const TeamSyncContext = createContext<UseTeamFlowSyncResult | null>(null);
 
 export function useTeamSync() {
   const context = useContext(TeamSyncContext);
   if (!context) {
-    throw new Error('useTeamSync must be used within a TeamSyncProvider');
+    throw new Error("useTeamSync must be used within a TeamSyncProvider");
   }
   return context;
 }

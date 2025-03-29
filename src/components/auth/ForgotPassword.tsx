@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
-import styles from './Auth.module.css';
+import { useState } from "react";
+// import { useRouter } from "next/navigation"; // Unused import
+import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+import styles from "./Auth.module.css";
 
 export function ForgotPassword() {
-  const router = useRouter();
-  const [email, setEmail] = useState('');
+  // const router = useRouter(); // Unused variable
+  const [email, setEmail] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -26,9 +26,9 @@ export function ForgotPassword() {
 
       if (error) throw error;
 
-      setMessage('Check your email for the password reset link');
+      setMessage("Check your email for the password reset link");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -53,7 +53,7 @@ export function ForgotPassword() {
             />
           </div>
           <button type="submit" disabled={loading} className={styles.button}>
-            {loading ? 'Sending reset link...' : 'Send Reset Link'}
+            {loading ? "Sending reset link..." : "Send Reset Link"}
           </button>
         </form>
         <div className={styles.switchAuth}>

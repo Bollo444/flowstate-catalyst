@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const BacklogPage = () => {
-  return (
-    <div>
-      Backlog Page
-    </div>
-  );
+  return <div>Backlog Page</div>;
 };
 
 export default BacklogPage;

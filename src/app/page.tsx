@@ -1,44 +1,27 @@
-'use client';
+"use client";
 
-import { FlowStateApp } from '@/components/FlowStateApp';
-import { useSupabase } from '@/lib/supabaseClient';
-import { redirect } from 'next/navigation';
-import { TaskCreate } from '@/components/tasks/TaskCreate';
-import { useState } from 'react';
-<<<<<<< HEAD
-import { Task } from '@/types/taskFlow'; // Import Task interface from src/types/taskFlow.ts
-=======
-import { Tables } from '@/types/database';
-
-interface Task extends Tables<'tasks'> {
-  id: string;
-  title: string;
-  description?: string;
-  status: 'todo' | 'in_progress' | 'completed';
-  created_at: string;
-  user_id: string;
-}
->>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
+import { FlowStateApp } from "@/components/FlowStateApp";
+import { useSupabase } from "@/lib/supabaseClient";
+import { redirect } from "next/navigation";
+import { TaskCreate } from "@/components/tasks/TaskCreate";
+// Removed useState and Task type import as local task state is no longer needed
 
 export default function Home() {
   const { session } = useSupabase();
-  const [tasks, setTasks] = useState<Task[]>([]);
+  // Removed unused local tasks state: const [tasks, setTasks] = useState<Task[]>([]);
 
   if (!session) {
-    redirect('/auth/signin');
+    redirect("/auth/signin");
   }
 
-  const handleTaskCreated = (newTask: Task): void => {
-    setTasks(prevTasks => [...prevTasks, newTask]);
-  };
+  // Removed unused handleTaskCreated function as task updates are handled within useFlowTasks hook
+  // const handleTaskCreated = (): void => { ... };
 
   return (
     <main>
-<<<<<<< HEAD
-      <TaskCreate onCreated={handleTaskCreated} />
-=======
-      <TaskCreate onTaskCreated={handleTaskCreated} />
->>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
+      {/* Pass userId, but onCreated is removed as it's not needed */}
+      {/* Task list updates should be consumed from useFlowTasks by display components */}
+      <TaskCreate userId={session.user.id} /* onCreated={handleTaskCreated} */ /> 
       <FlowStateApp />
     </main>
   );

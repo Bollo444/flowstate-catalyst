@@ -4,7 +4,7 @@
   background: white;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .insightsHeader {
@@ -43,16 +43,18 @@
 
 .metricsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+  grid-template-columns: repeat(2, 1fr); /* Default to 2 columns */
   gap: 16px;
   margin-top: 24px;
 }
 
 .metricCard {
-  background: #f8f9fa;
+  background: var(--background-white); /* Match container background */
   border-radius: 12px;
   padding: 16px;
   text-align: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); /* Add subtle shadow */
 }
 
 .metricCard h4 {
@@ -65,7 +67,7 @@
 .metricValue {
   font-size: 24px;
   font-weight: bold;
-  color: #2E3192;
+  color: #2e3192;
   margin: 8px 0;
 }
 
@@ -74,6 +76,13 @@
   padding: 4px 8px;
   border-radius: 4px;
   font-size: 14px;
+}
+
+/* Add a media query for smaller screens to use auto-fit */
+@media (max-width: 768px) {
+  .metricsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 }
 
 .trend.up {

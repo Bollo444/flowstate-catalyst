@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import styles from './styles.module.css';
-import { useFlowContext } from '../../context/FlowContext';
+import React, { useEffect, useState } from "react";
+import styles from "./styles.module.css";
+import { useFlowContext } from "../../context/FlowContext";
 
 const TimeUntilReset = () => {
   const { flowState } = useFlowContext();
   const [timeRemaining, setTimeRemaining] = useState(null);
 
   useEffect(() => {
-    if (flowState.status === 'flowing' && flowState.sessionStart) {
+    if (flowState.status === "flowing" && flowState.sessionStart) {
       const sessionStart = new Date(flowState.sessionStart);
       const currentTime = new Date();
       const timeElapsed = (currentTime - sessionStart) / 1000; // in seconds
@@ -24,7 +24,9 @@ const TimeUntilReset = () => {
 
   return (
     <div className={styles.timeUntilResetContainer}>
-      Time Remaining: {hours.toString().padStart(2, '0')}:{minutes.toString().padStart(2, '0')}:{seconds.toString().padStart(2, '0')}
+      Time Remaining: {hours.toString().padStart(2, "0")}:
+      {minutes.toString().padStart(2, "0")}:
+      {seconds.toString().padStart(2, "0")}
     </div>
   );
 };

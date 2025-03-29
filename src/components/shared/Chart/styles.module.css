@@ -1,7 +1,7 @@
 .chartContainer {
   position: relative;
   width: 100%;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 8px;
   padding: 1.5rem;
@@ -14,7 +14,7 @@
 
 /* Dark theme overrides for Chart.js tooltips */
 :global(.chartjs-tooltip) {
-  background: #2D2D2D !important;
+  background: #2d2d2d !important;
   border: 1px solid #404040 !important;
   border-radius: 4px;
   padding: 0.75rem !important;
@@ -57,7 +57,7 @@
   justify-content: center;
   border-radius: 8px;
   border: 1px solid rgba(255, 76, 76, 0.2);
-  color: #FF4C4C;
+  color: #ff4c4c;
   font-size: 0.875rem;
   text-align: center;
   padding: 1rem;
@@ -88,7 +88,7 @@
 }
 
 :global(.chartjs-legend li) {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   margin-right: 1rem;
   padding: 0.25rem 0;

@@ -1,7 +1,11 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useTeamSync } from './useTeamSync';
-import { TeamCollaboration, CollaborationTimeSlot, FlowOptimization } from '../features/teamSync/TeamCollaboration';
-import { TeamMemberStatus, TeamSync } from '../types/database';
+import { useState, useEffect, useCallback } from "react";
+import { useTeamSync } from "./useTeamSync";
+import {
+  TeamCollaboration,
+  CollaborationTimeSlot,
+  FlowOptimization,
+} from "../features/teamSync/TeamCollaboration";
+import { TeamMemberStatus, TeamSync } from "../types/database";
 
 export interface CollaborationState {
   optimalTimes: CollaborationTimeSlot[];
@@ -11,7 +15,10 @@ export interface CollaborationState {
   error: Error | null;
 }
 
-export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]) => {
+export const useTeamCollaboration = (
+  teamId: string,
+  members: TeamMemberStatus[]
+) => {
   const { activeSyncs } = useTeamSync(teamId);
   const [collaboration] = useState(() => new TeamCollaboration(teamId));
   const [state, setState] = useState<CollaborationState>({
@@ -19,46 +26,52 @@ export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]
     optimizations: [],
     canCollaborate: false,
     isLoading: true,
-    error: null
+    error: null,
   });
 
   // Get current active sync session
   const currentSync = activeSyncs?.[0];
 
   // Calculate optimal collaboration times
-  const calculateOptimalTimes = useCallback(async (duration?: number) => {
-    try {
-      setState(prev => ({ ...prev, isLoading: true }));
-      const times = await collaboration.calculateOptimalTimes(members, duration);
-      setState(prev => ({
-        ...prev,
-        optimalTimes: times,
-        isLoading: false
-      }));
-    } catch (error) {
-      setState(prev => ({
-        ...prev,
-        error: error as Error,
-        isLoading: false
-      }));
-    }
-  }, [collaboration, members]);
+  const calculateOptimalTimes = useCallback(
+    async (duration?: number) => {
+      try {
+        setState((prev) => ({ ...prev, isLoading: true }));
+        const times = await collaboration.calculateOptimalTimes(
+          members,
+          duration
+        );
+        setState((prev) => ({
+          ...prev,
+          optimalTimes: times,
+          isLoading: false,
+        }));
+      } catch (error) {
+        setState((prev) => ({
+          ...prev,
+          error: error as Error,
+          isLoading: false,
+        }));
+      }
+    },
+    [collaboration, members]
+  );
 
   // Get flow optimization suggestions
   const getOptimizations = useCallback(async () => {
     try {
-      setState(prev => ({ ...prev, isLoading: true }));
+      setState((prev) => ({ ...prev, isLoading: true }));
       const optimizations = await collaboration.getFlowOptimizations();
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         optimizations,
-        isLoading: false
+        isLoading: false,
       }));
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
         error: error as Error,
-        isLoading: false
+        isLoading: false,
       }));
     }
   }, [collaboration]);
@@ -66,15 +79,16 @@ export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]
   // Check if collaboration is currently suitable
   const checkCollaborationSuitability = useCallback(async () => {
     try {
-      const canCollaborate = await collaboration.checkCollaborationSuitability(members);
-      setState(prev => ({
+      const canCollaborate =
+        await collaboration.checkCollaborationSuitability(members);
+      setState((prev) => ({
         ...prev,
-        canCollaborate
+        canCollaborate,
       }));
     } catch (error) {
-      setState(prev => ({
+      setState((prev) => ({
         ...prev,
-        error: error as Error
+        error: error as Error,
       }));
     }
   }, [collaboration, members]);
@@ -86,7 +100,7 @@ export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]
 
   // Update optimizations when sync state changes
   useEffect(() => {
-    if (currentSync?.status === 'active') {
+    if (currentSync?.status === "active") {
       getOptimizations();
     }
   }, [currentSync, getOptimizations]);
@@ -98,33 +112,38 @@ export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]
     return () => clearInterval(interval);
   }, [checkCollaborationSuitability]);
 
-  const suggestCollaborationTime = useCallback((preferredDuration: number = 60): CollaborationTimeSlot | null => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    
-    // Filter times that are still upcoming today or tomorrow
-    const validTimes = state.optimalTimes.filter(slot => {
-      if (slot.start >= currentHour) return true;
-      if (slot.end - slot.start >= preferredDuration / 60) return true;
-      return false;
-    });
+  const suggestCollaborationTime = useCallback(
+    (preferredDuration: number = 60): CollaborationTimeSlot | null => {
+      const now = new Date();
+      const currentHour = now.getHours();
 
-    return validTimes[0] || null;
-  }, [state.optimalTimes]);
+      // Filter times that are still upcoming today or tomorrow
+      const validTimes = state.optimalTimes.filter((slot) => {
+        if (slot.start >= currentHour) return true;
+        if (slot.end - slot.start >= preferredDuration / 60) return true;
+        return false;
+      });
 
-  const getCollaborationScore = useCallback((members: TeamMemberStatus[]): number => {
-    const activeMembers = members.filter(m => m.status === 'focusing');
-    if (!activeMembers.length) return 0;
+      return validTimes[0] || null;
+    },
+    [state.optimalTimes]
+  );
 
-    const avgFlowScore = activeMembers.reduce(
-      (sum, m) => sum + m.flowState.score,
-      0
-    ) / activeMembers.length;
+  const getCollaborationScore = useCallback(
+    (members: TeamMemberStatus[]): number => {
+      const activeMembers = members.filter((m) => m.status === "focusing");
+      if (!activeMembers.length) return 0;
 
-    const participationRate = (activeMembers.length / members.length) * 100;
-    
-    return Math.round((avgFlowScore + participationRate) / 2);
-  }, []);
+      const avgFlowScore =
+        activeMembers.reduce((sum, m) => sum + m.flowState.score, 0) /
+        activeMembers.length;
+
+      const participationRate = (activeMembers.length / members.length) * 100;
+
+      return Math.round((avgFlowScore + participationRate) / 2);
+    },
+    []
+  );
 
   return {
     ...state,
@@ -138,8 +157,8 @@ export const useTeamCollaboration = (teamId: string, members: TeamMemberStatus[]
       await Promise.all([
         calculateOptimalTimes(),
         getOptimizations(),
-        checkCollaborationSuitability()
+        checkCollaborationSuitability(),
       ]);
-    }
+    },
   };
 };

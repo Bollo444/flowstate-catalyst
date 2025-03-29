@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useFlowContext } from '@/context/FlowContext';
-import { useFlowTasks } from '@/hooks/useFlowTasks';
-import TaskItem from '@/components/TaskItem';
-import TaskCreate from '@/components/tasks/TaskCreate';
-import styles from './styles.module.css';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useFlowContext } from "@/context/FlowContext";
+import { useFlowTasks } from "@/hooks/useFlowTasks";
+import TaskItem from "@/components/TaskItem";
+import TaskCreate from "@/components/tasks/TaskCreate";
+import styles from "./styles.module.css";
 
 interface ActiveTasksProps {
   userId: string;
@@ -22,7 +22,7 @@ export const ActiveTasks: React.FC<ActiveTasksProps> = ({ userId, teamId }) => {
     activeTaskId,
     switchTask,
     completeTask,
-    shouldTakeBreak
+    shouldTakeBreak,
   } = useFlowTasks({ userId, teamId });
 
   if (loading) {
@@ -44,15 +44,12 @@ export const ActiveTasks: React.FC<ActiveTasksProps> = ({ userId, teamId }) => {
   }
 
   const showBreakSuggestion = shouldTakeBreak();
-  const activeTasks = tasks.filter(task => !task.completed);
-  const completedTasks = tasks.filter(task => task.completed);
+  const activeTasks = tasks.filter((task) => !task.completed);
+  const completedTasks = tasks.filter((task) => task.completed);
 
   return (
     <div className={styles.tasksContainer}>
-      <TaskCreate 
-        userId={userId}
-        teamId={teamId}
-      />
+      <TaskCreate userId={userId} teamId={teamId} />
 
       {showBreakSuggestion && (
         <motion.div
@@ -74,7 +71,7 @@ export const ActiveTasks: React.FC<ActiveTasksProps> = ({ userId, teamId }) => {
           {activeTasks.length > 0 ? (
             <>
               <h2 className={styles.sectionTitle}>Active Tasks</h2>
-              {activeTasks.map(task => (
+              {activeTasks.map((task) => (
                 <TaskItem
                   key={task.id}
                   task={task}
@@ -98,12 +95,8 @@ export const ActiveTasks: React.FC<ActiveTasksProps> = ({ userId, teamId }) => {
             <>
               <h2 className={styles.sectionTitle}>Completed Tasks</h2>
               <div className={styles.completedTasks}>
-                {completedTasks.map(task => (
-                  <TaskItem
-                    key={task.id}
-                    task={task}
-                    isActive={false}
-                  />
+                {completedTasks.map((task) => (
+                  <TaskItem key={task.id} task={task} isActive={false} />
                 ))}
               </div>
             </>

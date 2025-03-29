@@ -1,7 +1,7 @@
 // src/components/team/SyncedSession.tsx
 
-import React, { useState } from 'react';
-import styles from '../../styles/TeamFlow.module.css'; // Import the CSS module
+import React, { useState } from "react";
+import styles from "../../styles/TeamFlow.module.css"; // Import the CSS module
 
 interface SyncedSession {
   id: string;
@@ -13,7 +13,9 @@ interface SyncedSession {
 }
 
 export const SyncedSession: React.FC = () => {
-  const [activeSession, setActiveSession] = useState<SyncedSession | null>(null);
+  const [activeSession, setActiveSession] = useState<SyncedSession | null>(
+    null
+  );
   // Removed useTeamCollaboration and useTeamFlowSync to avoid errors for now
   // const { teamSpace } = useTeamCollaboration();
   // const { teamMetrics } = useTeamFlowSync(teamSpace?.id || '');
@@ -42,10 +44,7 @@ export const SyncedSession: React.FC = () => {
             {/* Real-time flow indicators */}
             Flow Indicators
           </div>
-          <button 
-            className={styles.endButton}
-            onClick={endSyncedSession}
-          >
+          <button className={styles.endButton} onClick={endSyncedSession}>
             End Session
           </button>
         </div>
@@ -53,10 +52,7 @@ export const SyncedSession: React.FC = () => {
         <div className={styles.startSession}>
           <h3>Start Team Flow Session</h3>
           <p>Synchronize your team's flow state</p>
-          <button 
-            className={styles.startButton}
-            onClick={startSyncedSession}
-          >
+          <button className={styles.startButton} onClick={startSyncedSession}>
             Start Session
           </button>
         </div>

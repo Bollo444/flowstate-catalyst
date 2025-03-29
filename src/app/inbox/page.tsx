@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const InboxPage = () => {
-  return (
-    <div>
-      Inbox Page
-    </div>
-  );
+  return <div>Inbox Page</div>;
 };
 
 export default InboxPage;

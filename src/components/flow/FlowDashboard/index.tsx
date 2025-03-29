@@ -1,15 +1,15 @@
-import React from 'react';
-import styles from './FlowDashboard.module.css';
-import { useFlowStore } from '../../../stores/flowStore';
-import { FlowStateIndicator } from '../FlowStateIndicator';
-import { FlowTrends } from '../FlowTrends';
-import { TaskList } from '../TaskList';
-import { TeamSyncOverview } from '../../team/TeamSyncOverview';
-import { FlowMetrics } from '../FlowMetrics';
+import React from "react";
+import styles from "./FlowDashboard.module.css";
+import { useFlowStore } from "../../../stores/flowStore";
+import { FlowStateIndicator } from "../FlowStateIndicator";
+import { FlowTrends } from "../FlowTrends";
+import { TaskList } from "../TaskList";
+import { TeamSyncOverview } from "../../team/TeamSyncOverview";
+import { FlowMetrics } from "../FlowMetrics";
 
 export const FlowDashboard: React.FC = () => {
   const { currentFlow, tasks, teamSync } = useFlowStore();
-  
+
   return (
     <div className={styles.dashboardContainer}>
       <div className={styles.mainContent}>
@@ -20,10 +20,7 @@ export const FlowDashboard: React.FC = () => {
 
         <section className={styles.tasksSection}>
           <h3>Flow-Optimized Tasks</h3>
-          <TaskList 
-            tasks={tasks}
-            flowState={currentFlow.status}
-          />
+          <TaskList tasks={tasks} flowState={currentFlow.status} />
         </section>
       </div>
 

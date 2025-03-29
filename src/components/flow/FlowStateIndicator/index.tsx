@@ -1,179 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { FlowState, FlowMetrics } from '../../../hooks/useFlowState';
-import styles from './styles.module.css';
+"use client";
+
+import React, { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FlowScore } from "../FlowScore";
+import { Timer } from "@/components/shared/Timer";
+import { AlertCircle, AlertTriangle, CheckCircle, Zap } from "lucide-react";
+import { FlowState } from "@/context/FlowContext"; // *** Use FlowState from context ***
+import { ActivityMetrics } from "@/types/flow"; // Keep ActivityMetrics from flow types
+import { FlowStatus } from "@/types/database"; // *** Import FlowStatus enum from database types ***
+import clsx from "clsx"; // For conditional classes
 
 interface FlowStateIndicatorProps {
   flowState: FlowState;
-  metrics: FlowMetrics | null;
-  onInterrupt?: () => void;
+  metrics: ActivityMetrics;
+  onInterrupt: () => void;
 }
 
 export const FlowStateIndicator: React.FC<FlowStateIndicatorProps> = ({
   flowState,
   metrics,
-  onInterrupt
+  onInterrupt,
 }) => {
-  const [timeInState, setTimeInState] = useState(0);
-
-  useEffect(() => {
-    if (flowState.sessionStart) {
-      const interval = setInterval(() => {
-        const now = new Date();
-        const start = flowState.sessionStart as Date;
-        setTimeInState(Math.floor((now.getTime() - start.getTime()) / 60000));
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [flowState.sessionStart]);
-
-  const formatDuration = (minutes: number) => {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
-  };
-
-  const getStatusColor = () => {
+  const getStateIcon = useCallback(() => {
+    const iconClasses = "w-6 h-6"; // Base icon size
     switch (flowState.status) {
-      case 'flowing':
-        return '#4CAF50';
-      case 'starting':
-        return '#FFAA4C';
-      case 'interrupted':
-        return '#FF4C4C';
-      case 'cooling_down':
-        return '#4A9EFF';
+      case "peak":
+        // Using Zap icon for peak, themed colors
+        return <Zap className={clsx(iconClasses, "text-success-light dark:text-success-dark")} />;
+      case "flow":
+        // Using CheckCircle for flow, themed accent colors
+        return <CheckCircle className={clsx(iconClasses, "text-accent-light dark:text-accent-dark")} />;
+      case "building":
+        // Using AlertTriangle for building, themed warning colors
+        return <AlertTriangle className={clsx(iconClasses, "text-warning-light dark:text-warning-dark")} />;
+      case "rest":
+        // Using AlertCircle for rest, themed error colors
+        return <AlertCircle className={clsx(iconClasses, "text-error-light dark:text-error-dark")} />;
       default:
-        return '#808080';
+        return null;
     }
-  };
+  }, [flowState.status]);
 
-  const getStatusText = () => {
-    switch (flowState.status) {
-      case 'flowing':
-        return 'In Flow';
-      case 'starting':
-        return 'Getting Started';
-      case 'interrupted':
-        return 'Interrupted';
-      case 'cooling_down':
-        return 'Cooling Down';
-      default:
-        return 'Inactive';
-    }
-  };
-
-  const getIntensityDescription = () => {
-    if (flowState.intensity <= 3) return 'Low';
-    if (flowState.intensity <= 6) return 'Moderate';
-    if (flowState.intensity <= 8) return 'High';
-    return 'Peak';
-  };
-
-  const getOptimalTimeMessage = () => {
-    if (!metrics?.optimalTimeRanges.length) return null;
-
-    const now = new Date();
-    const currentHour = now.getHours();
-    const isOptimal = metrics.optimalTimeRanges.some(
-      range => currentHour >= range.start && currentHour <= range.end
-    );
-
-    if (isOptimal) {
-      return {
-        type: 'optimal',
-        message: 'This is your optimal work time! Make the most of it.'
-      };
-    }
-
-    // Find next optimal time range
-    const nextRange = metrics.optimalTimeRanges.find(range => range.start > currentHour);
-    if (nextRange) {
-      const hoursUntil = nextRange.start - currentHour;
-      return {
-        type: 'upcoming',
-        message: `Optimal work time in ${hoursUntil} hour${hoursUntil > 1 ? 's' : ''}`
-      };
-    }
-
-    // If no upcoming range today, show first range of next day
-    const firstRange = metrics.optimalTimeRanges[0];
-    const hoursUntil = (24 - currentHour) + firstRange.start;
-    return {
-      type: 'next-day',
-      message: `Next optimal work time tomorrow at ${firstRange.start}:00`
+  const getStateMessage = useCallback(() => {
+    // Cast keys explicitly to FlowStatus to resolve indexing error
+    const messages: Record<FlowStatus, string> = {
+      peak: "You're in peak flow! Keep going!",
+      flow: "You're in a good flow state",
+      building: "Building towards flow state",
+      rest: "Time for a short break?",
+      // Assuming 'inactive' isn't a typical status to display a message for here
+      // If it needs one, add: inactive: "Currently inactive"
     };
-  };
+    // Ensure that flowState.status is a valid key before accessing
+    if (flowState.status && messages[flowState.status as FlowStatus]) {
+       return messages[flowState.status as FlowStatus];
+    }
+    return ""; // Default empty message
+  }, [flowState.status]);
 
-  const optimalTimeInfo = getOptimalTimeMessage();
+  // Note: The flowState prop now comes from FlowContext, which lacks taskCompletions/interruptions.
+  // The ActivityMetrics type expects them. DashboardLayout provides 0 as defaults for the metrics prop.
 
   return (
-    <div className={styles.container}>
-      <div 
-        className={`${styles.indicator} ${styles[flowState.status]}`}
-        style={{ '--status-color': getStatusColor() } as React.CSSProperties}
-      >
-        <div className={styles.statusRing}>
-          <svg viewBox="0 0 100 100">
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="6"
-              strokeDasharray={`${flowState.score * 2.83} 283`}
-              transform="rotate(-90 50 50)"
-            />
-          </svg>
-          
-          <div className={styles.statusContent}>
-            <div className={styles.score}>{Math.round(flowState.score)}</div>
-            <div className={styles.status}>{getStatusText()}</div>
-          </div>
-        </div>
-
-        <div className={styles.metrics}>
-          <div className={styles.metric}>
-            <span className={styles.label}>Duration</span>
-            <span className={styles.value}>{formatDuration(timeInState)}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Intensity</span>
-            <span className={styles.value}>{getIntensityDescription()}</span>
-          </div>
-          <div className={styles.metric}>
-            <span className={styles.label}>Interruptions</span>
-            <span className={styles.value}>{flowState.interruptions}</span>
-          </div>
-        </div>
+    // Container: Flex layout (responsive), gap, themed background, rounded, shadow
+    <motion.div
+      className="flex flex-col md:flex-row gap-4 p-4 bg-background-light dark:bg-background-dark-secondary rounded-lg shadow-lg text-foreground-light dark:text-foreground-dark" // Adjusted padding/gap, added base text colors
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+    >
+      {/* Score Section: Apply Tailwind classes directly */}
+      <div className="flex-shrink-0 w-full md:w-64">
+        <FlowScore
+          score={flowState.score}
+          // status is available on the context's FlowState
+          status={flowState.status}
+          metrics={metrics}
+          showDetails
+        />
       </div>
 
-      {optimalTimeInfo && (
-        <div className={`${styles.optimalTime} ${styles[optimalTimeInfo.type]}`}>
-          <svg viewBox="0 0 24 24" className={styles.icon}>
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-          </svg>
-          <span>{optimalTimeInfo.message}</span>
-        </div>
-      )}
+      {/* Info Section: Flex grow, column layout, gap */}
+      <div className="flex-grow flex flex-col gap-3">
+        <AnimatePresence mode="wait">
+           {/* Status Message: Flex layout, gap, text size/weight */}
+          <motion.div
+            key={flowState.status} // Animation key based on status
+            className="flex items-center gap-3 text-lg font-medium"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 20 }}
+          >
+            {getStateIcon()}
+            <span>{getStateMessage()}</span>
+          </motion.div>
+        </AnimatePresence>
 
-      {flowState.status === 'flowing' && onInterrupt && (
+        {/* Timer Section: Flex layout, themed background, rounded, padding */}
+        <div className="flex items-center justify-between bg-background-light-secondary dark:bg-background-dark rounded-md p-3">
+          <Timer
+            time={metrics.activeTime}
+            // Assuming 'inactive' is a possible status, check against it
+            isActive={flowState.status !== "inactive"}
+            variant={flowState.status === "peak" ? "highlight" : "normal"}
+          />
+        </div>
+
+        {/* Interrupt Button: Themed background/text, hover effect, disabled state */}
         <button
-          className={styles.interruptButton}
+          className="mt-auto px-4 py-2 bg-error-light-muted text-error-light dark:bg-error-dark-muted dark:text-error-dark rounded-md hover:bg-error-light/30 dark:hover:bg-error-dark/30 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={onInterrupt}
+          disabled={flowState.status === "inactive"}
         >
           Record Interruption
         </button>
-      )}
-    </div>
+      </div>
+    </motion.div>
   );
 };

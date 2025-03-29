@@ -1,17 +1,17 @@
-import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Task } from '../../../types/database';
-import { FlowStatus } from '../../../stores/flowStore';
-import { TaskCard } from '../TaskCard';
-import { TaskFilters } from '../TaskFilters';
-import { TaskSearch, TaskSearchFilters } from '../TaskSearch';
-import { BatchActionsBar } from '../BatchActionsBar';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import { ErrorDisplay } from '../../shared/ErrorDisplay';
-import { TaskSelectionProvider } from '../../../context/TaskSelectionContext';
-import { useTasks } from '../../../hooks/useTasks';
-import { useLoadingState } from '../../../hooks/useLoadingState';
-import styles from './TaskList.module.css';
+import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Task } from "../../../types/database";
+import { FlowStatus } from "../../../stores/flowStore";
+import { TaskCard } from "../TaskCard";
+import { TaskFilters } from "../TaskFilters";
+import { TaskSearch, TaskSearchFilters } from "../TaskSearch";
+import { BatchActionsBar } from "../BatchActionsBar";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import { ErrorDisplay } from "../../shared/ErrorDisplay";
+import { TaskSelectionProvider } from "../../../context/TaskSelectionContext";
+import { useTasks } from "../../../hooks/useTasks";
+import { useLoadingState } from "../../../hooks/useLoadingState";
+import styles from "./TaskList.module.css";
 
 interface TaskListProps {
   projectId: string;
@@ -20,27 +20,31 @@ interface TaskListProps {
 
 export const TaskList: React.FC<TaskListProps> = ({ projectId, flowState }) => {
   const { getTasks } = useTasks();
-  const { isLoading, error, setError, startLoading, stopLoading, resetState } = useLoadingState();
+  const { isLoading, error, setError, startLoading, stopLoading, resetState } =
+    useLoadingState();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [searchFilters, setSearchFilters] = useState<TaskSearchFilters>({
-    query: '',
+    query: "",
   });
 
-  const loadTasks = React.useCallback(async (filters?: TaskSearchFilters) => {
-    startLoading();
-    try {
-      const data = await getTasks(projectId, filters);
-      setTasks(data);
-    } catch (err) {
-      setError({
-        code: 'TASKS_LOAD_ERROR',
-        message: 'Failed to load tasks',
-        details: err
-      });
-    } finally {
-      stopLoading();
-    }
-  }, [projectId, getTasks, startLoading, stopLoading, setError]);
+  const loadTasks = React.useCallback(
+    async (filters?: TaskSearchFilters) => {
+      startLoading();
+      try {
+        const data = await getTasks(projectId, filters);
+        setTasks(data);
+      } catch (err) {
+        setError({
+          code: "TASKS_LOAD_ERROR",
+          message: "Failed to load tasks",
+          details: err,
+        });
+      } finally {
+        stopLoading();
+      }
+    },
+    [projectId, getTasks, startLoading, stopLoading, setError]
+  );
 
   React.useEffect(() => {
     loadTasks(searchFilters);
@@ -73,10 +77,7 @@ export const TaskList: React.FC<TaskListProps> = ({ projectId, flowState }) => {
   return (
     <TaskSelectionProvider>
       <div className={styles.taskListContainer}>
-        <TaskSearch 
-          onSearch={handleSearch}
-          initialFilters={searchFilters}
-        />
+        <TaskSearch onSearch={handleSearch} initialFilters={searchFilters} />
 
         <div className={styles.taskList}>
           <AnimatePresence mode="popLayout">
@@ -94,7 +95,7 @@ export const TaskList: React.FC<TaskListProps> = ({ projectId, flowState }) => {
                 )}
               </motion.div>
             ) : (
-              tasks.map(task => (
+              tasks.map((task) => (
                 <motion.div
                   key={task.id}
                   layout
@@ -103,8 +104,8 @@ export const TaskList: React.FC<TaskListProps> = ({ projectId, flowState }) => {
                   exit={{ opacity: 0, y: -20 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <TaskCard 
-                    task={task} 
+                  <TaskCard
+                    task={task}
                     flowContext={flowState}
                     onUpdate={() => loadTasks(searchFilters)}
                   />

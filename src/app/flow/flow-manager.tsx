@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useTaskRouting } from '../../context/TaskRoutingContext';
-import { useFlowContext } from '../../context/FlowContext';
-import { TaskFlow } from '../../components/flow/TaskFlow';
-import { LoadingBoundary } from '../../components/shared/LoadingBoundary';
-import { ErrorBoundary } from '../../components/shared/ErrorBoundary';
-import { ErrorDisplay } from '../../components/shared/ErrorDisplay';
-import styles from './styles.module.css';
+import { useEffect } from "react";
+import { useTaskRouting } from "../../context/TaskRoutingContext";
+import { useFlowContext } from "../../context/FlowContext";
+import { TaskFlow } from "../../components/flow/TaskFlow";
+import { LoadingBoundary } from "../../components/shared/LoadingBoundary";
+import { ErrorBoundary } from "../../components/shared/ErrorBoundary";
+import { ErrorDisplay } from "../../components/shared/ErrorDisplay";
+import styles from "./styles.module.css";
 
 interface FlowStatsCardProps {
   flowState: {
@@ -24,7 +24,7 @@ function FlowStatsCard({
   flowState,
   routingResult,
   onStartNextTask,
-  hasNextTask
+  hasNextTask,
 }: FlowStatsCardProps) {
   return (
     <div className={styles.statsCard}>
@@ -75,7 +75,7 @@ export default function FlowManager() {
     error,
     routeTasks,
     startNextTask,
-    setError
+    setError,
   } = useTaskRouting();
 
   const { flowState } = useFlowContext();
@@ -84,19 +84,24 @@ export default function FlowManager() {
     if (flowState && routingResult?.routingFactors.flowAlignment) {
       const currentAlignment = routingResult.routingFactors.flowAlignment * 100;
       const alignmentDiff = Math.abs(flowState.score - currentAlignment);
-      
+
       // Re-route tasks if flow state has significantly changed
       if (alignmentDiff > 20) {
         routeTasks(currentSequence);
       }
     }
-  }, [flowState?.score, routingResult?.routingFactors.flowAlignment, routeTasks, currentSequence]);
+  }, [
+    flowState?.score,
+    routingResult?.routingFactors.flowAlignment,
+    routeTasks,
+    currentSequence,
+  ]);
 
   if (error) {
     return (
       <div className={styles.errorContainer}>
         <ErrorDisplay error={error} />
-        <button 
+        <button
           onClick={() => {
             setError(null);
             routeTasks(currentSequence);
@@ -121,7 +126,8 @@ export default function FlowManager() {
             <div className={styles.header}>
               <h1 className={styles.title}>Flow-Optimized Tasks</h1>
               <p className={styles.description}>
-                Tasks are automatically organized based on your current flow state and optimal work patterns.
+                Tasks are automatically organized based on your current flow
+                state and optimal work patterns.
               </p>
             </div>
 
@@ -132,7 +138,7 @@ export default function FlowManager() {
 
               <aside className={styles.sidebar}>
                 {flowState && (
-                  <FlowStatsCard 
+                  <FlowStatsCard
                     flowState={flowState}
                     routingResult={routingResult}
                     onStartNextTask={startNextTask}

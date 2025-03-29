@@ -1,7 +1,7 @@
 /* src/styles/TeamFlow.module.css */
 
 .teamFlowContainer {
-  background: linear-gradient(135deg, #2E3192, #1BFFFF);
+  background: linear-gradient(135deg, #2e3192, #1bffff);
   border-radius: 16px;
   padding: 24px;
   color: white;
@@ -29,7 +29,7 @@
   border-radius: 16px;
   padding: 24px;
   margin-top: 20px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .activeSession {
@@ -41,7 +41,7 @@
   font-size: 48px;
   text-align: center;
   font-weight: bold;
-  color: #2E3192;
+  color: #2e3192;
 }
 
 .participantsList {
@@ -51,7 +51,8 @@
   margin: 20px 0;
 }
 
-.startButton, .endButton {
+.startButton,
+.endButton {
   width: 100%;
   padding: 16px;
   border: none;
@@ -62,11 +63,11 @@
 }
 
 .startButton {
-  background: #2E3192;
+  background: #2e3192;
   color: white;
 }
 
 .endButton {
-  background: #FF3B3B;
+  background: #ff3b3b;
   color: white;
 }

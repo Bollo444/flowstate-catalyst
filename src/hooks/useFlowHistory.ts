@@ -1,6 +1,6 @@
 // src/hooks/useFlowHistory.ts
-import { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export const useFlowHistory = (userId: string) => {
   const supabase = useSupabaseClient();
@@ -14,10 +14,10 @@ export const useFlowHistory = (userId: string) => {
       try {
         // Fetch flow history data from Supabase for the given userId
         const { data, error } = await supabase
-          .from('flow_metrics')
-          .select('*')
-          .eq('user_id', userId)
-          .order('timestamp', { ascending: true })
+          .from("flow_metrics")
+          .select("*")
+          .eq("user_id", userId)
+          .order("timestamp", { ascending: true })
           .limit(30); // Limit to last 30 data points for performance
 
         if (error) throw error;

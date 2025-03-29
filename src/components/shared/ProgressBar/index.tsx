@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from './styles.module.css';
+import React from "react";
+import styles from "./styles.module.css";
 
 interface ProgressBarProps {
   progress: number;
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
   showPercentage?: boolean;
   interactive?: boolean;
   onChange?: (progress: number) => void;
@@ -13,12 +13,12 @@ interface ProgressBarProps {
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({
   progress,
-  size = 'medium',
+  size = "medium",
   showPercentage = true,
   interactive = false,
   onChange,
-  color = '#4A9EFF',
-  className
+  color = "#4A9EFF",
+  className,
 }) => {
   // Ensure progress is between 0 and 100
   const clampedProgress = Math.max(0, Math.min(100, progress));
@@ -36,21 +36,21 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
     if (!interactive || !onChange) return;
 
     const step = event.shiftKey ? 10 : 1;
-    
+
     switch (event.key) {
-      case 'ArrowLeft':
+      case "ArrowLeft":
         event.preventDefault();
         onChange(Math.max(0, clampedProgress - step));
         break;
-      case 'ArrowRight':
+      case "ArrowRight":
         event.preventDefault();
         onChange(Math.min(100, clampedProgress + step));
         break;
-      case 'Home':
+      case "Home":
         event.preventDefault();
         onChange(0);
         break;
-      case 'End':
+      case "End":
         event.preventDefault();
         onChange(100);
         break;
@@ -58,21 +58,23 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   };
 
   return (
-    <div className={`${styles.container} ${className || ''}`}>
+    <div className={`${styles.container} ${className || ""}`}>
       <div
-        className={`${styles.progressBar} ${styles[size]} ${interactive ? styles.interactive : ''}`}
+        className={`${styles.progressBar} ${styles[size]} ${interactive ? styles.interactive : ""}`}
         onClick={handleBarClick}
         onKeyDown={handleKeyDown}
-        role={interactive ? 'slider' : 'progressbar'}
+        role={interactive ? "slider" : "progressbar"}
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={clampedProgress}
         tabIndex={interactive ? 0 : undefined}
-        style={{
-          '--progress-color': color
-        } as React.CSSProperties}
+        style={
+          {
+            "--progress-color": color,
+          } as React.CSSProperties
+        }
       >
-        <div 
+        <div
           className={styles.progress}
           style={{ width: `${clampedProgress}%` }}
         />
@@ -84,9 +86,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         )}
       </div>
       {showPercentage && (
-        <span className={styles.percentage}>
-          {clampedProgress}%
-        </span>
+        <span className={styles.percentage}>{clampedProgress}%</span>
       )}
     </div>
   );

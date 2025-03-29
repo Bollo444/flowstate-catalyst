@@ -1,21 +1,22 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { createClient } from '@/lib/supabase-client';
-import { SocialLogin } from './SocialLogin';
-import styles from './Auth.module.css';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { createClient } from "@/lib/supabase-client";
+import { SocialLogin } from "./SocialLogin";
+import styles from "./Auth.module.css";
 
-interface AuthError {
-  message: string;
-  status?: number;
-}
+// Unused interface
+// interface AuthError {
+//   message: string;
+//   status?: number;
+// }
 
 export function SignIn() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
@@ -32,11 +33,11 @@ export function SignIn() {
       });
 
       if (error) throw error;
-      router.push('/');
+      router.push("/");
       router.refresh();
     } catch (error: unknown) {
       setError(
-        error instanceof Error ? error.message : 'An unexpected error occurred'
+        error instanceof Error ? error.message : "An unexpected error occurred"
       );
     } finally {
       setLoading(false);
@@ -75,12 +76,11 @@ export function SignIn() {
             <Link href="/auth/forgot-password">Forgot your password?</Link>
           </div>
           <button type="submit" disabled={loading} className={styles.button}>
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
         <p className={styles.switchAuth}>
-          Don't have an account?{' '}
-          <Link href="/auth/signup">Sign up here</Link>
+          Don't have an account? <Link href="/auth/signup">Sign up here</Link>
         </p>
         <SocialLogin />
       </div>

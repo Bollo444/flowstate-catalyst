@@ -68,7 +68,7 @@
   .flowContainer {
     background: rgba(0, 0, 0, 0.2);
   }
-  
+
   .flowScoreCard,
   .teamSyncCard {
     backdrop-filter: blur(12px);
@@ -85,7 +85,9 @@
 .enterActive {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .exit {
@@ -96,7 +98,9 @@
 .exitActive {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* Glass morphism effects */
@@ -106,8 +110,9 @@
   border-radius: 16px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
-              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .flowScoreCard,

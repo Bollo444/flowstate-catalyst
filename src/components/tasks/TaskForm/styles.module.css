@@ -21,7 +21,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .input,
@@ -40,13 +40,13 @@
 .textarea:focus,
 .select:focus {
   outline: none;
-  border-color: #3B82F6;
+  border-color: #3b82f6;
   background: rgba(0, 0, 0, 0.3);
 }
 
 .input::placeholder,
 .textarea::placeholder {
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .textarea {
@@ -59,7 +59,7 @@
 }
 
 .select option {
-  background: #1F2937;
+  background: #1f2937;
   color: white;
 }
 
@@ -81,17 +81,17 @@
 
 .success {
   background: rgba(80, 181, 132, 0.1);
-  color: #50B584;
+  color: #50b584;
 }
 
 .warning {
   background: rgba(245, 158, 11, 0.1);
-  color: #F59E0B;
+  color: #f59e0b;
 }
 
 .info {
   background: rgba(59, 130, 246, 0.1);
-  color: #3B82F6;
+  color: #3b82f6;
 }
 
 .icon {
@@ -114,7 +114,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .checkbox input[type="checkbox"] {
@@ -128,17 +128,17 @@
 }
 
 .checkbox:hover input[type="checkbox"] {
-  border-color: #3B82F6;
+  border-color: #3b82f6;
 }
 
 .checkbox input[type="checkbox"]:checked {
-  background: #3B82F6;
-  border-color: #3B82F6;
+  background: #3b82f6;
+  border-color: #3b82f6;
 }
 
 .contextWarning {
   font-size: 14px;
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .buttons {
@@ -159,17 +159,17 @@
 }
 
 .submitButton {
-  background: #3B82F6;
+  background: #3b82f6;
   border: none;
   color: white;
 }
 
 .submitButton:hover {
-  background: #2563EB;
+  background: #2563eb;
 }
 
 .submitButton:disabled {
-  background: #6B7280;
+  background: #6b7280;
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -177,7 +177,7 @@
 .cancelButton {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .cancelButton:hover {
@@ -204,7 +204,7 @@
   }
 
   .field label {
-    color: #4B5563;
+    color: #4b5563;
   }
 
   .input,
@@ -212,7 +212,7 @@
   .select {
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .input:focus,
@@ -223,12 +223,12 @@
 
   .input::placeholder,
   .textarea::placeholder {
-    color: #9CA3AF;
+    color: #9ca3af;
   }
 
   .select option {
     background: white;
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .flowSettings {
@@ -236,7 +236,7 @@
   }
 
   .checkbox {
-    color: #4B5563;
+    color: #4b5563;
   }
 
   .checkbox input[type="checkbox"] {
@@ -246,12 +246,12 @@
 
   .cancelButton {
     border-color: rgba(0, 0, 0, 0.1);
-    color: #6B7280;
+    color: #6b7280;
   }
 
   .cancelButton:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: #1F2937;
+    color: #1f2937;
   }
 }
 

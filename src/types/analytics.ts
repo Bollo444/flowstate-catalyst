@@ -1,4 +1,4 @@
-import { FlowStatus } from './supabase';
+import { FlowStatus } from "./supabase";
 
 export interface FlowHistoryEntry {
   id: string;
@@ -60,4 +60,4 @@ export interface AnalyticsTimeRange {
   end: Date;
 }
 
-export type TimeRangeOption = 'day' | 'week' | 'month';
+export type TimeRangeOption = "day" | "week" | "month";

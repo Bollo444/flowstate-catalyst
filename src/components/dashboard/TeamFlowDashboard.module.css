@@ -20,7 +20,7 @@
 .dashboardHeader {
   padding: 24px;
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .headerContent {
@@ -45,7 +45,7 @@
   background: white;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .loadingState {
@@ -60,7 +60,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top: 3px solid #2E3192;
+  border-top: 3px solid #2e3192;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 12px;
@@ -80,23 +80,27 @@
   padding: 12px 24px;
   border-radius: 8px;
   background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   animation: slideIn 0.3s ease;
 }
 
 .notification.success {
-  background: #10B981;
+  background: #10b981;
   color: white;
 }
 
 .notification.error {
-  background: #EF4444;
+  background: #ef4444;
   color: white;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes slideIn {
@@ -114,7 +118,7 @@
   .dashboardLayout {
     grid-template-columns: 1fr;
   }
-  
+
   .sidePanel {
     order: -1;
   }

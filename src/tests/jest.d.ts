@@ -1,12 +1,13 @@
 /// <reference types="jest" />
 /// <reference types="@testing-library/jest-dom" />
 
-import type { TestingLibraryMatchers } from '@testing-library/jest-dom/matchers';
-import type { expect } from '@jest/globals';
+import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";
+import type { expect } from "@jest/globals";
 
 declare global {
   namespace jest {
-    interface Matchers<R> extends TestingLibraryMatchers<typeof expect.stringContaining, R> {
+    interface Matchers<R>
+      extends TestingLibraryMatchers<typeof expect.stringContaining, R> {
       toBeInTheDocument(): R;
       toHaveTextContent(text: string | RegExp): R;
       toHaveAttribute(attr: string, value?: string): R;
@@ -32,8 +33,9 @@ declare global {
   }
 }
 
-declare module '@testing-library/jest-dom' {
-  export interface JestMatchers<R = void, T = {}> extends TestingLibraryMatchers<typeof expect.stringContaining, R> {}
+declare module "@testing-library/jest-dom" {
+  export interface JestMatchers<R = void, T = {}>
+    extends TestingLibraryMatchers<typeof expect.stringContaining, R> {}
 }
 
 // Explicitly define test function types
@@ -45,4 +47,4 @@ declare const describe: typeof jest.describe;
 declare const it: typeof jest.it;
 declare const test: typeof jest.test;
 declare const expect: typeof jest.expect;
-declare const jest: typeof import('@jest/globals').jest;
+declare const jest: typeof import("@jest/globals").jest;

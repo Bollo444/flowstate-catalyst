@@ -11,12 +11,12 @@ export interface WhisperCategory {
   name: string;
   triggers: string[];
   messages: FlowMessage[];
-  intensity: 'gentle' | 'moderate' | 'energetic';
+  intensity: "gentle" | "moderate" | "energetic";
 }
 
 export interface FlowMessage {
   text: string;
-  intensity: 'gentle' | 'moderate' | 'energetic';
+  intensity: "gentle" | "moderate" | "energetic";
 }
 
 export interface FlowStreak {
@@ -26,7 +26,7 @@ export interface FlowStreak {
 
 export interface WhisperPreferences {
   categoryEnabled: string[];
-  intensityLevel: 'gentle' | 'moderate' | 'energetic';
+  intensityLevel: "gentle" | "moderate" | "energetic";
 }
 
 export interface WhisperAnimation {
@@ -36,16 +36,16 @@ export interface WhisperAnimation {
 
 export interface FlowReward {
   id: string;
-  trigger: 'streak' | 'achievement' | 'interaction';
+  trigger: "streak" | "achievement" | "interaction";
   threshold: number;
   reward: {
-    type: 'badge' | 'theme' | 'animation' | 'power-up';
+    type: "badge" | "theme" | "animation" | "power-up";
     content: any;
   };
 }
 
 export interface WhisperProps {
   message: string;
-  animation: keyof typeof import('./animations').whisperAnimations;
-  interaction: 'emoji' | 'quick-reply' | 'acknowledge';
+  animation: keyof typeof import("./animations").whisperAnimations;
+  interaction: "emoji" | "quick-reply" | "acknowledge";
 }

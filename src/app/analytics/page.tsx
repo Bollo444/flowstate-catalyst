@@ -1,15 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { useFlowContext } from '@/context/FlowContext';
-import { TaskAnalytics } from '@/components/metrics/TaskAnalytics';
-import { TimeRangeOption } from '@/types/analytics';
-import styles from './analytics.module.css';
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { useFlowContext } from "@/context/FlowContext";
+// Note: TaskAnalytics seems to be in 'metrics' not 'analytics', adjust if needed
+import { TaskAnalytics } from "@/components/metrics/TaskAnalytics";
+import { PerformanceInsights } from "@/components/analytics/PerformanceInsights"; // Added import
+import { TimeRangeOption } from "@/types/analytics";
+import styles from "./analytics.module.css";
 
 export default function AnalyticsPage() {
   const { flowState } = useFlowContext();
-  const [timeRange, setTimeRange] = useState<TimeRangeOption>('week');
+  const [timeRange, setTimeRange] = useState<TimeRangeOption>("week");
 
   if (!flowState.userId) {
     return (
@@ -21,9 +23,9 @@ export default function AnalyticsPage() {
   }
 
   const timeRangeOptions: { value: TimeRangeOption; label: string }[] = [
-    { value: 'day', label: 'Today' },
-    { value: 'week', label: 'This Week' },
-    { value: 'month', label: 'This Month' },
+    { value: "day", label: "Today" },
+    { value: "week", label: "This Week" },
+    { value: "month", label: "This Month" },
   ];
 
   return (
@@ -45,7 +47,7 @@ export default function AnalyticsPage() {
               <button
                 key={option.value}
                 className={`${styles.timeRangeButton} ${
-                  timeRange === option.value ? styles.active : ''
+                  timeRange === option.value ? styles.active : ""
                 }`}
                 onClick={() => setTimeRange(option.value)}
               >
@@ -57,15 +59,15 @@ export default function AnalyticsPage() {
       </header>
 
       <main className={styles.content}>
-        <TaskAnalytics
-          userId={flowState.userId}
-          timeRange={timeRange}
-        />
+        <TaskAnalytics userId={flowState.userId} timeRange={timeRange} />
+        {/* Add the Performance Insights component */}
+        <PerformanceInsights />
       </main>
 
       <footer className={styles.footer}>
         <p className={styles.hint}>
-          Pro tip: Use these insights to optimize your daily schedule around your peak flow states.
+          Pro tip: Use these insights to optimize your daily schedule around
+          your peak flow states.
         </p>
       </footer>
     </motion.div>

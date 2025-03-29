@@ -1,9 +1,9 @@
 // src/components/core/FlowInterface/FlowHeader.tsx
-import React from 'react';
-import styles from './FlowInterface.module.css';
-import FlowStateIndicator from './FlowStateIndicator';
-import QuickActions from '../dashboard/QuickActions';
-import TeamPresence from '../team/TeamPresence';
+import React from "react";
+import styles from "./FlowInterface.module.css";
+import FlowStateIndicator from "./FlowStateIndicator";
+import QuickActions from "../dashboard/QuickActions";
+import TeamPresence from "../team/TeamPresence";
 
 interface FlowHeaderProps {
   children?: React.ReactNode;

@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const MorePage = () => {
-  return (
-    <div>
-      More Page
-    </div>
-  );
+  return <div>More Page</div>;
 };
 
 export default MorePage;

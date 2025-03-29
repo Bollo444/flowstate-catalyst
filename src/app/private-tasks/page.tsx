@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const PrivateTasksPage = () => {
-  return (
-    <div>
-      Private Tasks Page
-    </div>
-  );
+  return <div>Private Tasks Page</div>;
 };
 
 export default PrivateTasksPage;

@@ -1,37 +1,38 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { SessionContextProvider } from '@supabase/auth-helpers-react';
-import { TaskRoutingProvider } from '../context/TaskRoutingContext';
-import { FlowProvider } from '../context/FlowContext';
-import { Database } from '../types/supabase';
-import type { SupabaseSession } from '../types/supabase';
+import { ReactNode } from "react";
+// Removed imports for old Auth Helpers: createClientComponentClient, SessionContextProvider
+// Removed SupabaseSession import if it's only used by SessionContextProvider
+import { TaskRoutingProvider } from "../context/TaskRoutingContext";
+import { FlowContextProvider } from "../context/FlowContext"; 
+import { TeamSyncProvider } from "../context/TeamSyncContext";
+// Assuming Database type is needed elsewhere or can be removed if not
+// import { Database } from "../types/supabase"; 
 
 interface ProvidersProps {
   children: ReactNode;
-  initialSession: SupabaseSession;
+  // initialSession is no longer needed as context is handled by middleware + useSupabase hook
+  teamId?: string;
 }
 
-export function Providers({ children, initialSession }: ProvidersProps) {
-  const supabase = createClientComponentClient<Database>();
+export function Providers({
+  children,
+  teamId, // Removed initialSession from props
+}: ProvidersProps) {
+  // supabase client instance is now created and managed in supabaseClient.ts and useSupabase hook
+  // const supabase = createClientComponentClient<Database>(); 
 
+  // Remove SessionContextProvider wrapper
   return (
-    <SessionContextProvider 
-      supabaseClient={supabase} 
-      initialSession={initialSession}
-    >
-      <FlowProvider>
-        <TaskRoutingProvider
-          options={{
-            autoRoute: true,
-            sessionDuration: 90,
-            minFlowScore: 70
-          }}
-        >
-          {children}
-        </TaskRoutingProvider>
-      </FlowProvider>
-    </SessionContextProvider>
+    <FlowContextProvider> 
+      {/* Removed options prop */}
+      <TaskRoutingProvider> 
+        {teamId ? (
+          <TeamSyncProvider teamId={teamId}>{children}</TeamSyncProvider>
+        ) : (
+          children
+        )}
+      </TaskRoutingProvider>
+    </FlowContextProvider>
   );
 }

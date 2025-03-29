@@ -1,29 +1,28 @@
 // src/components/core/FlowInterface/ContentArea.tsx
-import React from 'react';
-import styles from './styles.module.css';
-import { AnimatePresence, motion, Variants } from 'framer-motion';
-import FlowDashboard from '../dashboard/FlowDashboard';
-import TeamView from '../team/TeamView';
-import { useFlowStore } from '../../store/flowState';
-import { flowAnimations } from '../../styles/animations'; // Import animations
+import React from "react";
+import { AnimatePresence, motion } from "framer-motion"; // Removed Variants import
+import FlowDashboard from "../dashboard/FlowDashboard";
+import TeamView from "../team/TeamView";
+import { useFlowStore } from "../../stores/flowStore"; // Corrected store path
 
 interface ContentAreaProps {
   className?: string;
 }
 
-const flowAnimations: Variants = {
+const flowAnimations = {
+  // Removed explicit Variants type annotation
   initial: { opacity: 0, x: -20 },
   animate: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: 20 }
+  exit: { opacity: 0, x: 20 },
 };
 
 export const ContentArea: React.FC<ContentAreaProps> = ({ className }) => {
   const { activeView } = useFlowStore();
-  
+
   return (
     <div className={className}>
       <AnimatePresence mode="wait">
-        {activeView === 'dashboard' && (
+        {activeView === "dashboard" && (
           <motion.div
             key="dashboard"
             variants={flowAnimations}
@@ -34,16 +33,19 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ className }) => {
             <FlowDashboard />
           </motion.div>
         )}
-        
-        {activeView === 'team' && (
+
+        {activeView === "team" && ( // Corrected animation props
           <motion.div
             key="team"
-            {...flowAnimations.pageTransition}
+            variants={flowAnimations}
+            initial="initial"
+            animate="animate"
+            exit="exit"
           >
             <TeamView />
           </motion.div>
         )}
-        
+
         {/* Add other views */}
       </AnimatePresence>
     </div>

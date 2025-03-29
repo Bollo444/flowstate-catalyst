@@ -1,5 +1,5 @@
-import React from 'react';
-import styles from './DashboardSummary.module.css';
+import React from "react";
+import styles from "./DashboardSummary.module.css";
 
 export const DashboardSummary: React.FC = () => {
   return (

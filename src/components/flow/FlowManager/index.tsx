@@ -1,47 +1,13 @@
-import React, { useState } from 'react';
-import { useFlowState } from '../../../hooks/useFlowState';
-import { FlowStateIndicator } from '../FlowStateIndicator';
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
-import styles from './styles.module.css';
+"use client";
 
-interface InterruptionType {
-  id: string;
-  label: string;
-  description: string;
-  impactLevel: 'low' | 'medium' | 'high';
-  estimatedRecoveryTime: number;
-}
-
-const INTERRUPTION_TYPES: InterruptionType[] = [
-  {
-    id: 'meeting',
-    label: 'Meeting',
-    description: 'Scheduled or impromptu meetings',
-    impactLevel: 'high',
-    estimatedRecoveryTime: 30
-  },
-  {
-    id: 'chat',
-    label: 'Chat/Message',
-    description: 'Slack, email, or other messages',
-    impactLevel: 'low',
-    estimatedRecoveryTime: 5
-  },
-  {
-    id: 'break',
-    label: 'Break',
-    description: 'Personal break or pause',
-    impactLevel: 'medium',
-    estimatedRecoveryTime: 15
-  },
-  {
-    id: 'emergency',
-    label: 'Emergency',
-    description: 'Urgent issues requiring immediate attention',
-    impactLevel: 'high',
-    estimatedRecoveryTime: 45
-  }
-];
+import { useState, useCallback } from "react";
+import { Dialog } from "@/components/shared/Dialog";
+import { FlowStateIndicator } from "../FlowStateIndicator";
+import { ProgressBar } from "@/components/shared/ProgressBar";
+import { MarkdownEditor } from "@/components/shared/MarkdownEditor";
+import { useFlowState } from "@/hooks/useFlowState";
+import { InterruptionType } from "@/types/flow";
+import styles from "./FlowManager.module.css";
 
 export const FlowManager: React.FC = () => {
   const {
@@ -49,12 +15,13 @@ export const FlowManager: React.FC = () => {
     metrics,
     startFlowSession,
     endFlowSession,
-    recordInterruption
+    recordInterruption,
   } = useFlowState();
 
   const [showInterruptionDialog, setShowInterruptionDialog] = useState(false);
-  const [interruptionNote, setInterruptionNote] = useState('');
-  const [selectedInterruption, setSelectedInterruption] = useState<InterruptionType | null>(null);
+  const [interruptionNote, setInterruptionNote] = useState("");
+  const [selectedInterruption, setSelectedInterruption] =
+    useState<InterruptionType | null>(null);
 
   const handleStartFlow = async () => {
     await startFlowSession();
@@ -67,24 +34,39 @@ export const FlowManager: React.FC = () => {
   const handleInterruptionSubmit = async () => {
     if (!selectedInterruption) return;
 
-    await recordInterruption(selectedInterruption.label, selectedInterruption.estimatedRecoveryTime);
+    await recordInterruption(
+      selectedInterruption.label,
+      selectedInterruption.estimatedRecoveryTime,
+      interruptionNote
+    );
     setShowInterruptionDialog(false);
-    setInterruptionNote('');
+    setInterruptionNote("");
     setSelectedInterruption(null);
   };
 
-  const getImpactColor = (level: InterruptionType['impactLevel']) => {
-    switch (level) {
-      case 'high':
-        return '#FF4C4C';
-      case 'medium':
-        return '#FFAA4C';
-      case 'low':
-        return '#4CAF50';
-      default:
-        return '#808080';
-    }
-  };
+  const renderMetrics = useCallback(() => {
+    return (
+      <div className={styles.metricsContainer}>
+        <div className={styles.metricCard}>
+          <h3>Flow Score</h3>
+          <ProgressBar
+            progress={flowState.score}
+            color={getFlowScoreColor(flowState.score)}
+            size="large"
+            showPercentage
+          />
+        </div>
+        <div className={styles.metricCard}>
+          <h3>Active Time</h3>
+          <span>{Math.floor(metrics.activeTime)}m</span>
+        </div>
+        <div className={styles.metricCard}>
+          <h3>Focus Rate</h3>
+          <span>{calculateFocusRate(metrics)}%</span>
+        </div>
+      </div>
+    );
+  }, [flowState.score, metrics]);
 
   return (
     <div className={styles.container}>
@@ -95,19 +77,15 @@ export const FlowManager: React.FC = () => {
           onInterrupt={() => setShowInterruptionDialog(true)}
         />
 
+        {renderMetrics()}
+
         <div className={styles.controls}>
-          {flowState.status === 'inactive' ? (
-            <button 
-              className={styles.startButton}
-              onClick={handleStartFlow}
-            >
+          {flowState.status === "inactive" ? (
+            <button className={styles.startButton} onClick={handleStartFlow}>
               Start Flow Session
             </button>
           ) : (
-            <button
-              className={styles.endButton}
-              onClick={handleEndFlow}
-            >
+            <button className={styles.endButton} onClick={handleEndFlow}>
               End Flow Session
             </button>
           )}
@@ -117,55 +95,34 @@ export const FlowManager: React.FC = () => {
       <Dialog
         open={showInterruptionDialog}
         onClose={() => setShowInterruptionDialog(false)}
-        maxWidth="sm"
-        fullWidth
+        title="Record Interruption"
       >
-        <DialogTitle className={styles.dialogTitle}>
-          Record Interruption
-        </DialogTitle>
-
-        <DialogContent className={styles.dialogContent}>
+        <div className={styles.interruptionForm}>
           <div className={styles.interruptionTypes}>
-            {INTERRUPTION_TYPES.map(type => (
+            {INTERRUPTION_TYPES.map((type) => (
               <button
-                key={type.id}
+                key={type.label}
                 className={`${styles.interruptionType} ${
-                  selectedInterruption?.id === type.id ? styles.selected : ''
+                  selectedInterruption?.label === type.label
+                    ? styles.selected
+                    : ""
                 }`}
                 onClick={() => setSelectedInterruption(type)}
-                style={{
-                  '--impact-color': getImpactColor(type.impactLevel)
-                } as React.CSSProperties}
+                style={{ borderColor: getImpactColor(type.impactLevel) }}
               >
-                <div className={styles.typeHeader}>
-                  <span className={styles.typeLabel}>{type.label}</span>
-                  <span className={styles.impactBadge}>
-                    {type.impactLevel.charAt(0).toUpperCase() + type.impactLevel.slice(1)} Impact
-                  </span>
-                </div>
-                <p className={styles.typeDescription}>{type.description}</p>
-                <div className={styles.recoveryTime}>
-                  ~{type.estimatedRecoveryTime}min recovery
-                </div>
+                <span>{type.label}</span>
+                <small>{type.estimatedRecoveryTime}m recovery</small>
               </button>
             ))}
           </div>
 
-          <textarea
-            className={styles.noteInput}
-            value={interruptionNote}
-            onChange={(e) => setInterruptionNote(e.target.value)}
-            placeholder="Add any notes about this interruption..."
-            rows={3}
+          <MarkdownEditor
+            initialValue={interruptionNote}
+            onChange={setInterruptionNote}
+            placeholder="Add notes about the interruption..."
           />
 
           <div className={styles.dialogActions}>
-            <button
-              className={styles.cancelButton}
-              onClick={() => setShowInterruptionDialog(false)}
-            >
-              Cancel
-            </button>
             <button
               className={styles.submitButton}
               onClick={handleInterruptionSubmit}
@@ -174,8 +131,28 @@ export const FlowManager: React.FC = () => {
               Record Interruption
             </button>
           </div>
-        </DialogContent>
+        </div>
       </Dialog>
     </div>
   );
+};
+
+const INTERRUPTION_TYPES: InterruptionType[] = [
+  { label: "Quick Question", estimatedRecoveryTime: 5, impactLevel: "low" },
+  { label: "Meeting", estimatedRecoveryTime: 15, impactLevel: "medium" },
+  { label: "Technical Issue", estimatedRecoveryTime: 20, impactLevel: "high" },
+  { label: "Emergency", estimatedRecoveryTime: 30, impactLevel: "high" },
+];
+
+const getFlowScoreColor = (score: number): string => {
+  if (score >= 80) return "#4CAF50";
+  if (score >= 60) return "#FFA726";
+  return "#FF5252";
+};
+
+const calculateFocusRate = (metrics: ActivityMetrics): number => {
+  const totalTime = metrics.activeTime + metrics.interruptedTime;
+  return totalTime > 0
+    ? Math.round((metrics.activeTime / totalTime) * 100)
+    : 100;
 };

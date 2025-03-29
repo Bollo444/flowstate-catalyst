@@ -14,7 +14,7 @@ export interface AnalysisResult {
   projectContext?: {
     relatedProject: string;
     suggestedTasks: string[];
-    priority?: 'high' | 'medium' | 'low';
+    priority?: "high" | "medium" | "low";
   };
   contentSummary?: string;
   tags: string[];

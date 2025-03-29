@@ -1,1 +1,0 @@
-Write-Output 'Checking MCP status...'

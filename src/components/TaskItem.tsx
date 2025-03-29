@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useMemo } from 'react';
-import { motion } from 'framer-motion';
-import { CheckCircle, AlertCircle, ArrowRightCircle } from 'lucide-react';
-import { useFlowContext } from '@/context/FlowContext';
-import { TaskFlowService, Task } from '@/services/taskFlow';
-import styles from './TaskItem.module.css';
+import React, { useMemo } from "react";
+import { motion } from "framer-motion";
+import { CheckCircle, AlertCircle, ArrowRightCircle } from "lucide-react";
+import { useFlowContext } from "@/context/FlowContext";
+import { TaskFlowService, Task } from "@/services/taskFlow";
+import styles from "./TaskItem.module.css";
 
 interface TaskItemProps {
   task: Task & { successProbability?: number };
@@ -18,19 +18,20 @@ export const TaskItem: React.FC<TaskItemProps> = ({
   task,
   isActive,
   onSelect,
-  onComplete
+  onComplete,
 }) => {
   const { flowState } = useFlowContext();
 
   const flowMetrics = useMemo(() => {
-    const probability = task.successProbability ?? 
+    const probability =
+      task.successProbability ??
       TaskFlowService.predictTaskSuccess(task, flowState);
-    
+
     return {
-      isOptimal: flowState.status === 'peak' || flowState.status === 'flow',
+      isOptimal: flowState.status === "peak" || flowState.status === "flow",
       probability,
       contextWarning: !isActive && task.contextCost > 0.3,
-      breakNeeded: TaskFlowService.suggestBreak(flowState)
+      breakNeeded: TaskFlowService.suggestBreak(flowState),
     };
   }, [task, flowState, isActive]);
 
@@ -51,9 +52,9 @@ export const TaskItem: React.FC<TaskItemProps> = ({
     <motion.div
       className={`
         ${styles.taskItem}
-        ${isActive ? styles.active : ''}
-        ${task.completed ? styles.completed : ''}
-        ${flowMetrics.isOptimal ? styles.optimal : ''}
+        ${isActive ? styles.active : ""}
+        ${task.completed ? styles.completed : ""}
+        ${flowMetrics.isOptimal ? styles.optimal : ""}
       `}
       onClick={handleSelect}
       initial={{ opacity: 0, y: 10 }}
@@ -88,11 +89,13 @@ export const TaskItem: React.FC<TaskItemProps> = ({
 
         <div className={styles.metric}>
           <span>Success Rate</span>
-          <span className={`
-            ${flowMetrics.probability >= 0.7 ? styles.high : ''}
-            ${flowMetrics.probability < 0.7 && flowMetrics.probability >= 0.4 ? styles.medium : ''}
-            ${flowMetrics.probability < 0.4 ? styles.low : ''}
-          `}>
+          <span
+            className={`
+            ${flowMetrics.probability >= 0.7 ? styles.high : ""}
+            ${flowMetrics.probability < 0.7 && flowMetrics.probability >= 0.4 ? styles.medium : ""}
+            ${flowMetrics.probability < 0.4 ? styles.low : ""}
+          `}
+          >
             {Math.round(flowMetrics.probability * 100)}%
           </span>
         </div>
@@ -113,24 +116,22 @@ export const TaskItem: React.FC<TaskItemProps> = ({
       )}
 
       {isActive && (
-        <motion.div 
+        <motion.div
           className={styles.flowStatus}
           animate={{
             scale: [1, 1.05, 1],
-            opacity: [0.8, 1, 0.8]
+            opacity: [0.8, 1, 0.8],
           }}
           transition={{
             duration: 2,
-            repeat: Infinity
+            repeat: Infinity,
           }}
         >
           <div className={styles.statusIndicator}>
             <ArrowRightCircle className={styles.icon} />
             <span>In Progress</span>
           </div>
-          <div className={styles.flowScore}>
-            Flow Score: {flowState.score}
-          </div>
+          <div className={styles.flowScore}>Flow Score: {flowState.score}</div>
         </motion.div>
       )}
     </motion.div>

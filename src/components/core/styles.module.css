@@ -15,7 +15,7 @@
   align-items: center;
   gap: 12px;
   padding: 24px;
-  color: #9CA3AF;
+  color: #9ca3af;
   font-size: 14px;
 }
 
@@ -23,7 +23,7 @@
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #3B82F6;
+  background: #3b82f6;
   animation: pulse 1.5s infinite;
 }
 
@@ -46,13 +46,13 @@
   padding: 24px;
   background: rgba(239, 68, 68, 0.1);
   border-radius: 8px;
-  color: #EF4444;
+  color: #ef4444;
 }
 
 .error button {
   margin-top: 12px;
   padding: 6px 12px;
-  background: #EF4444;
+  background: #ef4444;
   color: white;
   border: none;
   border-radius: 4px;
@@ -62,14 +62,14 @@
 }
 
 .error button:hover {
-  background: #DC2626;
+  background: #dc2626;
 }
 
 .breakSuggestion {
   padding: 16px;
   background: rgba(245, 158, 11, 0.1);
   border-radius: 8px;
-  color: #F59E0B;
+  color: #f59e0b;
 }
 
 .breakSuggestion h3 {
@@ -99,7 +99,7 @@
 .emptyState {
   text-align: center;
   padding: 48px 24px;
-  color: #9CA3AF;
+  color: #9ca3af;
   background: rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   font-size: 14px;
@@ -143,7 +143,7 @@
 
 .stat span:first-child {
   font-size: 12px;
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .stat span:last-child {
@@ -172,7 +172,9 @@
 .taskEnterActive {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 }
 
 .taskExit {
@@ -182,7 +184,9 @@
 .taskExitActive {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 /* Glass morphism override for light mode */
@@ -191,12 +195,12 @@
     background: rgba(255, 255, 255, 0.8);
     border-color: rgba(0, 0, 0, 0.1);
   }
-  
+
   .sectionTitle {
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .stat span:last-child {
-    color: #1F2937;
+    color: #1f2937;
   }
 }

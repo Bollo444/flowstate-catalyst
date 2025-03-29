@@ -1,27 +1,23 @@
 // src/components/dashboard/TeamFlowDashboard.tsx
 
-import React, { useState, useEffect } from 'react';
-import { useSupabaseClient, User } from '@supabase/auth-helpers-react';
-import { DashboardControls } from './DashboardControls';
-import { DashboardLayout } from './DashboardLayout';
-import { TeamInsights } from './TeamInsights';
-import { ActivityFeed } from '../team/ActivityFeed';
-import { QuickActions } from './QuickActions';
-import { FlowStreakManager } from '../flow/FlowWhispers/FlowStreakManager';
-import { useTeamDashboard } from '../../hooks/useTeamDashboard';
-import styles from './TeamFlowDashboard.module.css';
-import { ErrorBoundary } from 'react-error-boundary';
-import {
-  DashboardState,
-  Team,
-  Notification,
-} from '../../types/flow';
-import { FlowSystemValidator } from '../../validation/FlowSystemValidator';
-import { DebugLogger } from '../../debug/FlowDebugger';
-import { SystemMonitor } from '../../monitoring/FlowPerformanceMonitor';
-import { NotificationCenter } from '../../components/notifications/NotificationCenter/index';
-import { TeamMetric } from '../../types/metrics';
-import { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
+import React, { useState, useEffect } from "react";
+import { useSupabaseClient, User } from "@supabase/auth-helpers-react";
+import { DashboardControls } from "./DashboardControls";
+import { DashboardLayout } from "./DashboardLayout";
+import { TeamInsights } from "./TeamInsights";
+import { ActivityFeed } from "../team/ActivityFeed";
+import { QuickActions } from "./QuickActions";
+import { FlowStreakManager } from "../flow/FlowWhispers/FlowStreakManager";
+import { useTeamDashboard } from "../../hooks/useTeamDashboard";
+import styles from "./TeamFlowDashboard.module.css";
+import { ErrorBoundary } from "react-error-boundary";
+import { DashboardState, Team, Notification } from "../../types/flow";
+import { FlowSystemValidator } from "../../validation/FlowSystemValidator";
+import { DebugLogger } from "../../debug/FlowDebugger";
+import { SystemMonitor } from "../../monitoring/FlowPerformanceMonitor";
+import { NotificationCenter } from "../../components/notifications/NotificationCenter/index";
+import { TeamMetric } from "../../types/metrics";
+import { PostgrestError, SupabaseClient } from "@supabase/supabase-js";
 
 interface TeamFlowDashboardProps {
   teamId: string;
@@ -45,20 +41,22 @@ const ErrorBoundaryFallback: React.FC<ErrorBoundaryFallbackProps> = ({
 
 const initialMetrics: TeamMetric[] = [
   {
-    name: 'Focus',
+    name: "Focus",
     value: 75,
   },
   {
-    name: 'Intensity',
+    name: "Intensity",
     value: 50,
   },
   {
-    name: 'Collaboration',
+    name: "Collaboration",
     value: 25,
   },
 ];
 
-export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) => {
+export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({
+  teamId,
+}) => {
   const supabase: SupabaseClient = useSupabaseClient();
   const user = supabase.auth.user();
   const { state, updateDashboardState } = useTeamDashboard();
@@ -66,7 +64,7 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
   const [loading, setLoading] = useState<boolean>(true);
   const [dashboardState, setDashboardState] = useState<DashboardState>({
     isFullscreen: false,
-    activeSection: 'overview',
+    activeSection: "overview",
     notifications: [],
   });
 
@@ -97,9 +95,9 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
       setLoading(true);
       try {
         const { data, error } = await supabase
-          .from('teams')
-          .select('*')
-          .eq('id', teamId)
+          .from("teams")
+          .select("*")
+          .eq("id", teamId)
           .single();
 
         if (error) {
@@ -108,12 +106,15 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
 
         setTeamData(data as Team);
       } catch (error: unknown | PostgrestError) {
-        console.error('Error fetching team data:', error);
+        console.error("Error fetching team data:", error);
 
         if (error instanceof PostgrestError) {
-          addNotification({ type: 'error', message: error.message });
+          addNotification({ type: "error", message: error.message });
         } else {
-          addNotification({ type: 'error', message: 'An unexpected error occurred.' });
+          addNotification({
+            type: "error",
+            message: "An unexpected error occurred.",
+          });
         }
       } finally {
         setLoading(false);
@@ -134,9 +135,12 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
       const results = await validator.validateDataFlow();
       if (results) {
         results.forEach((result) => {
-          if (result.status !== 'success') {
-            debugLogger.logEvent({ type: 'validation_issue', details: result });
-            addNotification({ type: 'warning', message: `Validation issue: ${result.message}` });
+          if (result.status !== "success") {
+            debugLogger.logEvent({ type: "validation_issue", details: result });
+            addNotification({
+              type: "warning",
+              message: `Validation issue: ${result.message}`,
+            });
           }
         });
       }
@@ -150,8 +154,8 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
       monitor.stopMonitoring();
       const performanceReport = monitor.generateReport();
       const debugReport = debugLogger.generateDebugReport();
-      console.log('Performance Report:', performanceReport);
-      console.log('Debug Report:', debugReport);
+      console.log("Performance Report:", performanceReport);
+      console.log("Debug Report:", debugReport);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -164,11 +168,12 @@ export const TeamFlowDashboard: React.FC<TeamFlowDashboardProps> = ({ teamId }) 
     <ErrorBoundary
       FallbackComponent={ErrorBoundaryFallback}
       onError={(error) => {
-        debugLogger.logEvent({ type: 'error', details: error });
+        debugLogger.logEvent({ type: "error", details: error });
       }}
     >
       <div
-        className={`${styles.dashboardContainer} ${dashboardState.isFullscreen ? styles.fullscreen : ''
+        className={`${styles.dashboardContainer} ${
+          dashboardState.isFullscreen ? styles.fullscreen : ""
         }`}
       >
         {/* ... other JSX ... */}

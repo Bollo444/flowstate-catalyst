@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { createContext, useReducer, useContext, ReactNode } from 'react';
+import React, { createContext, useReducer, useContext, ReactNode } from "react";
 
-import { FlowStatus } from '@/types/supabase';
+import { FlowStatus } from "@/types/supabase";
 
 export interface FlowState {
   userId: string;
@@ -20,44 +20,52 @@ interface FlowContextType {
 }
 
 interface FlowAction {
-  type: 'UPDATE_FLOW_STATE';
+  type: "UPDATE_FLOW_STATE";
   payload: Partial<FlowState>;
 }
 
 const initialState: FlowState = {
-  userId: '',
+  userId: "",
   score: 0,
   intensity: 0,
-  status: 'rest',
+  status: "rest",
   activeTime: 0,
-  lastUpdated: new Date().toISOString()
+  lastUpdated: new Date().toISOString(),
 };
 
 export const FlowContext = createContext<FlowContextType | null>(null);
 
 function flowReducer(state: FlowState, action: FlowAction): FlowState {
   switch (action.type) {
-    case 'UPDATE_FLOW_STATE':
+    case "UPDATE_FLOW_STATE":
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       };
     default:
       return state;
   }
 }
-
-interface FlowProviderProps {
-  children: ReactNode;
+``;
+interface FlowContextProviderProps {
+  children: React.ReactNode;
+  initialFlowState?: Partial<FlowState>;
 }
 
-export function FlowProvider({ children }: FlowProviderProps) {
-  const [flowState, dispatch] = useReducer(flowReducer, initialState);
+export const FlowContextProvider: React.FC<FlowContextProviderProps> = ({
+  children,
+  initialFlowState = {},
+}) => {
+  const [flowState, dispatch] = useReducer(flowReducer, {
+    ...initialState,
+    ...initialFlowState,
+    lastUpdated: new Date().toISOString(),
+  });
 
   const updateFlowState = (updates: Partial<FlowState>) => {
     dispatch({
-      type: 'UPDATE_FLOW_STATE',
-      payload: updates
+      type: "UPDATE_FLOW_STATE",
+      payload: updates,
     });
   };
 
@@ -65,18 +73,18 @@ export function FlowProvider({ children }: FlowProviderProps) {
     <FlowContext.Provider
       value={{
         flowState,
-        updateFlowState
+        updateFlowState,
       }}
     >
       {children}
     </FlowContext.Provider>
   );
-}
+};
 
 export function useFlowContext() {
   const context = useContext(FlowContext);
   if (!context) {
-    throw new Error('useFlowContext must be used within a FlowProvider');
+    throw new Error("useFlowContext must be used within a FlowProvider");
   }
   return context;
 }

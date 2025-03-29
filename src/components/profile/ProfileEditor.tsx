@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { useSupabase } from '@/lib/supabaseClient';
-import { Tables } from '@/types/database';
-import styles from './Profile.module.css';
+import { useState } from "react";
+import Image from "next/image";
+import { useSupabase } from "@/lib/supabaseClient";
+import { Tables } from "@/types/database";
+import styles from "./Profile.module.css";
 
 interface ProfileEditorProps {
-  initialProfile: Tables<'profiles'>;
+  initialProfile: Tables<"profiles">;
 }
 
 export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
@@ -22,8 +22,9 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) { // 2MB limit
-      setError('Image size should be less than 2MB');
+    if (file.size > 2 * 1024 * 1024) {
+      // 2MB limit
+      setError("Image size should be less than 2MB");
       return;
     }
 
@@ -40,37 +41,37 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
       // Upload avatar if changed
       let avatarUrl = profile.avatar_url;
       if (avatar) {
-        const fileExt = avatar.name.split('.').pop();
+        const fileExt = avatar.name.split(".").pop();
         const filePath = `${profile.id}/avatar.${fileExt}`;
 
         const { error: uploadError, data } = await supabase.storage
-          .from('avatars')
+          .from("avatars")
           .upload(filePath, avatar, { upsert: true });
 
         if (uploadError) throw uploadError;
 
-        const { data: { publicUrl } } = supabase.storage
-          .from('avatars')
-          .getPublicUrl(filePath);
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("avatars").getPublicUrl(filePath);
 
         avatarUrl = publicUrl;
       }
 
       // Update profile
       const { error: updateError } = await supabase
-        .from('profiles')
+        .from("profiles")
         .update({
           ...profile,
           avatar_url: avatarUrl,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
-        .eq('id', profile.id);
+        .eq("id", profile.id);
 
       if (updateError) throw updateError;
 
       setSuccess(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -80,8 +81,10 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
     <div className={styles.profileEditor}>
       <form onSubmit={handleProfileUpdate} className={styles.form}>
         {error && <div className={styles.error}>{error}</div>}
-        {success && <div className={styles.success}>Profile updated successfully</div>}
-        
+        {success && (
+          <div className={styles.success}>Profile updated successfully</div>
+        )}
+
         <div className={styles.avatarSection}>
           <div className={styles.avatarWrapper}>
             {profile.avatar_url ? (
@@ -94,7 +97,7 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
               />
             ) : (
               <div className={styles.avatarPlaceholder}>
-                {profile.name?.[0]?.toUpperCase() || '?'}
+                {profile.name?.[0]?.toUpperCase() || "?"}
               </div>
             )}
           </div>
@@ -118,7 +121,7 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
           <input
             id="name"
             type="text"
-            value={profile.name || ''}
+            value={profile.name || ""}
             onChange={(e) => setProfile({ ...profile, name: e.target.value })}
             placeholder="Enter your name"
           />
@@ -128,7 +131,7 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
           <label htmlFor="bio">Bio</label>
           <textarea
             id="bio"
-            value={profile.bio || ''}
+            value={profile.bio || ""}
             onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
             placeholder="Tell us about yourself"
             rows={3}
@@ -140,14 +143,20 @@ export function ProfileEditor({ initialProfile }: ProfileEditorProps) {
           <input
             id="phone"
             type="tel"
-            value={profile.phone_number || ''}
-            onChange={(e) => setProfile({ ...profile, phone_number: e.target.value })}
+            value={profile.phone_number || ""}
+            onChange={(e) =>
+              setProfile({ ...profile, phone_number: e.target.value })
+            }
             placeholder="Enter your phone number"
           />
         </div>
 
-        <button type="submit" disabled={loading} className={styles.submitButton}>
-          {loading ? 'Saving...' : 'Save Changes'}
+        <button
+          type="submit"
+          disabled={loading}
+          className={styles.submitButton}
+        >
+          {loading ? "Saving..." : "Save Changes"}
         </button>
       </form>
     </div>

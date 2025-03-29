@@ -5,17 +5,17 @@
 }
 
 .label {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   font-weight: 500;
 }
 
 .select {
   padding: 0.75rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 4px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 0.875rem;
   width: 100%;
   appearance: none;
@@ -28,7 +28,7 @@
 
 .select:focus {
   outline: none;
-  border-color: #4A9EFF;
+  border-color: #4a9eff;
 }
 
 .select:disabled {
@@ -37,7 +37,7 @@
 }
 
 .error {
-  color: #FF4C4C;
+  color: #ff4c4c;
   font-size: 0.75rem;
 }
 
@@ -55,7 +55,7 @@
 }
 
 .userList::-webkit-scrollbar-track {
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 2px;
 }
 
@@ -69,7 +69,7 @@
   align-items: center;
   gap: 0.75rem;
   padding: 0.5rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -91,12 +91,12 @@
 }
 
 .userCheckbox input[type="checkbox"]:checked {
-  background: #4A9EFF;
-  border-color: #4A9EFF;
+  background: #4a9eff;
+  border-color: #4a9eff;
 }
 
 .userCheckbox input[type="checkbox"]:checked::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -132,7 +132,7 @@
   height: 24px;
   border-radius: 50%;
   background: #404040;
-  color: #FFFFFF;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;

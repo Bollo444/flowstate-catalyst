@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import React, { Component, ErrorInfo, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
@@ -11,7 +11,7 @@ interface State {
 
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false
+    hasError: false,
   };
 
   public static getDerivedStateFromError(error: Error): State {
@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('Uncaught error:', error, errorInfo);
+    console.error("Uncaught error:", error, errorInfo);
   }
 
   public render() {
@@ -27,9 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="error-boundary">
           <h2>Something went wrong</h2>
-          <button onClick={() => window.location.reload()}>
-            Refresh Page
-          </button>
+          <button onClick={() => window.location.reload()}>Refresh Page</button>
         </div>
       );
     }

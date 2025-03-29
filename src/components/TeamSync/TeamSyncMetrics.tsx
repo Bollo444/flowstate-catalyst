@@ -1,22 +1,31 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo } from 'react';
-import { useTeamSync } from '@/context/TeamSyncContext';
-import { motion } from 'framer-motion';
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { useEffect, useMemo } from "react";
+import { useTeamSync } from "@/context/TeamSyncContext";
+import { motion } from "framer-motion";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export function TeamSyncMetrics() {
   const { syncState } = useTeamSync();
 
   const flowData = useMemo(() => {
     if (!syncState) return [];
-    
-    return Array.from(syncState.participantStates.entries()).map(([userId, state]) => ({
-      userId,
-      name: state.user_name || userId,
-      score: state.flow_state?.score || 0,
-      timestamp: state.last_update
-    }));
+
+    return Array.from(syncState.participantStates.entries()).map(
+      ([userId, state]) => ({
+        userId,
+        name: state.user_name || userId,
+        score: state.flow_state?.score || 0,
+        timestamp: state.last_update,
+      })
+    );
   }, [syncState]);
 
   if (!syncState || flowData.length === 0) {

@@ -1,8 +1,14 @@
-import '@testing-library/jest-dom';
-import { jest, beforeAll, afterAll, beforeEach, afterEach } from '@jest/globals';
+import "@testing-library/jest-dom";
+import {
+  jest,
+  beforeAll,
+  afterAll,
+  beforeEach,
+  afterEach,
+} from "@jest/globals";
 
 // Mock browser APIs for tests
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   // Mock matchMedia
   const mockMatchMedia = (query: string) => ({
     matches: false,
@@ -23,22 +29,23 @@ if (typeof window !== 'undefined') {
     unobserve = () => {};
     disconnect = () => {};
     root = null;
-    rootMargin = '';
+    rootMargin = "";
     thresholds = [];
-    
+
     constructor() {
       // Constructor required for class instantiation
     }
   }
 
-  window.IntersectionObserver = window.IntersectionObserver || MockIntersectionObserver;
+  window.IntersectionObserver =
+    window.IntersectionObserver || MockIntersectionObserver;
 
   // Mock ResizeObserver
   class MockResizeObserver {
     observe = () => {};
     unobserve = () => {};
     disconnect = () => {};
-    
+
     constructor() {
       // Constructor required for class instantiation
     }
@@ -50,9 +57,9 @@ if (typeof window !== 'undefined') {
 // Configure global test environment
 beforeAll(() => {
   // Add any global test setup here
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     // Additional window setup if needed
-    Object.defineProperty(window, 'scrollTo', {
+    Object.defineProperty(window, "scrollTo", {
       value: () => {},
       writable: true,
     });
@@ -71,10 +78,10 @@ beforeEach(() => {
 afterEach(() => {
   // Clean up after each test
   jest.clearAllMocks();
-  
+
   // Reset any document body modifications
-  if (typeof document !== 'undefined') {
-    document.body.innerHTML = '';
+  if (typeof document !== "undefined") {
+    document.body.innerHTML = "";
   }
 });
 
@@ -83,17 +90,12 @@ jest.setTimeout(10000); // 10 second timeout
 
 // Silence console warnings during tests
 // Only in test environment
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === "test") {
+  // Fix the console error handler
   const originalError = console.error;
-  const originalWarn = console.warn;
-  
   console.error = (...args: any[]) => {
-    if (args[0]?.includes('Warning:')) return;
+    // Check if first argument is a string before calling includes
+    if (typeof args[0] === "string" && args[0].includes("Warning:")) return;
     originalError.call(console, ...args);
-  };
-  
-  console.warn = (...args: any[]) => {
-    if (args[0]?.includes('Warning:')) return;
-    originalWarn.call(console, ...args);
   };
 }

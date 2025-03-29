@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import type { AppError } from '../types/error';
+import { useState, useCallback } from "react";
+import type { AppError } from "../types/error";
 
 export interface LoadingState {
   isLoading: boolean;
@@ -32,18 +32,21 @@ export function useLoadingState(): LoadingState {
     setError(null);
   }, []);
 
-  const wrapAsync = useCallback(async <T,>(asyncFn: () => Promise<T>): Promise<T> => {
-    try {
-      startLoading();
-      const result = await asyncFn();
-      return result;
-    } catch (err) {
-      setError(err as AppError);
-      throw err;
-    } finally {
-      stopLoading();
-    }
-  }, [startLoading, stopLoading]);
+  const wrapAsync = useCallback(
+    async <T>(asyncFn: () => Promise<T>): Promise<T> => {
+      try {
+        startLoading();
+        const result = await asyncFn();
+        return result;
+      } catch (err) {
+        setError(err as AppError);
+        throw err;
+      } finally {
+        stopLoading();
+      }
+    },
+    [startLoading, stopLoading]
+  );
 
   return {
     isLoading,
@@ -53,6 +56,6 @@ export function useLoadingState(): LoadingState {
     clearError,
     startLoading,
     stopLoading,
-    wrapAsync
+    wrapAsync,
   };
 }

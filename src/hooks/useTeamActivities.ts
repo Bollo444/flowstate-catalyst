@@ -1,8 +1,8 @@
 // src/hooks/useTeamActivities.ts
-import { useState, useEffect } from 'react';
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { TeamService } from '../services/api/teamService';
-import { useLoadingState } from './useLoadingState';
+import { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { TeamService } from "../services/api/teamService";
+import { useLoadingState } from "./useLoadingState";
 
 export const useTeamActivities = (teamId: string) => {
   const supabase = useSupabaseClient();
@@ -11,14 +11,13 @@ export const useTeamActivities = (teamId: string) => {
   const [loading, setLoading] = useState(true);
   const { startLoading, stopLoading } = useLoadingState();
 
-
   const fetchActivities = async () => {
     try {
       startLoading();
       const data = await teamService.getTeamActivities(teamId);
       setActivities(data);
     } catch (error) {
-      console.error('Error fetching activities:', error);
+      console.error("Error fetching activities:", error);
     } finally {
       stopLoading();
     }
@@ -28,15 +27,19 @@ export const useTeamActivities = (teamId: string) => {
     fetchActivities();
 
     const subscription = supabase
-      .channel('team_activities')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'team_activities',
-        filter: `team_id=eq.${teamId}`
-      }, payload => {
-        setActivities(current => [payload.new, ...current]);
-      })
+      .channel("team_activities")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "team_activities",
+          filter: `team_id=eq.${teamId}`,
+        },
+        (payload) => {
+          setActivities((current) => [payload.new, ...current]);
+        }
+      )
       .subscribe();
 
     return () => {

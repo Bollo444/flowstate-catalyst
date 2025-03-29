@@ -1,70 +1,21 @@
-export type FlowStatus = 'peak' | 'flow' | 'rest' | 'building';
+import type { Json } from "./database"; // Re-export Json if needed elsewhere
 
-export interface Tables {
-  teams: {
-    id: string;
-    name: string;
-    description: string | null;
-    created_at: string;
-    updated_at: string;
-  };
-  team_members: {
-    user_id: string;
-    team_id: string;
-    role: string;
-    joined_at: string;
-  };
-  team_invites: {
-    id: string;
-    team_id: string;
-    inviter_id: string;
-    invitee_email: string;
-    role: string;
-    created_at: string;
-    expires_at: string;
-  };
-  flow_states: {
-    id: string;
-    user_id: string;
-    score: number;
-    status: FlowStatus;
-    active_time: number;
-    created_at: string;
-    updated_at: string;
-  };
-  flow_history: {
-    id: string;
-    user_id: string;
-    score: number;
-    status: FlowStatus;
-    active_time: number;
-    started_at: string;
-    ended_at: string;
-  };
-  flow_sync_events: {
-    id: string;
-    team_id: string;
-    user_id: string;
-    event_type: string;
-    payload: Record<string, any>;
-    created_at: string;
-  };
-}
-
-export interface Database {
-  public: Tables;
-}
-
-<<<<<<< HEAD
-export type Json = any;
-
-=======
->>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e
 export interface SupabaseSession {
   user: {
     id: string;
     app_metadata: {
-      provider: string;
+      provider?: string; // Make provider optional as it might not always exist
+      // Add other relevant app_metadata fields if known
     };
+    // Add other relevant user fields if known (e.g., email)
+    email?: string;
   };
+  // Add other session properties if needed (e.g., access_token)
+  access_token?: string;
+  refresh_token?: string;
+  expires_in?: number;
+  expires_at?: number;
 }
+
+// Optionally re-export Json if it's intended to be accessible via this module
+export type { Json };

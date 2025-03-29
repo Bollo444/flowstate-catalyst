@@ -1,21 +1,29 @@
-<<<<<<< HEAD
+// Import Status types from the single source of truth
+import { FlowStatus, TaskStatus as DbTaskStatus } from "./database"; 
+
+// Internal Task type using camelCase convention
 export interface Task {
   id: string;
   title: string;
-  description?: string;
-  status: 'todo' | 'in_progress' | 'completed';
-  created_at: string;
-  user_id: string;
+  description: string | null;
+  status: DbTaskStatus; // Use the imported status type
+  createdAt: string; // camelCase
+  userId: string; // camelCase
   priority?: number;
   flowOptimal?: boolean;
   contextCost?: number;
   completed?: boolean;
   progress?: number;
-  completionMetrics?: any; // TODO: Define a proper interface for completionMetrics
-  dependencies?: string[]; // Assuming dependencies are strings (task IDs)
-  estimatedDuration: number; // Add estimatedDuration
-  estimated_duration: number; // Add estimated_duration (with underscore - to handle both cases for now)
+  completionMetrics?: any; // TODO: Define a proper interface
+  dependencies?: string[]; 
+  estimatedDuration: number; // camelCase
+  // Add optional DB-related fields if needed internally, ensure they are camelCase
+  teamId?: string | null; 
+  projectId?: string | null;
+  dueDate?: string; // Should match internal usage, string | null | undefined?
 }
+
+// --- Other interfaces remain the same ---
 
 export interface TaskFlowMetrics {
   focus_duration: number;
@@ -39,7 +47,7 @@ export interface TaskFlowSession {
   completed_tasks: string[]; // Array of completed task IDs
 }
 
-export interface TaskPriorityFactors { // <--- ADDED TaskPriorityFactors interface
+export interface TaskPriorityFactors {
   urgency: number;
   importance: number;
   flowAlignment: number;
@@ -48,7 +56,7 @@ export interface TaskPriorityFactors { // <--- ADDED TaskPriorityFactors interfa
 
 export interface TaskPriorityScore {
   score: number;
-  factors: TaskPriorityFactors; 
+  factors: TaskPriorityFactors;
 }
 
 export interface TaskAssignmentMatch {
@@ -58,10 +66,15 @@ export interface TaskAssignmentMatch {
   workloadScore: number;
   expertiseScore: number;
   reasons: string[];
+  taskId: string; 
 }
-=======
-import type { Task } from './database';
-import type { FlowState, FlowPreferences } from './flow';
+
+import type { FlowState } from "./flow";
+
+export interface FlowPreferences {
+  optimizeFor?: "individual" | "team" | "balanced";
+  preferredWorkStyle?: "deep" | "burst";
+}
 
 export interface TaskRoutingResult {
   suggestedSequence: Task[];
@@ -82,12 +95,12 @@ export interface TaskRoutingMetadata {
   routingTimestamp: string;
   flowScore: number;
   sequenceScore: number;
-  estimated_duration?: number;
+  estimatedDuration?: number; // Renamed from estimated_duration
 }
 
 export interface TaskRoutingConfig {
   flowState: FlowState;
-  preferences: FlowPreferences;
+  preferences: Record<string, any>; 
   currentTasks: Task[];
   teamContext?: {
     activeMemberCount: number;
@@ -97,21 +110,22 @@ export interface TaskRoutingConfig {
 }
 
 export interface TaskDurationEstimate {
-  min: number;   // in minutes
-  max: number;   // in minutes
-  confidence: number;  // 0-1
+  min: number; // in minutes
+  max: number; // in minutes
+  confidence: number; // 0-1
 }
 
-export interface TaskFlowMetrics {
-  estimatedDuration: TaskDurationEstimate;
-  complexity: number;  // 0-100
-  flowAlignment: number;  // 0-1
-  contextSwitchCost: number;  // 0-1
-  teamImpact: number;  // 0-1
-}
+// Re-defined TaskFlowMetrics interface (duplicate removed if intended)
+// export interface TaskFlowMetrics { 
+//   estimatedDuration: TaskDurationEstimate; 
+//   complexity: number; // 0-100
+//   flowAlignment: number; // 0-1
+//   contextSwitchCost: number; // 0-1
+//   teamImpact: number; // 0-1
+// }
 
 export interface TaskRoutingOptions {
-  optimizeFor?: 'individual' | 'team' | 'balanced';
+  optimizeFor?: "individual" | "team" | "balanced";
   minFlowScore?: number;
   maxDuration?: number;
   priorityWeight?: number;
@@ -122,10 +136,9 @@ export interface TaskRoutingOptions {
 
 // Extended Task interface with flow-specific properties
 export interface FlowTask extends Task {
-  flowMetrics?: TaskFlowMetrics;
+  flowMetrics?: TaskFlowMetrics; // Check if this TaskFlowMetrics is the intended one
   routingScore?: number;
   previousContext?: string[];
   nextContext?: string[];
-  estimated_duration?: number;
+  // estimatedDuration is already in Task
 }
->>>>>>> 7d9ee070489d2151403e6b883b553afda5d85c0e

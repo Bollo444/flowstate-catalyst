@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { Task } from '../types/database';
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { Task } from "../types/database";
 
 interface TaskSelectionContextType {
   selectedTasks: Set<string>;
@@ -11,17 +11,24 @@ interface TaskSelectionContextType {
   hasSelection: boolean;
 }
 
-const TaskSelectionContext = createContext<TaskSelectionContextType | undefined>(undefined);
+const TaskSelectionContext = createContext<
+  TaskSelectionContextType | undefined
+>(undefined);
 
-export const TaskSelectionProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const TaskSelectionProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [selectedTasks, setSelectedTasks] = useState<Set<string>>(new Set());
 
-  const isSelected = useCallback((taskId: string) => {
-    return selectedTasks.has(taskId);
-  }, [selectedTasks]);
+  const isSelected = useCallback(
+    (taskId: string) => {
+      return selectedTasks.has(taskId);
+    },
+    [selectedTasks]
+  );
 
   const toggleTask = useCallback((taskId: string) => {
-    setSelectedTasks(prev => {
+    setSelectedTasks((prev) => {
       const next = new Set(prev);
       if (next.has(taskId)) {
         next.delete(taskId);
@@ -60,7 +67,9 @@ export const TaskSelectionProvider: React.FC<{ children: React.ReactNode }> = ({
 export const useTaskSelection = () => {
   const context = useContext(TaskSelectionContext);
   if (context === undefined) {
-    throw new Error('useTaskSelection must be used within a TaskSelectionProvider');
+    throw new Error(
+      "useTaskSelection must be used within a TaskSelectionProvider"
+    );
   }
   return context;
 };

@@ -13,7 +13,7 @@
   background: transparent;
   border: 1px solid #404040;
   border-radius: 4px;
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -56,31 +56,31 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 4px;
   border: 1px solid #404040;
 }
 
 .dependency.complete {
   opacity: 0.7;
-  border-left: 3px solid #48BB78;
+  border-left: 3px solid #48bb78;
 }
 
 .dependency.pending {
-  border-left: 3px solid #F6AD55;
+  border-left: 3px solid #f6ad55;
 }
 
 .title {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
 }
 
 .removeButton {
   padding: 0.25rem 0.75rem;
   background: transparent;
-  border: 1px solid #FF4C4C;
+  border: 1px solid #ff4c4c;
   border-radius: 4px;
-  color: #FF4C4C;
+  color: #ff4c4c;
   font-size: 0.75rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -111,10 +111,10 @@
 .select {
   width: 100%;
   padding: 0.75rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 4px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 0.875rem;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
@@ -127,7 +127,7 @@
 
 .select:focus {
   outline: none;
-  border-color: #4A9EFF;
+  border-color: #4a9eff;
 }
 
 .select:disabled {

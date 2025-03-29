@@ -1,6 +1,6 @@
 // src/components/core/FlowInterface/FlowMenuItem.tsx
-import React from 'react';
-import styles from './styles.module.css'; // Assuming styles.module.css is in the same directory
+import React from "react";
+import styles from "./styles.module.css"; // Assuming styles.module.css is in the same directory
 
 interface FlowMenuItemProps {
   icon: React.ReactNode;

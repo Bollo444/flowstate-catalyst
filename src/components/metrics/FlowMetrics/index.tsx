@@ -1,13 +1,13 @@
-import React from 'react';
-import styles from './FlowMetrics.module.css';
-import { useFlowStore } from '../../../stores/flowStore';
-import { MetricCard } from '../../shared/MetricCard';
-import { FlowTrends } from '../../flow/FlowTrends';
-import { formatDuration } from '../../../utils/timeUtils';
+import React from "react";
+import styles from "./FlowMetrics.module.css";
+import { useFlowStore } from "../../../stores/flowStore";
+import { MetricCard } from "../../shared/MetricCard";
+import { FlowTrends } from "../../flow/FlowTrends";
+import { formatDuration } from "../../../utils/timeUtils";
 
 export const FlowMetrics: React.FC = () => {
   const { metrics } = useFlowStore();
-  
+
   return (
     <div className={styles.metricsContainer}>
       <div className={styles.metricCards}>

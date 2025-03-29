@@ -1,4 +1,4 @@
-import { Task } from '../../types/database';
+import { Task } from "../../types/database";
 
 export interface TaskRoutingFactors {
   flowAlignment: number;
@@ -35,10 +35,10 @@ export interface TaskRouterOptions {
 }
 
 export enum TaskRoutingStrategy {
-  FLOW_OPTIMIZED = 'flow_optimized',
-  TIME_SENSITIVE = 'time_sensitive',
-  BALANCED = 'balanced',
-  CONTEXT_BASED = 'context_based'
+  FLOW_OPTIMIZED = "flow_optimized",
+  TIME_SENSITIVE = "time_sensitive",
+  BALANCED = "balanced",
+  CONTEXT_BASED = "context_based",
 }
 
 export interface TaskRoutingMetrics {
@@ -50,7 +50,7 @@ export interface TaskRoutingMetrics {
 
 // Types for task flow events and updates
 export type TaskFlowEvent = {
-  type: 'task_start' | 'task_complete' | 'task_skip' | 'flow_state_change';
+  type: "task_start" | "task_complete" | "task_skip" | "flow_state_change";
   timestamp: string;
   taskId?: string;
   flowScore?: number;

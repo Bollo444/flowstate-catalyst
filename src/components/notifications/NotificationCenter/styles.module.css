@@ -20,14 +20,14 @@
 .bellIcon {
   width: 24px;
   height: 24px;
-  fill: #E0E0E0;
+  fill: #e0e0e0;
 }
 
 .badge {
   position: absolute;
   top: 0;
   right: 0;
-  background: #FF4C4C;
+  background: #ff4c4c;
   color: white;
   font-size: 0.75rem;
   min-width: 18px;
@@ -37,7 +37,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 4px;
-  border: 2px solid #2D2D2D;
+  border: 2px solid #2d2d2d;
   animation: pulse 2s infinite;
 }
 
@@ -46,7 +46,7 @@
   top: calc(100% + 0.5rem);
   right: 0;
   width: 360px;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -65,7 +65,7 @@
 }
 
 .header h3 {
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 1rem;
   font-weight: 500;
   margin: 0;
@@ -74,7 +74,7 @@
 .markAllRead {
   background: transparent;
   border: none;
-  color: #4A9EFF;
+  color: #4a9eff;
   font-size: 0.875rem;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
@@ -99,7 +99,7 @@
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  background: #2D2D2D;
+  background: #2d2d2d;
   border-radius: 6px;
   margin: 0.5rem 0;
   cursor: pointer;
@@ -113,7 +113,7 @@
 
 .notification.unread {
   background: rgba(74, 158, 255, 0.05);
-  border-left: 3px solid #4A9EFF;
+  border-left: 3px solid #4a9eff;
 }
 
 .icon {
@@ -124,15 +124,15 @@
 }
 
 .icon.completion {
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .icon.milestone {
-  color: #FFAA4C;
+  color: #ffaa4c;
 }
 
 .icon.update {
-  color: #4A9EFF;
+  color: #4a9eff;
 }
 
 .content {
@@ -148,7 +148,7 @@
 }
 
 .userName {
-  color: #FFFFFF;
+  color: #ffffff;
   font-weight: 500;
   font-size: 0.875rem;
 }
@@ -160,13 +160,13 @@
 }
 
 .message {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   margin: 0.25rem 0;
 }
 
 .note {
-  color: #A0A0A0;
+  color: #a0a0a0;
   font-size: 0.875rem;
   margin: 0.5rem 0;
   padding: 0.5rem;
@@ -185,7 +185,7 @@
 
 .progressBar {
   height: 100%;
-  background: #4A9EFF;
+  background: #4a9eff;
   transition: width 0.3s ease;
 }
 

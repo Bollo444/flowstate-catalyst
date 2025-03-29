@@ -1,22 +1,18 @@
-import { Session } from 'next-auth';
-import { SupabaseSession } from '../types/supabase';
+"use client";
+
+import { ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+import { ThemeProviderWrapper } from "./theme-provider";
 
 interface ClientProvidersProps {
-  children: React.ReactNode;
-  session: Session | null | undefined;
+  children: ReactNode;
+  session: any;
 }
 
-interface SupabaseClientProvidersProps {
-  children: React.ReactNode;
-  session: SupabaseSession | null;
+export function ClientProviders({ children, session }: ClientProvidersProps) {
+  return (
+    <SessionProvider session={session}>
+      <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+    </SessionProvider>
+  );
 }
-
-const ClientProviders: React.FC<ClientProvidersProps> = ({ children, session }) => {
-  return <>{children}</>;
-};
-
-const SupabaseClientProviders: React.FC<SupabaseClientProvidersProps> = ({ children, session }) => {
-  return <>{children}</>;
-};
-
-export { ClientProviders, SupabaseClientProviders };

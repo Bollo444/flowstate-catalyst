@@ -1,6 +1,6 @@
 // src/components/core/FlowInterface/FlowSidebar.tsx
-import React from 'react';
-import styles from './FlowInterface.module.css'; // Correct path
+import React from "react";
+import styles from "./FlowInterface.module.css"; // Correct path
 
 const FlowSidebar: React.FC = () => {
   return (

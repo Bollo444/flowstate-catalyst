@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
-import { PasswordStrength } from './PasswordStrength';
-import styles from './Auth.module.css';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabaseClient";
+import { PasswordStrength } from "./PasswordStrength";
+import styles from "./Auth.module.css";
 
 export function ResetPassword() {
   const router = useRouter();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export function ResetPassword() {
     setMessage(null);
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
@@ -28,17 +28,17 @@ export function ResetPassword() {
 
     try {
       const { error } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
 
       if (error) throw error;
 
-      setMessage('Password updated successfully');
+      setMessage("Password updated successfully");
       setTimeout(() => {
-        router.push('/auth/signin');
+        router.push("/auth/signin");
       }, 2000);
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -77,7 +77,7 @@ export function ResetPassword() {
             />
           </div>
           <button type="submit" disabled={loading} className={styles.button}>
-            {loading ? 'Updating password...' : 'Update Password'}
+            {loading ? "Updating password..." : "Update Password"}
           </button>
         </form>
       </div>

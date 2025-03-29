@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { FileAnalyzer } from '../../../services/fileAnalysis/analyzer';
-import { FileOrganizer } from '../../../services/fileAnalysis/organizer';
-import styles from './styles.module.css';
-import { AnalysisResult } from '../../../services/fileAnalysis/types';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import { FileOrganizerComponent } from '../FileOrganizer';
+import React, { useState } from "react";
+import { FileAnalyzer } from "../../../services/fileAnalysis/analyzer";
+import { FileOrganizer } from "../../../services/fileAnalysis/organizer";
+import styles from "./styles.module.css";
+import { AnalysisResult } from "../../../services/fileAnalysis/types";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import { FileOrganizerComponent } from "../FileOrganizer";
 
 export const FileAnalyzerComponent: React.FC = () => {
   const [analyzing, setAnalyzing] = useState(false);
@@ -20,12 +20,11 @@ export const FileAnalyzerComponent: React.FC = () => {
       const files = Array.from(event.dataTransfer.files);
       const file = files[0]; // For now, handling one file
       setCurrentFile(file);
-      
+
       const analysisResults = await analyzer.analyzeFile(file);
       setResults(analysisResults);
-
     } catch (error) {
-      console.error('Analysis error:', error);
+      console.error("Analysis error:", error);
     } finally {
       setAnalyzing(false);
     }
@@ -38,14 +37,14 @@ export const FileAnalyzerComponent: React.FC = () => {
       const newFileName = organizer.generateFileName(results);
       const renamedFile = await organizer.renameFile(currentFile, newFileName);
       setCurrentFile(renamedFile);
-      
+
       // Update the results with the new filename
       setResults({
         ...results,
-        originalName: renamedFile.name
+        originalName: renamedFile.name,
       });
     } catch (error) {
-      console.error('Rename error:', error);
+      console.error("Rename error:", error);
     }
   };
 
@@ -57,7 +56,7 @@ export const FileAnalyzerComponent: React.FC = () => {
 
   return (
     <div className={styles.analyzerContainer}>
-      <div 
+      <div
         className={styles.dropZone}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleFileDrop}
@@ -78,7 +77,7 @@ export const FileAnalyzerComponent: React.FC = () => {
       {results && currentFile && (
         <div className={styles.results}>
           <h3>Analysis Results</h3>
-          
+
           <div className={styles.suggestedName}>
             <h4>Suggested Name:</h4>
             <p>{results.suggestedName}</p>
@@ -103,16 +102,15 @@ export const FileAnalyzerComponent: React.FC = () => {
             <h4>Tags:</h4>
             <div className={styles.tagList}>
               {results.tags.map((tag, index) => (
-                <span key={index} className={styles.tag}>{tag}</span>
+                <span key={index} className={styles.tag}>
+                  {tag}
+                </span>
               ))}
             </div>
           </div>
 
           <div className={styles.actions}>
-            <button 
-              onClick={handleRename}
-              className={styles.actionButton}
-            >
+            <button onClick={handleRename} className={styles.actionButton}>
               Apply Suggested Name
             </button>
           </div>
@@ -120,7 +118,7 @@ export const FileAnalyzerComponent: React.FC = () => {
       )}
 
       {results && (
-        <FileOrganizerComponent 
+        <FileOrganizerComponent
           suggestion={results}
           onApply={handleOrganizationComplete}
         />

@@ -8,7 +8,7 @@
 }
 
 .message {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   margin: 0;
   text-align: center;
@@ -16,7 +16,8 @@
 }
 
 @keyframes fadeInOut {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.5;
   }
   50% {

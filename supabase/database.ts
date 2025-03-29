@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -73,16 +73,16 @@ export async function createDatabaseSchema() {
   `;
 
   try {
-    const { error } = await supabase.rpc('run_sql', { sql });
+    const { error } = await supabase.rpc("run_sql", { sql });
     if (error) {
-      console.error('Error creating database schema:', error);
+      console.error("Error creating database schema:", error);
       return { success: false, error: error.message };
     } else {
-      console.log('Database schema created successfully');
+      console.log("Database schema created successfully");
       return { success: true };
     }
   } catch (e) {
-    console.error('Error creating database schema:', e);
+    console.error("Error creating database schema:", e);
     return { success: false, error: e.message };
   }
 }

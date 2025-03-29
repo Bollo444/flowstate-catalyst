@@ -1,26 +1,26 @@
-import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { Project } from '../types/database';
-import { handleSupabaseError } from '../utils/errorHandling';
-import { useLoadingState } from './useLoadingState';
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Project } from "../types/database";
+import { handleSupabaseError } from "../utils/errorHandling";
+import { useLoadingState } from "./useLoadingState";
 
 export const useProjects = () => {
   const supabase = useSupabaseClient();
   const { setError, startLoading, stopLoading } = useLoadingState();
 
-  const getProjects = async (userId: string) => {
+  const getProjects = async () => {
     startLoading();
     try {
       const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false });
+        .from("projects")
+        .select("*")
+        // .eq('user_id', userId) - RLS handles filtering
+        .order("created_at", { ascending: false });
 
       if (error) {
         setError({
-          code: 'PROJECTS_LOAD_FAILED',
-          message: 'Failed to load projects.',
-          details: handleSupabaseError(error)
+          code: "PROJECTS_LOAD_FAILED",
+          message: "Failed to load projects.",
+          details: handleSupabaseError(error),
         });
         return [];
       }
@@ -29,19 +29,21 @@ export const useProjects = () => {
     } catch (error) {
       stopLoading();
       setError({
-        code: 'PROJECTS_LOAD_ERROR',
-        message: 'Error loading projects.',
-        details: error
+        code: "PROJECTS_LOAD_ERROR",
+        message: "Error loading projects.",
+        details: error,
       });
       return [];
     }
   };
 
-  const createProject = async (project: Omit<Project, 'id' | 'created_at' | 'updated_at'>) => {
+  const createProject = async (
+    project: Omit<Project, "id" | "created_at" | "updated_at">
+  ) => {
     startLoading();
     try {
       const { data, error } = await supabase
-        .from('projects')
+        .from("projects")
         .insert(project)
         .select()
         .single();
@@ -53,16 +55,19 @@ export const useProjects = () => {
     }
   };
 
-  const updateProject = async (projectId: string, updates: Partial<Omit<Project, 'id' | 'created_at' | 'updated_at'>>) => {
+  const updateProject = async (
+    projectId: string,
+    updates: Partial<Omit<Project, "id" | "created_at" | "updated_at">>
+  ) => {
     startLoading();
     try {
       const { data, error } = await supabase
-        .from('projects')
+        .from("projects")
         .update({
           ...updates,
-          updated_at: new Date().toISOString()
+          updated_at: new Date().toISOString(),
         })
-        .eq('id', projectId)
+        .eq("id", projectId)
         .select()
         .single();
 
@@ -78,17 +83,17 @@ export const useProjects = () => {
     try {
       // First, delete all tasks associated with the project
       const { error: tasksError } = await supabase
-        .from('tasks')
+        .from("tasks")
         .delete()
-        .eq('project_id', projectId);
+        .eq("project_id", projectId);
 
       if (tasksError) throw handleSupabaseError(tasksError);
 
       // Then delete the project
       const { error: projectError } = await supabase
-        .from('projects')
+        .from("projects")
         .delete()
-        .eq('id', projectId);
+        .eq("id", projectId);
 
       if (projectError) throw handleSupabaseError(projectError);
     } finally {

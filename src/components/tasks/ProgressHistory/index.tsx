@@ -1,12 +1,12 @@
-import React from 'react';
-import { Dialog, DialogTitle, DialogContent } from '@mui/material';
-import { ProgressUpdate, AppError } from '../../../types/database';
-import { useProgressHistory } from '../../../hooks/useProgressHistory';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import { ErrorDisplay } from '../../shared/ErrorDisplay';
-import { ProgressBar } from '../../shared/ProgressBar';
-import { formatDistanceToNow } from 'date-fns';
-import styles from './styles.module.css';
+import React from "react";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
+import { ProgressUpdate, AppError } from "../../../types/database";
+import { useProgressHistory } from "../../../hooks/useProgressHistory";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import { ErrorDisplay } from "../../shared/ErrorDisplay";
+import { ProgressBar } from "../../shared/ProgressBar";
+import { formatDistanceToNow } from "date-fns";
+import styles from "./styles.module.css";
 
 interface ProgressHistoryProps {
   taskId: string;
@@ -17,24 +17,20 @@ interface ProgressHistoryProps {
 export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
   taskId,
   open,
-  onClose
+  onClose,
 }) => {
-  const {
-    history,
-    loading,
-    error,
-    deleteProgressUpdate
-  } = useProgressHistory(taskId);
+  const { history, loading, error, deleteProgressUpdate } =
+    useProgressHistory(taskId);
 
   const handleDelete = async (updateId: string) => {
-    if (!confirm('Are you sure you want to delete this progress update?')) {
+    if (!confirm("Are you sure you want to delete this progress update?")) {
       return;
     }
 
     try {
       await deleteProgressUpdate(updateId);
     } catch (error) {
-      console.error('Failed to delete progress update:', error);
+      console.error("Failed to delete progress update:", error);
     }
   };
 
@@ -43,10 +39,15 @@ export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
       <div key={update.id} className={styles.timelineItem}>
         <div className={styles.timelineIcon}>
           {update.user?.avatar_url ? (
-            <img src={update.user.avatar_url} alt={update.user.full_name || update.user.email} />
+            <img
+              src={update.user.avatar_url}
+              alt={update.user.full_name || update.user.email}
+            />
           ) : (
             <div className={styles.avatarPlaceholder}>
-              {(update.user?.full_name || update.user?.email || '?').charAt(0).toUpperCase()}
+              {(update.user?.full_name || update.user?.email || "?")
+                .charAt(0)
+                .toUpperCase()}
             </div>
           )}
         </div>
@@ -55,10 +56,12 @@ export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
           <div className={styles.header}>
             <div className={styles.userInfo}>
               <span className={styles.userName}>
-                {update.user?.full_name || update.user?.email || 'Unknown User'}
+                {update.user?.full_name || update.user?.email || "Unknown User"}
               </span>
               <span className={styles.timestamp}>
-                {formatDistanceToNow(new Date(update.created_at), { addSuffix: true })}
+                {formatDistanceToNow(new Date(update.created_at), {
+                  addSuffix: true,
+                })}
               </span>
             </div>
             <button
@@ -87,9 +90,7 @@ export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
             />
           </div>
 
-          {update.note && (
-            <p className={styles.note}>{update.note}</p>
-          )}
+          {update.note && <p className={styles.note}>{update.note}</p>}
         </div>
       </div>
     );
@@ -103,9 +104,7 @@ export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
       fullWidth
       className={styles.dialog}
     >
-      <DialogTitle className={styles.title}>
-        Progress History
-      </DialogTitle>
+      <DialogTitle className={styles.title}>Progress History</DialogTitle>
 
       <DialogContent className={styles.content}>
         {loading ? (
@@ -116,9 +115,9 @@ export const ProgressHistory: React.FC<ProgressHistoryProps> = ({
           <div className={styles.error}>
             <ErrorDisplay
               error={{
-                code: 'PROGRESS_HISTORY_ERROR',
-                message: 'Failed to load progress history',
-                details: error
+                code: "PROGRESS_HISTORY_ERROR",
+                message: "Failed to load progress history",
+                details: error,
               }}
             />
           </div>

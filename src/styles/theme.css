@@ -1,12 +1,12 @@
 :root {
   --primary-color: #ff7700;
-  --secondary-color: #4A9EFF;
-  --success-color: #4CAF50;
-  --warning-color: #FFAA4C;
-  --error-color: #FF4C4C;
+  --secondary-color: #4a9eff;
+  --success-color: #4caf50;
+  --warning-color: #ffaa4c;
+  --error-color: #ff4c4c;
   --background-dark: #323232;
-  --background-darker: #2D2D2D;
-  --text-primary: #E0E0E0;
+  --background-darker: #2d2d2d;
+  --text-primary: #e0e0e0;
   --text-secondary: #808080;
   --border-color: #404040;
 }

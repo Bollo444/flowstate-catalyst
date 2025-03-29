@@ -1,17 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useTeamSync } from '@/context/TeamSyncContext';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Activity, Users, Pause, Play } from 'lucide-react';
+import { useEffect } from "react";
+import { useTeamSync } from "@/context/TeamSyncContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { Activity, Users, Pause, Play } from "lucide-react";
 
 export function TeamSyncStatus() {
-  const { 
-    syncState, 
-    isInitialized,
-    pauseSync,
-    resumeSync
-  } = useTeamSync();
+  const { syncState, isInitialized, pauseSync, resumeSync } = useTeamSync();
 
   if (!isInitialized || !syncState) {
     return null;
@@ -44,20 +39,25 @@ export function TeamSyncStatus() {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className={`w-2 h-2 rounded-full ${
-                status === 'active' ? 'bg-green-500' : 
-                status === 'paused' ? 'bg-yellow-500' : 'bg-red-500'
-              }`} />
+              <div
+                className={`w-2 h-2 rounded-full ${
+                  status === "active"
+                    ? "bg-green-500"
+                    : status === "paused"
+                      ? "bg-yellow-500"
+                      : "bg-red-500"
+                }`}
+              />
               <span className="capitalize">{status}</span>
             </div>
-            {status === 'active' ? (
+            {status === "active" ? (
               <button
                 onClick={() => pauseSync()}
                 className="text-gray-600 hover:text-gray-800"
               >
                 <Pause className="w-4 h-4" />
               </button>
-            ) : status === 'paused' ? (
+            ) : status === "paused" ? (
               <button
                 onClick={() => resumeSync()}
                 className="text-gray-600 hover:text-gray-800"

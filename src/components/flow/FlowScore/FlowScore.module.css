@@ -1,0 +1,68 @@
+.flowScore {
+  @apply flex flex-col gap-4 p-4 rounded-xl bg-zinc-900/50 backdrop-blur-sm;
+}
+
+.scoreContainer {
+  @apply flex flex-col items-center gap-2;
+}
+
+.scoreCircle {
+  @apply w-24 h-24 rounded-full flex items-center justify-center
+         border border-zinc-700/50 transition-all duration-300;
+}
+
+.score {
+  @apply text-3xl font-bold text-white;
+}
+
+.label {
+  @apply text-sm text-zinc-400;
+}
+
+.status {
+  @apply text-center py-1 px-3 rounded-full text-sm font-medium;
+}
+
+.peak {
+  @apply bg-emerald-900/20 text-emerald-400 border border-emerald-500/20;
+}
+
+.flow {
+  @apply bg-blue-900/20 text-blue-400 border border-blue-500/20;
+}
+
+.building {
+  @apply bg-amber-900/20 text-amber-400 border border-amber-500/20;
+}
+
+.rest {
+  @apply bg-red-900/20 text-red-400 border border-red-500/20;
+}
+
+.inactive {
+  @apply bg-zinc-800/20 text-zinc-400 border border-zinc-700/20;
+}
+
+.details {
+  @apply mt-4 overflow-hidden;
+}
+
+.metrics {
+  @apply grid grid-cols-3 gap-2;
+}
+
+.metricItem {
+  @apply flex flex-col items-center gap-1 p-2 rounded-lg bg-zinc-800/30;
+}
+
+.metricIcon {
+  @apply text-lg;
+}
+
+.metricValue {
+  @apply text-lg font-semibold text-white;
+}
+
+.metricLabel {
+  @apply text-xs text-zinc-400;
+}

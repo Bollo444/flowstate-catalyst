@@ -1,14 +1,22 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { TeamSync } from '../../../types/teamSync';
-import { TeamMemberStatus } from '../../../types/flow';
-import { Avatar } from '../../shared/Avatar';
-import { FlowScore } from '../../flow/FlowScore';
-import type { FlowScoreSize, FlowScoreProps, FlowScoreBaseProps } from '../../flow/FlowScore/FlowScore.types';
-import { getColorStateFromScore, getFlowStateFromScore, getColorClass } from '../../flow/FlowScore/utils';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import styles from './styles.module.css';
+import React, { useEffect, useState } from "react";
+import { TeamSync } from "../../../types/teamSync";
+import { TeamMemberStatus } from "../../../types/flow";
+import { Avatar } from "../../shared/Avatar";
+import { FlowScore } from "../../flow/FlowScore";
+import type {
+  FlowScoreSize,
+  FlowScoreProps,
+  FlowScoreBaseProps,
+} from "../../flow/FlowScore/FlowScore.types";
+import {
+  getColorStateFromScore,
+  getFlowStateFromScore,
+  getColorClass,
+} from "../../flow/FlowScore/utils";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import styles from "./styles.module.css";
 
 interface SyncedSessionProps {
   sync: TeamSync;
@@ -16,7 +24,11 @@ interface SyncedSessionProps {
   onStatusUpdate?: (status: TeamMemberStatus) => void;
 }
 
-export function SyncedSession({ sync, currentUserId, onStatusUpdate }: SyncedSessionProps) {
+export function SyncedSession({
+  sync,
+  currentUserId,
+  onStatusUpdate,
+}: SyncedSessionProps) {
   const [localSync, setLocalSync] = useState<TeamSync>(sync);
 
   useEffect(() => {
@@ -31,18 +43,22 @@ export function SyncedSession({ sync, currentUserId, onStatusUpdate }: SyncedSes
     );
   }
 
-  const currentUser = localSync.participants.find(p => p.user_id === currentUserId);
-  const otherParticipants = localSync.participants.filter(p => p.user_id !== currentUserId);
+  const currentUser = localSync.participants.find(
+    (p) => p.user_id === currentUserId
+  );
+  const otherParticipants = localSync.participants.filter(
+    (p) => p.user_id !== currentUserId
+  );
   const teamScore = localSync.metrics.average_flow_score;
 
   const teamFlowScore: FlowScoreProps = {
     score: teamScore,
     colorState: getColorStateFromScore(teamScore),
     flowState: getFlowStateFromScore(teamScore),
-    label: 'Team Flow',
-    size: 'small',
+    label: "Team Flow",
+    size: "small",
     showLabel: true,
-    className: styles.teamScore
+    className: styles.teamScore,
   };
 
   return (
@@ -68,7 +84,7 @@ export function SyncedSession({ sync, currentUserId, onStatusUpdate }: SyncedSes
           />
         )}
 
-        {otherParticipants.map(participant => (
+        {otherParticipants.map((participant) => (
           <ParticipantCard
             key={participant.user_id}
             participant={participant}
@@ -86,7 +102,11 @@ interface ParticipantCardProps {
   onStatusUpdate?: (status: TeamMemberStatus) => void;
 }
 
-function ParticipantCard({ participant, isCurrentUser, onStatusUpdate }: ParticipantCardProps) {
+function ParticipantCard({
+  participant,
+  isCurrentUser,
+  onStatusUpdate,
+}: ParticipantCardProps) {
   const score = participant.flowState.score;
   const colorState = getColorStateFromScore(score);
   const flowState = getFlowStateFromScore(score);
@@ -95,9 +115,9 @@ function ParticipantCard({ participant, isCurrentUser, onStatusUpdate }: Partici
     score,
     colorState,
     flowState,
-    size: 'tiny',
+    size: "tiny",
     showLabel: false,
-    className: styles.participantScore
+    className: styles.participantScore,
   };
 
   return (
@@ -116,11 +136,11 @@ function ParticipantCard({ participant, isCurrentUser, onStatusUpdate }: Partici
           <div className={styles.flowStatus}>
             <div
               className={styles.statusDot}
-              style={{ 
-                backgroundColor: getColorClass(colorState)
+              style={{
+                backgroundColor: getColorClass(colorState),
               }}
             />
-            {participant.status.replace('_', ' ')}
+            {participant.status.replace("_", " ")}
           </div>
         </div>
       </div>
@@ -128,7 +148,10 @@ function ParticipantCard({ participant, isCurrentUser, onStatusUpdate }: Partici
       <div className={styles.metrics}>
         <FlowScore {...flowScoreProps} />
         <div className={styles.focusMetrics}>
-          <span>Focus Time: {formatDuration(participant.flowState.focus_duration * 1000)}</span>
+          <span>
+            Focus Time:{" "}
+            {formatDuration(participant.flowState.focus_duration * 1000)}
+          </span>
           <span>Interruptions: {participant.flowState.interruption_count}</span>
         </div>
       </div>

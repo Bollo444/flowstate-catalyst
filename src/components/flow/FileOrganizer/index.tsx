@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { AnalysisResult } from '../../../services/fileAnalysis/types';
-import { useProjects } from '../../../hooks/useProjects';
-import { useTasks } from '../../../hooks/useTasks';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { AnalysisResult } from "../../../services/fileAnalysis/types";
+import { useProjects } from "../../../hooks/useProjects";
+import { useTasks } from "../../../hooks/useTasks";
+import styles from "./styles.module.css";
 
 interface FileOrganizerProps {
   suggestion: AnalysisResult;
@@ -11,7 +11,7 @@ interface FileOrganizerProps {
 
 export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
   suggestion,
-  onApply
+  onApply,
 }) => {
   const { createProject } = useProjects();
   const { createTask } = useTasks();
@@ -19,36 +19,38 @@ export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
 
   const handleCreateProject = async () => {
     if (!suggestion.projectContext) return;
-    
+
     setIsCreating(true);
     try {
       // Create new project
       const project = await createProject({
-        user_id: '', // This will be filled by the backend using the authenticated user
+        user_id: "", // This will be filled by the backend using the authenticated user
         title: suggestion.projectContext.relatedProject,
         description: `Project created from file: ${suggestion.originalName}`,
-        status: 'active',
+        status: "active",
         flow_state_data: {
           current_flow_score: 0,
-        }
+        },
       });
 
       // Create suggested tasks
       if (suggestion.projectContext.suggestedTasks) {
         await Promise.all(
-          suggestion.projectContext.suggestedTasks.map(taskTitle =>
+          suggestion.projectContext.suggestedTasks.map((taskTitle) =>
             createTask({
               project_id: project.id,
-              user_id: '', // This will be filled by the backend
+              user_id: "", // This will be filled by the backend
               title: taskTitle,
               description: null,
-              priority: suggestion.projectContext?.priority || 'medium',
-              status: 'pending',
-              due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+              priority: suggestion.projectContext?.priority || "medium",
+              status: "pending",
+              due_date: new Date(
+                Date.now() + 7 * 24 * 60 * 60 * 1000
+              ).toISOString(),
               assignee_id: null,
               dependencies: null,
               progress: 0,
-              flow_metrics: {}
+              flow_metrics: {},
             })
           )
         );
@@ -56,7 +58,7 @@ export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
 
       onApply();
     } catch (error) {
-      console.error('Error creating project:', error);
+      console.error("Error creating project:", error);
     } finally {
       setIsCreating(false);
     }
@@ -74,9 +76,11 @@ export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
           <span>Suggested Name:</span>
           <span>{suggestion.suggestedName}</span>
         </div>
-        <button 
+        <button
           className={styles.button}
-          onClick={() => {/* Implement rename action */}}
+          onClick={() => {
+            /* Implement rename action */
+          }}
         >
           Apply Suggested Name
         </button>
@@ -104,7 +108,7 @@ export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
             onClick={handleCreateProject}
             disabled={isCreating}
           >
-            {isCreating ? 'Creating Project...' : 'Create Project'}
+            {isCreating ? "Creating Project..." : "Create Project"}
           </button>
         </div>
       )}
@@ -113,7 +117,9 @@ export const FileOrganizerComponent: React.FC<FileOrganizerProps> = ({
         <h3>Tags</h3>
         <div className={styles.tags}>
           {suggestion.tags.map((tag, index) => (
-            <span key={index} className={styles.tag}>{tag}</span>
+            <span key={index} className={styles.tag}>
+              {tag}
+            </span>
           ))}
         </div>
       </div>

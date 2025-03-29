@@ -1,5 +1,5 @@
 .form {
-  background: #2D2D2D;
+  background: #2d2d2d;
   padding: 1.5rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -13,7 +13,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .input,
@@ -22,8 +22,8 @@
   padding: 0.75rem;
   border: 1px solid #404040;
   border-radius: 4px;
-  background: #1A1A1A;
-  color: #FFFFFF;
+  background: #1a1a1a;
+  color: #ffffff;
   font-size: 1rem;
 }
 
@@ -55,24 +55,24 @@
 }
 
 .submitButton {
-  background: #4A9EFF;
+  background: #4a9eff;
   border: none;
   color: white;
 }
 
 .submitButton:hover:not(:disabled) {
-  background: #3B8DE6;
+  background: #3b8de6;
 }
 
 .submitButton:disabled {
-  background: #2D5A94;
+  background: #2d5a94;
   cursor: not-allowed;
 }
 
 .cancelButton {
   background: transparent;
   border: 1px solid #404040;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .cancelButton:hover {

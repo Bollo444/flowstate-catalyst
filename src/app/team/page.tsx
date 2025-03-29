@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { useFlowContext } from '@/context/FlowContext'
-import { useTeam } from '@/hooks/useTeam'
-import TeamCharter from '@/features/TeamCharter'
-import TeamFlowSync from '@/components/team/TeamFlowSync'
+import React from "react";
+import { useFlowContext } from "@/context/FlowContext";
+import { useTeam } from "@/hooks/useTeam";
+import TeamCharter from "@/features/TeamCharter";
+import TeamFlowSync from "@/components/team/TeamFlowSync";
 
 const TeamPage = () => {
   const { flowState } = useFlowContext();
@@ -36,14 +36,11 @@ const TeamPage = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <TeamCharter />
         {flowState && (
-          <TeamFlowSync 
-            teamId={team.id} 
-            currentUserId={flowState.userId} 
-          />
+          <TeamFlowSync teamId={team.id} currentUserId={flowState.userId} />
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TeamPage
+export default TeamPage;

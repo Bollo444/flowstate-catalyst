@@ -1,6 +1,6 @@
--- Add new profile fields
-ALTER TABLE profiles
-ADD COLUMN name text,
-ADD COLUMN avatar_url text,
-ADD COLUMN bio text,
-ADD COLUMN phone_number text;
+-- Add new profile fields (Commented out as columns already exist in create_profiles_table.sql)
+-- ALTER TABLE profiles
+-- ADD COLUMN name text,
+-- ADD COLUMN avatar_url text,
+-- ADD COLUMN bio text,
+-- ADD COLUMN phone_number text;

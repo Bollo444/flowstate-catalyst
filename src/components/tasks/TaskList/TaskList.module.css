@@ -11,13 +11,13 @@
 .emptyState {
   text-align: center;
   padding: 2rem;
-  background: #1A1A1A;
+  background: #1a1a1a;
   border-radius: 8px;
   border: 2px dashed #404040;
 }
 
 .emptyState p {
-  color: #A0A0A0;
+  color: #a0a0a0;
   margin: 0;
   font-size: 0.875rem;
 }
@@ -38,15 +38,15 @@
 }
 
 .groupTitle {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   font-weight: 500;
   margin: 0;
 }
 
 .groupCount {
-  background: #2D2D2D;
-  color: #A0A0A0;
+  background: #2d2d2d;
+  color: #a0a0a0;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -61,7 +61,9 @@
 .taskEnterActive {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
 }
 
 .taskExit {
@@ -71,7 +73,9 @@
 .taskExitActive {
   opacity: 0;
   transform: translateY(-20px);
-  transition: opacity 200ms ease-out, transform 200ms ease-out;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
 }
 
 @media (max-width: 640px) {

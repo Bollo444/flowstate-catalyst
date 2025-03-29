@@ -1,7 +1,7 @@
 /* src/components/flow/FlowWhispers/styles.module.css */
 
 .streakManager {
-  background: linear-gradient(135deg, #2E3192, #1BFFFF);
+  background: linear-gradient(135deg, #2e3192, #1bffff);
   border-radius: 16px;
   padding: 24px;
   color: white;
@@ -87,8 +87,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .errorContainer {
@@ -104,6 +108,6 @@
   border: none;
   border-radius: 6px;
   background: white;
-  color: #2E3192;
+  color: #2e3192;
   cursor: pointer;
 }

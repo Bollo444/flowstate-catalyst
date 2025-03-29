@@ -1,60 +1,45 @@
-import '@testing-library/jest-dom';
-import { jest, beforeAll, afterAll } from '@jest/globals';
-import { configure } from '@testing-library/dom';
+import "@testing-library/jest-dom";
+import { configure } from "@testing-library/react";
+import { server } from "./mocks/server";
 
-declare global {
-  namespace jest {
-    interface Matchers<R> {
-      toBeInTheDocument(): R;
-      toHaveAttribute(attr: string, value?: string): R;
-      toHaveClass(className: string): R;
-      toHaveStyle(style: Record<string, any>): R;
-      toBeVisible(): R;
-      toHaveTextContent(text: string | RegExp): R;
-    }
-  }
-}
+// Establish API mocking before all tests
+beforeAll(() => server.listen());
 
-// Mock IntersectionObserver if needed
-if (typeof window !== 'undefined') {
-  const mockObserveImplementation = function() {
-    return {
-      observe: function() {
-        return null;
-      },
-      unobserve: function() {
-        return null;
-      },
-      disconnect: function() {
-        return null;
-      }
-    };
-  };
+// Reset any request handlers that we may add during the tests
+afterEach(() => server.resetHandlers());
 
-  // @ts-ignore
-  window.IntersectionObserver = window.IntersectionObserver ||
-    function() {
-      return mockObserveImplementation();
-    };
-
-  // @ts-ignore
-  window.ResizeObserver = window.ResizeObserver ||
-    function() {
-      return mockObserveImplementation();
-    };
-}
+// Clean up after the tests are finished
+afterAll(() => server.close());
 
 // Configure testing library
 configure({
-  testIdAttribute: 'data-testid'
+  testIdAttribute: "data-testid",
 });
 
-// Global test setup
-beforeAll(() => {
-  // Add any global test setup here
-});
+// Mock IntersectionObserver
+global.IntersectionObserver = class IntersectionObserver {
+  constructor() {}
+  observe() {
+    return null;
+  }
+  unobserve() {
+    return null;
+  }
+  disconnect() {
+    return null;
+  }
+};
 
-// Global test teardown
-afterAll(() => {
-  // Add any global test cleanup here
-});
+// Mock ResizeObserver
+global.ResizeObserver = class ResizeObserver {
+  constructor() {}
+  observe() {
+    return null;
+  }
+  unobserve() {
+    return null;
+  }
+  disconnect() {
+    return null;
+  }
+};

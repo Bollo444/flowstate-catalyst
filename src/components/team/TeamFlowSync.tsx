@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { FlowState } from '@/types/flow';
-import { flowSyncService } from '@/services/flowSync';
-import styles from './TeamFlowSync.module.css';
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { FlowState } from "@/types/flow";
+import { flowSyncService } from "@/services/flowSync";
+import styles from "./TeamFlowSync.module.css";
 
 interface TeamMemberFlow extends FlowState {
   name: string;
@@ -19,17 +19,22 @@ interface TeamFlowSyncProps {
 
 const staggerDelay = 0.1;
 
-export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserId }) => {
+export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({
+  teamId,
+  currentUserId,
+}) => {
   const [teamFlows, setTeamFlows] = useState<TeamMemberFlow[]>([]);
   const [synced, setSynced] = useState(false);
 
   useEffect(() => {
     // Subscribe to team flow updates
     const unsubscribeFlow = flowSyncService.onFlowUpdate((state) => {
-      setTeamFlows(prev => {
-        const index = prev.findIndex(member => member.userId === state.userId);
+      setTeamFlows((prev) => {
+        const index = prev.findIndex(
+          (member) => member.userId === state.userId
+        );
         if (index === -1) return prev;
-        
+
         const updated = [...prev];
         updated[index] = { ...updated[index], ...state };
         return updated;
@@ -37,15 +42,19 @@ export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserI
     });
 
     // Subscribe to presence updates
-    const unsubscribePresence = flowSyncService.onPresenceUpdate((presenceStates) => {
-      setTeamFlows(prev => {
-        return prev.map(member => ({
-          ...member,
-          online: presenceStates.some(state => state.userId === member.userId && state.online)
-        }));
-      });
-      setSynced(true);
-    });
+    const unsubscribePresence = flowSyncService.onPresenceUpdate(
+      (presenceStates) => {
+        setTeamFlows((prev) => {
+          return prev.map((member) => ({
+            ...member,
+            online: presenceStates.some(
+              (state) => state.userId === member.userId && state.online
+            ),
+          }));
+        });
+        setSynced(true);
+      }
+    );
 
     return () => {
       unsubscribeFlow();
@@ -54,14 +63,14 @@ export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserI
   }, [teamId]);
 
   const getFlowAdvice = (memberFlow: TeamMemberFlow) => {
-    if (memberFlow.status === 'peak') {
-      return 'In deep focus - minimize interruptions';
-    } else if (memberFlow.status === 'flow') {
-      return 'Good time for quick collaboration';
-    } else if (memberFlow.status === 'rest') {
-      return 'Taking a break';
+    if (memberFlow.status === "peak") {
+      return "In deep focus - minimize interruptions";
+    } else if (memberFlow.status === "flow") {
+      return "Good time for quick collaboration";
+    } else if (memberFlow.status === "rest") {
+      return "Taking a break";
     }
-    return 'Building focus';
+    return "Building focus";
   };
 
   return (
@@ -69,7 +78,7 @@ export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserI
       <header className={styles.header}>
         <h3>Team Flow</h3>
         <div className={styles.syncStatus}>
-          {synced ? 'Real-time sync active' : 'Connecting...'}
+          {synced ? "Real-time sync active" : "Connecting..."}
         </div>
       </header>
 
@@ -91,7 +100,9 @@ export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserI
                 </Avatar>
                 <div className={styles.memberInfo}>
                   <h4>{member.name}</h4>
-                  <div className={`${styles.flowStatus} ${styles[member.status]}`}>
+                  <div
+                    className={`${styles.flowStatus} ${styles[member.status]}`}
+                  >
                     {member.status}
                   </div>
                 </div>
@@ -114,18 +125,14 @@ export const TeamFlowSync: React.FC<TeamFlowSyncProps> = ({ teamId, currentUserI
                 </div>
               </div>
 
-              <div className={styles.advice}>
-                {getFlowAdvice(member)}
-              </div>
+              <div className={styles.advice}>{getFlowAdvice(member)}</div>
             </motion.div>
           ))}
         </div>
       </AnimatePresence>
 
       {teamFlows.length === 0 && (
-        <div className={styles.empty}>
-          No team members currently active
-        </div>
+        <div className={styles.empty}>No team members currently active</div>
       )}
     </div>
   );

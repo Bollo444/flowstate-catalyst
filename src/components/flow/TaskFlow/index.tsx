@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useTaskRouting } from '../../../context/TaskRoutingContext';
-import { useFlowContext } from '../../../context/FlowContext';
-import { LoadingSpinner } from '../../shared/LoadingSpinner';
-import { Task } from '../../../types/database';
-import { TaskRoutingResult } from '../../../features/taskFlow/types';
-import styles from './styles.module.css';
+import React from "react";
+import { useTaskRouting } from "../../../context/TaskRoutingContext";
+import { useFlowContext } from "../../../context/FlowContext";
+import { LoadingSpinner } from "../../shared/LoadingSpinner";
+import { Task } from "../../../types/database";
+import { TaskRoutingResult } from "../../../features/taskFlow/types";
+import styles from "./styles.module.css";
 
 interface TaskItemProps {
   task: Task;
@@ -17,12 +17,12 @@ interface TaskItemProps {
 
 function TaskItem({ task, isActive, flowScore, onSelect }: TaskItemProps) {
   const flowIndicatorStyle = {
-    '--flow-score': `${flowScore}%`
+    "--flow-score": `${flowScore}%`,
   } as React.CSSProperties;
 
   return (
-    <div 
-      className={`${styles.taskItem} ${isActive ? styles.active : ''}`}
+    <div
+      className={`${styles.taskItem} ${isActive ? styles.active : ""}`}
       onClick={() => onSelect(task.id)}
       data-testid={`task-item-${task.id}`}
     >
@@ -35,8 +35,8 @@ function TaskItem({ task, isActive, flowScore, onSelect }: TaskItemProps) {
           </div>
         )}
       </div>
-      <div 
-        className={styles.flowIndicator} 
+      <div
+        className={styles.flowIndicator}
         style={flowIndicatorStyle}
         title={`Flow alignment: ${Math.round(flowScore)}%`}
       />
@@ -45,13 +45,9 @@ function TaskItem({ task, isActive, flowScore, onSelect }: TaskItemProps) {
 }
 
 export function TaskFlow() {
-  const { 
-    currentSequence, 
-    routingResult,
-    startNextTask,
-    isRouting
-  } = useTaskRouting();
-  
+  const { currentSequence, routingResult, startNextTask, isRouting } =
+    useTaskRouting();
+
   const { flowState } = useFlowContext();
 
   if (isRouting) {
@@ -76,7 +72,7 @@ export function TaskFlow() {
   const calculateTaskFlowScore = (index: number, total: number): number => {
     if (!routingResult) return 0;
     const baseScore = routingResult.routingFactors.flowAlignment * 100;
-    const positionFactor = 1 - (index / total * 0.5); // Earlier tasks get higher scores
+    const positionFactor = 1 - (index / total) * 0.5; // Earlier tasks get higher scores
     return baseScore * positionFactor;
   };
 
@@ -84,7 +80,10 @@ export function TaskFlow() {
     <div className={styles.container} data-testid="task-flow">
       <div className={styles.taskList}>
         {currentSequence.map((task, index) => {
-          const flowScore = calculateTaskFlowScore(index, currentSequence.length);
+          const flowScore = calculateTaskFlowScore(
+            index,
+            currentSequence.length
+          );
           const isActive = index === 0;
 
           return (
@@ -98,7 +97,7 @@ export function TaskFlow() {
           );
         })}
       </div>
-      
+
       {flowState && routingResult && (
         <div className={styles.flowInfo}>
           <div className={styles.flowMetric}>

@@ -1,19 +1,25 @@
 {
   "presets": [
-    ["next/babel", {
-      "preset-react": {
-        "runtime": "automatic",
-        "importSource": "@emotion/react"
+    [
+      "next/babel",
+      {
+        "preset-react": {
+          "runtime": "automatic"
+          // Temporarily removed "importSource": "@emotion/react" to test build
+        }
       }
-    }]
+    ]
   ],
   "env": {
     "test": {
       "plugins": [
         ["@babel/plugin-transform-modules-commonjs"],
-        ["@babel/plugin-transform-runtime", {
-          "regenerator": true
-        }]
+        [
+          "@babel/plugin-transform-runtime",
+          {
+            "regenerator": true
+          }
+        ]
       ]
     }
   }

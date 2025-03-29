@@ -1,62 +1,56 @@
 // src/monitoring/FlowPerformanceMonitor.ts
 
-interface PerformanceReport {
-  averageRenderTime: number;
-  averageUpdateTime: number;
-  averageInteractionTime: number;
-  recommendations: string[];
-}
+export class FlowPerformanceMonitor {
+  private static instance: FlowPerformanceMonitor;
+  private metrics: Map<string, number[]> = new Map();
+  private thresholds: Map<string, number> = new Map();
 
-class FlowPerformanceMonitor {
-  private metrics: {
-    renderTimes: number[];
-    dataUpdateTimes: number[];
-    interactionTimes: number[];
-  } = {
-    renderTimes: [],
-    dataUpdateTimes: [],
-    interactionTimes: []
-  };
-
-  startMonitoring() {
-    this.monitorRenderPerformance();
-    this.monitorDataUpdates();
-    this.monitorUserInteractions();
+  private constructor() {
+    this.thresholds.set("renderTime", 16); // 60fps target
+    this.thresholds.set("taskUpdateLatency", 100);
+    this.thresholds.set("flowStateUpdateInterval", 1000);
   }
 
-  private monitorRenderPerformance() {
-    // Implementation
-    console.log('monitorRenderPerformance not implemented');
+  static getInstance(): FlowPerformanceMonitor {
+    if (!FlowPerformanceMonitor.instance) {
+      FlowPerformanceMonitor.instance = new FlowPerformanceMonitor();
+    }
+    return FlowPerformanceMonitor.instance;
   }
 
-  private monitorDataUpdates() {
-    // Implementation
-    console.log('monitorDataUpdates not implemented');
+  measureOperation(name: string, startTime: number): void {
+    const duration = performance.now() - startTime;
+    if (!this.metrics.has(name)) {
+      this.metrics.set(name, []);
+    }
+    this.metrics.get(name)?.push(duration);
+    this.checkThreshold(name, duration);
   }
 
-  private monitorUserInteractions() {
-    // Implementation
-    console.log('monitorUserInteractions not implemented');
+  private checkThreshold(name: string, duration: number): void {
+    const threshold = this.thresholds.get(name);
+    if (threshold && duration > threshold) {
+      console.warn(
+        `Performance warning: ${name} took ${duration}ms (threshold: ${threshold}ms)`
+      );
+      // Could integrate with your monitoring service here
+    }
   }
 
-  generateReport(): PerformanceReport {
-    // Generate performance report
-    return {
-      averageRenderTime: this.calculateAverage(this.metrics.renderTimes),
-      averageUpdateTime: this.calculateAverage(this.metrics.dataUpdateTimes),
-      averageInteractionTime: this.calculateAverage(this.metrics.interactionTimes),
-      recommendations: this.generateRecommendations()
-    };
-  }
+  getMetrics(): Record<string, { average: number; max: number; min: number }> {
+    const result: Record<
+      string,
+      { average: number; max: number; min: number }
+    > = {};
 
-  private calculateAverage(dataPoints: number[]): number {
-    return dataPoints.length > 0 ? dataPoints.reduce((a, b) => a + b, 0) / dataPoints.length : 0;
-  }
+    this.metrics.forEach((durations, name) => {
+      result[name] = {
+        average: durations.reduce((a, b) => a + b, 0) / durations.length,
+        max: Math.max(...durations),
+        min: Math.min(...durations),
+      };
+    });
 
-  private generateRecommendations(): string[] {
-    // Dummy recommendations
-    return ['Improve chart rendering performance', 'Optimize data update frequency'];
+    return result;
   }
 }
-
-export default FlowPerformanceMonitor;

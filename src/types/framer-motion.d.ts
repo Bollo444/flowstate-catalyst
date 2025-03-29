@@ -1,5 +1,5 @@
-declare module 'framer-motion' {
-  import * as React from 'react';
+declare module "framer-motion" {
+  import * as React from "react";
 
   interface TransitionProperties {
     type?: string;
@@ -8,7 +8,7 @@ declare module 'framer-motion' {
     duration?: number;
     ease?: string | number[];
     repeat?: number | Infinity;
-    repeatType?: 'loop' | 'reverse' | 'mirror';
+    repeatType?: "loop" | "reverse" | "mirror";
     delay?: number;
   }
 
@@ -37,14 +37,14 @@ declare module 'framer-motion' {
     whileTap?: object | string;
     whileFocus?: object | string;
     whileDrag?: object | string;
-    drag?: boolean | 'x' | 'y';
+    drag?: boolean | "x" | "y";
     dragConstraints?: object;
     dragElastic?: number | boolean;
   }
 
   export interface AnimatePresenceProps {
     children: React.ReactNode;
-    mode?: 'sync' | 'wait' | 'popLayout';
+    mode?: "sync" | "wait" | "popLayout";
     initial?: boolean;
     onExitComplete?: () => void;
   }

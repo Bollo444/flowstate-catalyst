@@ -7,14 +7,14 @@
 .progressBar {
   position: relative;
   width: 100%;
-  background: #2D2D2D;
+  background: #2d2d2d;
   border-radius: 4px;
   overflow: hidden;
 }
 
 .progress {
   height: 100%;
-  background: var(--progress-color, #4A9EFF);
+  background: var(--progress-color, #4a9eff);
   transition: width 0.3s ease;
   border-radius: 4px;
 }
@@ -33,7 +33,7 @@
 }
 
 .percentage {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 0.875rem;
   min-width: 3.5rem;
   text-align: right;
@@ -54,7 +54,7 @@
 }
 
 .interactive .progress::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -100,7 +100,9 @@
 
 /* Focus styles for keyboard navigation */
 .interactive:focus .handle {
-  box-shadow: 0 0 0 2px var(--progress-color), 0 0 0 4px rgba(74, 158, 255, 0.4);
+  box-shadow:
+    0 0 0 2px var(--progress-color),
+    0 0 0 4px rgba(74, 158, 255, 0.4);
 }
 
 /* High contrast mode support */

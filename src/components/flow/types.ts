@@ -3,13 +3,18 @@
  */
 
 // Score display sizes
-export type FlowScoreSize = 'tiny' | 'small' | 'medium' | 'large';
+export type FlowScoreSize = "tiny" | "small" | "medium" | "large";
 
 // Score color states
-export type FlowScoreColorState = 'excellent' | 'good' | 'moderate' | 'poor' | 'critical';
+export type FlowScoreColorState =
+  | "excellent"
+  | "good"
+  | "moderate"
+  | "poor"
+  | "critical";
 
 // Flow states
-export type FlowState = 'peak' | 'flow' | 'rest' | 'building';
+export type FlowState = "peak" | "flow" | "rest" | "building";
 
 // Props for the FlowScore component
 export interface FlowScoreProps {
@@ -30,4 +35,4 @@ export interface FlowScoreProps {
 }
 
 // Re-export all Flow types
-export * from './FlowScore/FlowScore.types';
+export * from "./FlowScore/FlowScore.types";

@@ -1,11 +1,11 @@
-import React from 'react';
-import styles from './TeamView.module.css';
-import { useFlowStore } from '../../../stores/flowStore';
-import { TeamSyncButton } from '../TeamSyncButton';
-import { TeamMemberCard } from '../TeamMemberCard';
-import { TeamFlowChart } from '../TeamFlowChart';
-import { SyncOpportunities } from '../SyncOpportunities';
-import { CollaborationInsights } from '../CollaborationInsights';
+import React from "react";
+import styles from "./TeamView.module.css";
+import { useFlowStore } from "../../../stores/flowStore";
+import { TeamSyncButton } from "../TeamSyncButton";
+import { TeamMemberCard } from "../TeamMemberCard";
+import { TeamFlowChart } from "../TeamFlowChart";
+import { SyncOpportunities } from "../SyncOpportunities";
+import { CollaborationInsights } from "../CollaborationInsights";
 
 export const TeamView: React.FC = () => {
   const { teamMembers, teamFlow } = useFlowStore();
@@ -18,7 +18,7 @@ export const TeamView: React.FC = () => {
       </div>
 
       <div className={styles.teamGrid}>
-        {teamMembers.map(member => (
+        {teamMembers.map((member) => (
           <TeamMemberCard
             key={member.id}
             member={member}

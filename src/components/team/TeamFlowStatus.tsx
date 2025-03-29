@@ -1,11 +1,11 @@
 // src/components/team/TeamFlowStatus.tsx
 
-import React, { useEffect } from 'react';
-import styles from '../../styles/TeamFlow.module.css'; // Import CSS module
-import { useTeamFlowSync } from '../../features/teamSync/TeamFlowSync';
-import { LoadingSpinner } from '../../components/shared/LoadingSpinner';
-import { ErrorDisplay } from '../../components/shared/ErrorDisplay';
-import { AppError } from '../../types/error';
+import React, { useEffect } from "react";
+import styles from "../../styles/TeamFlow.module.css"; // Import CSS module
+import { useTeamFlowSync } from "../../features/teamSync/TeamFlowSync";
+import { LoadingSpinner } from "../../components/shared/LoadingSpinner";
+import { ErrorDisplay } from "../../components/shared/ErrorDisplay";
+import { AppError } from "../../types/error";
 
 interface TeamFlowStatusProps {
   teamId: string;
@@ -26,7 +26,6 @@ export const TeamFlowStatus: React.FC<TeamFlowStatusProps> = ({ teamId }) => {
     return <ErrorDisplay error={teamMetrics.error as AppError} />;
   }
 
-
   return (
     <div className={styles.teamFlowContainer}>
       <div className={styles.teamFlowHeader}>
@@ -35,7 +34,7 @@ export const TeamFlowStatus: React.FC<TeamFlowStatusProps> = ({ teamId }) => {
           {teamMetrics?.teamFlowScore}%
         </div>
       </div>
-      
+
       <div className={styles.teamMetrics}>
         <div className={styles.metricCard}>
           <span>Average Streak</span>

@@ -1,14 +1,37 @@
 {
-  "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
-    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app",
+  "..\\node_modules\\@supabase\\auth-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
+    "id": 9743,
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\functions-js\\dist\\module\\helper.js -> @supabase/node-fetch": {
+    "id": 4914,
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> @supabase/node-fetch": {
+    "id": 4914,
+    "files": []
+  },
+  "..\\node_modules\\@supabase\\realtime-js\\dist\\module\\RealtimeClient.js -> ws": {
+    "id": 9491,
     "files": [
-      "static/chunks/fallback/node_modules_next_dist_pages__app_js.js"
+      "static/chunks/7026.c3c0c449238c8f91.js",
+      "static/chunks/9491.16c8f7985bb1a4c9.js"
+    ]
+  },
+  "..\\node_modules\\@supabase\\storage-js\\dist\\module\\lib\\helpers.js -> @supabase/node-fetch": {
+    "id": 4914,
+    "files": []
+  },
+  "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_app": {
+    "id": 9945,
+    "files": [
+      "static/chunks/9945.2ea55d61d2f4e07e.js"
     ]
   },
   "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error": {
-    "id": "..\\node_modules\\next\\dist\\client\\index.js -> ../pages/_error",
+    "id": 1535,
     "files": [
-      "static/chunks/fallback/node_modules_next_dist_pages__error_js.js"
+      "static/chunks/1535.de91a6cdb892f6cb.js"
     ]
   }
 }

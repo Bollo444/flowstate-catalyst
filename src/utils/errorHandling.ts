@@ -1,5 +1,5 @@
-import { PostgrestError } from '@supabase/supabase-js';
-import { AppError } from '../types/error';
+import { PostgrestError } from "@supabase/supabase-js";
+import { AppError } from "../types/error";
 
 export const handleSupabaseError = (error: PostgrestError): AppError => {
   return {
@@ -7,7 +7,7 @@ export const handleSupabaseError = (error: PostgrestError): AppError => {
     message: error.message,
     details: {
       hint: error.hint,
-      details: error.details
-    }
+      details: error.details,
+    },
   };
 };

@@ -1,6 +1,6 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorDisplay } from '../ErrorDisplay';
-import styles from './styles.module.css';
+import React, { Component, ErrorInfo, ReactNode } from "react";
+import { ErrorDisplay } from "../ErrorDisplay";
+import styles from "./styles.module.css";
 
 interface Props {
   children: ReactNode;
@@ -16,13 +16,13 @@ interface State {
 export class ErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
-    error: null
+    error: null,
   };
 
   public static getDerivedStateFromError(error: Error): State {
-    return { 
-      hasError: true, 
-      error 
+    return {
+      hasError: true,
+      error,
     };
   }
 
@@ -35,7 +35,7 @@ export class ErrorBoundary extends Component<Props, State> {
   private handleRetry = () => {
     this.setState({
       hasError: false,
-      error: null
+      error: null,
     });
   };
 
@@ -49,15 +49,12 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className={styles.errorContainer}>
           <ErrorDisplay
             error={{
-              code: 'BOUNDARY_ERROR',
-              message: 'An unexpected error occurred',
-              details: this.state.error
+              code: "BOUNDARY_ERROR",
+              message: "An unexpected error occurred",
+              details: this.state.error,
             }}
           />
-          <button 
-            onClick={this.handleRetry}
-            className={styles.retryButton}
-          >
+          <button onClick={this.handleRetry} className={styles.retryButton}>
             Try Again
           </button>
         </div>

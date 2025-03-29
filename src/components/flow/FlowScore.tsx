@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FlowStatus } from '@/types/supabase';
-import { ActivityMetrics } from '@/types/flow';
-import styles from './FlowScore.module.css';
+import React, { useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FlowStatus } from "@/types/supabase";
+import { ActivityMetrics } from "@/types/flow";
+import styles from "./FlowScore.module.css";
 
 interface FlowScoreProps {
   score: number;
@@ -14,44 +14,44 @@ interface FlowScoreProps {
 }
 
 const statusColors = {
-  peak: '#50B584',    // Bright green for peak performance
-  flow: '#3B82F6',    // Blue for steady flow
-  rest: '#8B5CF6',    // Purple for rest phase
-  building: '#F59E0B' // Orange for building phase
+  peak: "#50B584", // Bright green for peak performance
+  flow: "#3B82F6", // Blue for steady flow
+  rest: "#8B5CF6", // Purple for rest phase
+  building: "#F59E0B", // Orange for building phase
 };
 
 const statusDescriptions = {
-  peak: 'Peak performance! You\'re in an optimal flow state.',
-  flow: 'You\'re in flow. Keep the momentum going!',
-  rest: 'Time to recharge. Take a short break.',
-  building: 'Building focus. Minimize distractions.'
+  peak: "Peak performance! You're in an optimal flow state.",
+  flow: "You're in flow. Keep the momentum going!",
+  rest: "Time to recharge. Take a short break.",
+  building: "Building focus. Minimize distractions.",
 };
 
-export const FlowScore: React.FC<FlowScoreProps> = ({ 
-  score, 
-  status, 
-  metrics, 
-  showDetails = false 
+export const FlowScore: React.FC<FlowScoreProps> = ({
+  score,
+  status,
+  metrics,
+  showDetails = false,
 }) => {
   return (
-    <motion.div 
+    <motion.div
       className={styles.flowScore}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.3 }}
     >
       <div className={styles.scoreContainer}>
-        <motion.div 
+        <motion.div
           className={styles.scoreCircle}
-          style={{ 
+          style={{
             backgroundColor: statusColors[status],
             opacity: score / 100,
           }}
           animate={{
-            boxShadow: `0 0 ${status === 'peak' ? '2px' : '1px'} ${statusColors[status]}`
+            boxShadow: `0 0 ${status === "peak" ? "2px" : "1px"} ${statusColors[status]}`,
           }}
         >
-          <motion.div 
+          <motion.div
             className={styles.score}
             animate={{ scale: [1, 1.1, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
@@ -63,7 +63,7 @@ export const FlowScore: React.FC<FlowScoreProps> = ({
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.div 
+        <motion.div
           key={status}
           className={`${styles.status} ${styles[status]}`}
           initial={{ y: 10, opacity: 0 }}
@@ -76,10 +76,10 @@ export const FlowScore: React.FC<FlowScoreProps> = ({
       </AnimatePresence>
 
       {showDetails && (
-        <motion.div 
+        <motion.div
           className={styles.details}
           initial={{ height: 0, opacity: 0 }}
-          animate={{ height: 'auto', opacity: 1 }}
+          animate={{ height: "auto", opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
           <p className={styles.description}>{statusDescriptions[status]}</p>
@@ -95,10 +95,9 @@ export const FlowScore: React.FC<FlowScoreProps> = ({
             <div className={styles.metric}>
               <span>Last Break</span>
               <span>
-                {metrics.lastBreakTime 
+                {metrics.lastBreakTime
                   ? `${Math.floor((Date.now() - metrics.lastBreakTime.getTime()) / 60000)}m ago`
-                  : 'N/A'
-                }
+                  : "N/A"}
               </span>
             </div>
           </div>

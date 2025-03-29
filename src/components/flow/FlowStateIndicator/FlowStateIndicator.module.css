@@ -1,0 +1,58 @@
+.container {
+  @apply flex flex-col md:flex-row gap-6 p-6 bg-zinc-900 rounded-lg shadow-lg;
+}
+
+.scoreSection {
+  @apply flex-shrink-0 w-full md:w-64;
+}
+
+.infoSection {
+  @apply flex-grow flex flex-col gap-4;
+}
+
+.statusMessage {
+  @apply flex items-center gap-3 text-lg font-medium;
+}
+
+.icon {
+  @apply w-6 h-6;
+}
+
+.timerSection {
+  @apply flex items-center justify-between bg-zinc-800 rounded-md p-4;
+}
+
+.interruptButton {
+  @apply mt-auto px-4 py-2 bg-red-600/20 text-red-400 rounded-md 
+         hover:bg-red-600/30 transition-colors duration-200
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.peak {
+  @apply text-emerald-400;
+  animation: pulse 2s infinite;
+}
+
+.flow {
+  @apply text-blue-400;
+}
+
+.building {
+  @apply text-amber-400;
+}
+
+.rest {
+  @apply text-red-400;
+}

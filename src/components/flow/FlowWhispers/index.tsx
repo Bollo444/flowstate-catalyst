@@ -1,21 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import styles from './styles.module.css';
-import FlowWhisperCard from './WhisperCard';
-import { useFlowWhispers } from '../../../hooks/useFlowWhispers';
+import React, { useState, useCallback, useEffect } from "react";
+import styles from "./styles.module.css";
+import FlowWhisperCard from "./WhisperCard";
+import { useFlowWhispers } from "../../../hooks/useFlowWhispers";
 
 interface FlowWhisper {
   id: string;
   message: string;
-  type: 'motivation' | 'insight' | 'achievement' | 'flow-check';
+  type: "motivation" | "insight" | "achievement" | "flow-check";
   emoji?: string[];
-  interaction?: 'emoji' | 'quick-reply' | 'acknowledge';
+  interaction?: "emoji" | "quick-reply" | "acknowledge";
 }
 
 interface FlowWhispersProviderProps {
   children: React.ReactNode;
 }
 
-const FlowWhispersProvider: React.FC<FlowWhispersProviderProps> = ({ children }) => {
+const FlowWhispersProvider: React.FC<FlowWhispersProviderProps> = ({
+  children,
+}) => {
   const [activeWhisper, setActiveWhisper] = useState<FlowWhisper | null>(null);
   const { triggerWhisper } = useFlowWhispers();
   const [flowStreak, setFlowStreak] = useState(0);
@@ -32,7 +34,7 @@ const FlowWhispersProvider: React.FC<FlowWhispersProviderProps> = ({ children })
   // Example trigger - replace with actual triggers based on user flow/activity
   useEffect(() => {
     const intervalId = setInterval(() => {
-      const whisper = triggerWhisper('exampleActivity'); // Replace with actual activity
+      const whisper = triggerWhisper("exampleActivity"); // Replace with actual activity
       if (whisper) {
         showWhisper(whisper);
       }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { debounce } from '../../../utils/debounce';
-import styles from './styles.module.css';
+import React, { useState, useEffect, useCallback } from "react";
+import { debounce } from "../../../utils/debounce";
+import styles from "./styles.module.css";
 
 interface SearchInputProps {
   onSearch: (value: string) => void;
@@ -12,10 +12,10 @@ interface SearchInputProps {
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   onSearch,
-  placeholder = 'Search...',
+  placeholder = "Search...",
   debounceMs = 300,
-  initialValue = '',
-  className
+  initialValue = "",
+  className,
 }) => {
   const [value, setValue] = useState(initialValue);
   const [isFocused, setIsFocused] = useState(false);
@@ -39,13 +39,13 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   };
 
   const handleClear = () => {
-    setValue('');
-    onSearch('');
+    setValue("");
+    onSearch("");
   };
 
   return (
-    <div 
-      className={`${styles.searchContainer} ${isFocused ? styles.focused : ''} ${className || ''}`}
+    <div
+      className={`${styles.searchContainer} ${isFocused ? styles.focused : ""} ${className || ""}`}
     >
       <svg
         className={styles.searchIcon}

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { useTasks } from '../../../hooks/useTasks';
-import { useTaskSelection } from '../../../context/TaskSelectionContext';
-import { Task } from '../../../types/database';
-import { ConfirmDialog } from '../../shared/ConfirmDialog';
-import { UserSelector } from '../../shared/UserSelector';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import { useTasks } from "../../../hooks/useTasks";
+import { useTaskSelection } from "../../../context/TaskSelectionContext";
+import { Task } from "../../../types/database";
+import { ConfirmDialog } from "../../shared/ConfirmDialog";
+import { UserSelector } from "../../shared/UserSelector";
+import styles from "./styles.module.css";
 
 interface BatchActionsBarProps {
   tasks: Task[];
@@ -18,17 +18,17 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [assignError, setAssignError] = useState<string | undefined>(undefined);
 
-  const handleStatusUpdate = async (status: Task['status']) => {
+  const handleStatusUpdate = async (status: Task["status"]) => {
     setIsUpdating(true);
     try {
       await Promise.all(
-        Array.from(selectedTasks).map(taskId => 
+        Array.from(selectedTasks).map((taskId) =>
           updateTaskStatus(taskId, status)
         )
       );
       clearSelection();
     } catch (error) {
-      console.error('Failed to update tasks:', error);
+      console.error("Failed to update tasks:", error);
     } finally {
       setIsUpdating(false);
     }
@@ -39,7 +39,7 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
     setAssignError(undefined);
     try {
       await Promise.all(
-        Array.from(selectedTasks).map(taskId =>
+        Array.from(selectedTasks).map((taskId) =>
           updateTask(taskId, {
             assignee_id: userIds.length === 1 ? userIds[0] : null,
             // If multiple users are selected, we'll need to handle this differently
@@ -49,8 +49,8 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
       );
       clearSelection();
     } catch (error) {
-      console.error('Failed to assign tasks:', error);
-      setAssignError('Failed to assign tasks. Please try again.');
+      console.error("Failed to assign tasks:", error);
+      setAssignError("Failed to assign tasks. Please try again.");
     } finally {
       setIsUpdating(false);
     }
@@ -60,13 +60,11 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
     setIsDeleting(true);
     try {
       await Promise.all(
-        Array.from(selectedTasks).map(taskId => 
-          deleteTask(taskId)
-        )
+        Array.from(selectedTasks).map((taskId) => deleteTask(taskId))
       );
       clearSelection();
     } catch (error) {
-      console.error('Failed to delete tasks:', error);
+      console.error("Failed to delete tasks:", error);
     } finally {
       setIsDeleting(false);
       setShowDeleteConfirm(false);
@@ -80,10 +78,7 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
       <div className={styles.batchActionsBar}>
         <div className={styles.info}>
           <span className={styles.count}>{selectedCount} selected</span>
-          <button
-            onClick={clearSelection}
-            className={styles.clearButton}
-          >
+          <button onClick={clearSelection} className={styles.clearButton}>
             Clear
           </button>
         </div>
@@ -102,21 +97,21 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
 
           <div className={styles.statusActions}>
             <button
-              onClick={() => handleStatusUpdate('pending')}
+              onClick={() => handleStatusUpdate("pending")}
               className={styles.actionButton}
               disabled={isUpdating}
             >
               Mark as To Do
             </button>
             <button
-              onClick={() => handleStatusUpdate('in_progress')}
+              onClick={() => handleStatusUpdate("in_progress")}
               className={styles.actionButton}
               disabled={isUpdating}
             >
               Mark In Progress
             </button>
             <button
-              onClick={() => handleStatusUpdate('completed')}
+              onClick={() => handleStatusUpdate("completed")}
               className={styles.actionButton}
               disabled={isUpdating}
             >
@@ -137,7 +132,7 @@ export const BatchActionsBar: React.FC<BatchActionsBarProps> = ({ tasks }) => {
       <ConfirmDialog
         open={showDeleteConfirm}
         title="Delete Tasks"
-        message={`Are you sure you want to delete ${selectedCount} selected ${selectedCount === 1 ? 'task' : 'tasks'}? This action cannot be undone.`}
+        message={`Are you sure you want to delete ${selectedCount} selected ${selectedCount === 1 ? "task" : "tasks"}? This action cannot be undone.`}
         confirmLabel="Delete Tasks"
         onConfirm={handleDelete}
         onCancel={() => setShowDeleteConfirm(false)}

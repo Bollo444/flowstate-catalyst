@@ -1,6 +1,6 @@
-import create from 'zustand';
+import create from "zustand";
 
-type FlowStatus = 'peak' | 'flow' | 'rest' | 'building';
+type FlowStatus = "peak" | "flow" | "rest" | "building";
 interface TeamMember {
   id: string;
   name: string;
@@ -40,21 +40,26 @@ interface FlowStore {
 export const useFlowStore = create<FlowStore>((set) => ({
   currentFlow: {
     score: 85,
-    status: 'flow',
-    energy: 100
+    status: "flow",
+    energy: 100,
   },
   team: {
     members: [],
-    syncStatus: 'idle'
+    syncStatus: "idle",
   },
   tasks: {
     active: [],
     suggested: [],
-    completed: []
+    completed: [],
   },
   actions: {
-    updateFlow: (flow) => set(state => ({ currentFlow: { ...state.currentFlow, ...flow } })),
-    syncTeam: (syncStatus) => set(state => ({ team: { ...state.team, syncStatus } })),
-    manageTask: (task) => set(state => ({ tasks: { ...state.tasks, active: [...state.tasks.active, task] } })),
-  }
+    updateFlow: (flow) =>
+      set((state) => ({ currentFlow: { ...state.currentFlow, ...flow } })),
+    syncTeam: (syncStatus) =>
+      set((state) => ({ team: { ...state.team, syncStatus } })),
+    manageTask: (task) =>
+      set((state) => ({
+        tasks: { ...state.tasks, active: [...state.tasks.active, task] },
+      })),
+  },
 }));

@@ -1,0 +1,1 @@
+(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[3449],{1434:function(n,e,u){Promise.resolve().then(u.bind(u,260))},260:function(n,e,u){"use strict";u.r(e),u(6871);var t=u(7437);e.default=function(){return(0,t.jsx)("div",{children:"Backlog Page"})}}},function(n){n.O(0,[2971,529,1744],function(){return n(n.s=1434)}),_N_E=n.O()}]);

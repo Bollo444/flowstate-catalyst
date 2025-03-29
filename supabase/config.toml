@@ -1,0 +1,53 @@
+# Supabase project configuration
+
+# This is the project identifier on app.supabase.com
+# It can be found in the URL of your project dashboard: https://app.supabase.com/project/<project_id>
+# project_id = "" # Use this if linking to a remote project
+
+# The major version of Postgres to use for the database.
+# db.major_version = 15
+
+# The port number which the database service will listen on.
+# Defaults to 54322.
+[db]
+port = 54328 # Changed port again
+
+# The port number which the API gateway (Kong) will listen on.
+# Defaults to 54321.
+[api]
+port = 54331 # Set Kong port explicitly to avoid conflict
+
+# The port number which the auth service will listen on.
+# Defaults to 9999.
+# [auth]
+# port = 9999
+
+# The port number which the storage service will listen on.
+# Defaults to 54325.
+# [storage]
+# port = 54325
+
+# The port number which the realtime service will listen on.
+# Defaults to 54324.
+# [realtime]
+# port = 54324
+
+# Configuration for specific edge functions goes under [functions.<function_name>]
+# Example:
+# [functions.hello]
+# verify_jwt = true
+
+# The port number which the Inbucket service will listen on.
+# Defaults to 54326.
+[inbucket]
+port = 54332 # Set Inbucket port explicitly to avoid conflict
+
+# The port number which the Studio service will listen on.
+# Defaults to 54323.
+[studio]
+port = 54329 # Explicitly set Studio port to avoid conflict
+
+# The port number which the Analytics service will listen on.
+# Defaults to 54327.
+[analytics]
+port = 54330 # Set analytics port explicitly to avoid conflict

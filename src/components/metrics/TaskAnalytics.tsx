@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, TrendingUp, Zap, RefreshCw } from 'lucide-react';
-import { useFlowContext } from '@/context/FlowContext';
-import { useFlowAnalytics } from '@/hooks/useFlowAnalytics';
-import { SimpleChart } from './SimpleChart';
-import { TimeRangeOption } from '@/types/analytics';
-import styles from './Analytics.module.css';
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Clock, TrendingUp, Zap, RefreshCw } from "lucide-react";
+import { useFlowContext } from "@/context/FlowContext";
+import { useFlowAnalytics } from "@/hooks/useFlowAnalytics";
+import { SimpleChart } from "./SimpleChart";
+import { TimeRangeOption } from "@/types/analytics";
+import styles from "./Analytics.module.css";
 
 interface TaskAnalyticsProps {
   userId: string;
@@ -20,12 +20,20 @@ interface MetricCard {
   value: string | number;
   change: number;
   icon: React.ReactNode;
-  trend: 'up' | 'down' | 'neutral';
+  trend: "up" | "down" | "neutral";
 }
 
-export const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ userId, teamId, timeRange }) => {
+export const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({
+  userId,
+  teamId,
+  timeRange,
+}) => {
   const { flowState } = useFlowContext();
-  const { metrics, loading, error } = useFlowAnalytics({ userId, teamId, timeRange });
+  const { metrics, loading, error } = useFlowAnalytics({
+    userId,
+    teamId,
+    timeRange,
+  });
 
   if (loading) {
     return (
@@ -54,32 +62,32 @@ export const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ userId, teamId, ti
 
   const cards: MetricCard[] = [
     {
-      title: 'Average Flow Score',
+      title: "Average Flow Score",
       value: Math.round(metrics.averageMetrics.flowScore),
       change: 12,
       icon: <TrendingUp className={styles.icon} />,
-      trend: 'up',
+      trend: "up",
     },
     {
-      title: 'Tasks Completed',
+      title: "Tasks Completed",
       value: metrics.averageMetrics.taskCompletions,
       change: 3,
       icon: <Zap className={styles.icon} />,
-      trend: 'up',
+      trend: "up",
     },
     {
-      title: 'Active Time',
+      title: "Active Time",
       value: `${Math.round(metrics.averageMetrics.activeTime)}m`,
       change: 15,
       icon: <Clock className={styles.icon} />,
-      trend: 'up',
+      trend: "up",
     },
     {
-      title: 'Context Switches',
+      title: "Context Switches",
       value: metrics.averageMetrics.contextSwitches,
       change: -2,
       icon: <RefreshCw className={styles.icon} />,
-      trend: 'down',
+      trend: "down",
     },
   ];
 
@@ -90,7 +98,7 @@ export const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ userId, teamId, ti
     <div className={styles.analytics}>
       <div className={styles.metricsGrid}>
         <AnimatePresence>
-      {cards.map((metric: MetricCard, index: number) => (
+          {cards.map((metric: MetricCard, index: number) => (
             <motion.div
               key={metric.title}
               className={styles.metricCard}
@@ -106,14 +114,14 @@ export const TaskAnalytics: React.FC<TaskAnalyticsProps> = ({ userId, teamId, ti
                 {metric.value}
                 <span
                   className={`${styles.change} ${
-                    metric.trend === 'up'
+                    metric.trend === "up"
                       ? styles.positive
-                      : metric.trend === 'down'
-                      ? styles.negative
-                      : ''
+                      : metric.trend === "down"
+                        ? styles.negative
+                        : ""
                   }`}
                 >
-                  {metric.change > 0 ? '+' : ''}
+                  {metric.change > 0 ? "+" : ""}
                   {metric.change}%
                 </span>
               </div>

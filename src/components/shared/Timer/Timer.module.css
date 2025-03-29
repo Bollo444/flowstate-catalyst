@@ -1,0 +1,44 @@
+.container {
+  @apply flex items-center gap-4 p-3 rounded-lg bg-zinc-800/50 backdrop-blur-sm;
+}
+
+.icon {
+  @apply w-5 h-5 text-zinc-400;
+}
+
+.timeDisplay {
+  @apply flex flex-col;
+}
+
+.time {
+  @apply text-xl font-mono font-semibold tracking-tight;
+}
+
+.label {
+  @apply text-xs text-zinc-400;
+}
+
+.controlButton {
+  @apply p-2 rounded-md hover:bg-zinc-700 transition-colors
+         flex items-center justify-center;
+}
+
+.highlight {
+  @apply bg-emerald-900/20 border border-emerald-500/20;
+}
+
+.highlight .time {
+  @apply text-emerald-400;
+}
+
+.highlight .icon {
+  @apply text-emerald-400;
+}
+
+.normal {
+  @apply border border-zinc-700/50;
+}
+
+.normal .time {
+  @apply text-zinc-100;
+}

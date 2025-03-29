@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { supabase } from '@/lib/supabaseClient';
-import { SocialLogin } from './SocialLogin';
-import { PasswordStrength } from './PasswordStrength';
-import styles from './Auth.module.css';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+import { SocialLogin } from "./SocialLogin";
+import { PasswordStrength } from "./PasswordStrength";
+import styles from "./Auth.module.css";
 
 export function SignUp() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +21,7 @@ export function SignUp() {
     setError(null);
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       return;
     }
 
@@ -40,20 +40,18 @@ export function SignUp() {
 
       if (data.user) {
         // Create a profile for the new user
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: data.user.id,
-            user_id: data.user.id,
-            email: data.user.email,
-          });
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: data.user.id,
+          user_id: data.user.id,
+          email: data.user.email,
+        });
 
         if (profileError) throw profileError;
       }
 
-      router.push('/auth/verify');
+      router.push("/auth/verify");
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An error occurred');
+      setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -102,12 +100,11 @@ export function SignUp() {
             />
           </div>
           <button type="submit" disabled={loading} className={styles.button}>
-            {loading ? 'Creating account...' : 'Sign Up'}
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
         <p className={styles.switchAuth}>
-          Already have an account?{' '}
-          <Link href="/auth/signin">Sign in here</Link>
+          Already have an account? <Link href="/auth/signin">Sign in here</Link>
         </p>
         <SocialLogin redirectTo="/onboarding" />
       </div>

@@ -1,10 +1,10 @@
 module.exports = {
   presets: [
     [
-      'next/babel',
+      "next/babel",
       {
-        'preset-react': {
-          runtime: 'automatic',
+        "preset-react": {
+          runtime: "automatic",
         },
       },
     ],
@@ -12,20 +12,20 @@ module.exports = {
   env: {
     test: {
       presets: [
-        ['@babel/preset-env', { targets: { node: 'current' } }],
-        ['@babel/preset-react', { runtime: 'automatic' }],
-        '@babel/preset-typescript',
+        ["@babel/preset-env", { targets: { node: "current" } }],
+        ["@babel/preset-react", { runtime: "automatic" }],
+        "@babel/preset-typescript",
       ],
       plugins: [
-        ['@babel/plugin-transform-runtime', { regenerator: true }],
-        ['@babel/plugin-transform-modules-commonjs'],
+        ["@babel/plugin-transform-runtime", { regenerator: true }],
+        ["@babel/plugin-transform-modules-commonjs"],
       ],
     },
     development: {
-      presets: ['next/babel'],
+      presets: ["next/babel"],
     },
     production: {
-      presets: ['next/babel'],
+      presets: ["next/babel"],
     },
   },
 };

@@ -17,7 +17,7 @@
   padding: 0 16px;
   background: none;
   border: none;
-  color: #6B7280;
+  color: #6b7280;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -47,7 +47,7 @@
 .closeButton {
   background: none;
   border: none;
-  color: #6B7280;
+  color: #6b7280;
   cursor: pointer;
   padding: 4px;
   font-size: 18px;
@@ -74,17 +74,17 @@
 
 .advice[data-type="success"] {
   background: rgba(80, 181, 132, 0.1);
-  color: #50B584;
+  color: #50b584;
 }
 
 .advice[data-type="warning"] {
   background: rgba(245, 158, 11, 0.1);
-  color: #F59E0B;
+  color: #f59e0b;
 }
 
 .advice[data-type="info"] {
   background: rgba(59, 130, 246, 0.1);
-  color: #3B82F6;
+  color: #3b82f6;
 }
 
 .field {
@@ -96,7 +96,7 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #9CA3AF;
+  color: #9ca3af;
   margin-bottom: 8px;
 }
 
@@ -115,13 +115,13 @@
 .field input:focus,
 .field textarea:focus {
   outline: none;
-  border-color: #3B82F6;
+  border-color: #3b82f6;
   background: rgba(0, 0, 0, 0.3);
 }
 
 .field input::placeholder,
 .field textarea::placeholder {
-  color: #6B7280;
+  color: #6b7280;
 }
 
 .field input[type="number"] {
@@ -157,7 +157,7 @@
 .cancelButton {
   background: none;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9CA3AF;
+  color: #9ca3af;
 }
 
 .cancelButton:hover {
@@ -166,17 +166,17 @@
 }
 
 .submitButton {
-  background: #3B82F6;
+  background: #3b82f6;
   border: none;
   color: white;
 }
 
 .submitButton:hover {
-  background: #2563EB;
+  background: #2563eb;
 }
 
 .submitButton:disabled {
-  background: #6B7280;
+  background: #6b7280;
   cursor: not-allowed;
   opacity: 0.7;
 }
@@ -241,27 +241,27 @@
 
   .createButton:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .header h3 {
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .closeButton:hover {
-    color: #1F2937;
+    color: #1f2937;
     background: rgba(0, 0, 0, 0.05);
   }
 
   .field label {
-    color: #4B5563;
+    color: #4b5563;
   }
 
   .field input,
   .field textarea {
     background: rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.1);
-    color: #1F2937;
+    color: #1f2937;
   }
 
   .field input:focus,
@@ -271,16 +271,16 @@
 
   .field input::placeholder,
   .field textarea::placeholder {
-    color: #9CA3AF;
+    color: #9ca3af;
   }
 
   .cancelButton {
     border-color: rgba(0, 0, 0, 0.1);
-    color: #6B7280;
+    color: #6b7280;
   }
 
   .cancelButton:hover {
     background: rgba(0, 0, 0, 0.05);
-    color: #1F2937;
+    color: #1f2937;
   }
 }

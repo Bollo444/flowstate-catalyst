@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { Task } from '../../../types/database';
-import { ProgressBar } from '../../shared/ProgressBar';
-import styles from './styles.module.css';
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
+import { Task } from "../../../types/database";
+import { ProgressBar } from "../../shared/ProgressBar";
+import styles from "./styles.module.css";
 
 interface ProgressUpdateModalProps {
   open: boolean;
@@ -15,37 +20,35 @@ export const ProgressUpdateModal: React.FC<ProgressUpdateModalProps> = ({
   open,
   onClose,
   task,
-  onUpdate
+  onUpdate,
 }) => {
   const [progress, setProgress] = useState(task.progress || 0);
-  const [note, setNote] = useState('');
+  const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     try {
       await onUpdate(progress, note);
       onClose();
     } catch (error) {
-      console.error('Failed to update progress:', error);
+      console.error("Failed to update progress:", error);
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog 
-      open={open} 
+    <Dialog
+      open={open}
       onClose={onClose}
       className={styles.dialog}
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle className={styles.title}>
-        Update Progress
-      </DialogTitle>
+      <DialogTitle className={styles.title}>Update Progress</DialogTitle>
 
       <DialogContent className={styles.content}>
         <form onSubmit={handleSubmit} className={styles.form}>
@@ -73,7 +76,8 @@ export const ProgressUpdateModal: React.FC<ProgressUpdateModalProps> = ({
               className={styles.noteInput}
             />
             <p className={styles.noteHint}>
-              Optional: Add context about what was completed or any blockers encountered
+              Optional: Add context about what was completed or any blockers
+              encountered
             </p>
           </div>
 
@@ -83,28 +87,28 @@ export const ProgressUpdateModal: React.FC<ProgressUpdateModalProps> = ({
               <button
                 type="button"
                 onClick={() => setProgress(25)}
-                className={progress === 25 ? styles.active : ''}
+                className={progress === 25 ? styles.active : ""}
               >
                 Started (25%)
               </button>
               <button
                 type="button"
                 onClick={() => setProgress(50)}
-                className={progress === 50 ? styles.active : ''}
+                className={progress === 50 ? styles.active : ""}
               >
                 Halfway (50%)
               </button>
               <button
                 type="button"
                 onClick={() => setProgress(75)}
-                className={progress === 75 ? styles.active : ''}
+                className={progress === 75 ? styles.active : ""}
               >
                 Almost Done (75%)
               </button>
               <button
                 type="button"
                 onClick={() => setProgress(100)}
-                className={progress === 100 ? styles.active : ''}
+                className={progress === 100 ? styles.active : ""}
               >
                 Complete (100%)
               </button>
@@ -126,7 +130,7 @@ export const ProgressUpdateModal: React.FC<ProgressUpdateModalProps> = ({
           className={styles.submitButton}
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Updating...' : 'Update Progress'}
+          {isSubmitting ? "Updating..." : "Update Progress"}
         </button>
       </DialogActions>
     </Dialog>

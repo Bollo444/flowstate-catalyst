@@ -1,13 +1,18 @@
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes } from "react";
 
 // Score display sizes
-export type FlowScoreSize = 'tiny' | 'small' | 'medium' | 'large';
+export type FlowScoreSize = "tiny" | "small" | "medium" | "large";
 
 // Score color states
-export type FlowScoreColorState = 'excellent' | 'good' | 'moderate' | 'poor' | 'critical';
+export type FlowScoreColorState =
+  | "excellent"
+  | "good"
+  | "moderate"
+  | "poor"
+  | "critical";
 
 // Flow states
-export type FlowState = 'peak' | 'flow' | 'rest' | 'building';
+export type FlowState = "peak" | "flow" | "rest" | "building";
 
 // Base props for FlowScore component
 export interface FlowScoreBaseProps {
@@ -26,7 +31,8 @@ export interface FlowScoreBaseProps {
 }
 
 // Full props including HTML attributes
-export type FlowScoreProps = FlowScoreBaseProps & HTMLAttributes<HTMLDivElement>;
+export type FlowScoreProps = FlowScoreBaseProps &
+  HTMLAttributes<HTMLDivElement>;
 
 // Re-export for convenience
 export default FlowScoreProps;

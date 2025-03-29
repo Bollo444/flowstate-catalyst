@@ -1,8 +1,8 @@
 // src/components/flow/FlowWhispers/FlowStreakManager.tsx
 
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../lib/supabaseClient';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../../../lib/supabaseClient";
+import styles from "./styles.module.css";
 
 interface StreakData {
   currentStreak: number;
@@ -22,14 +22,14 @@ export const FlowStreakManager: React.FC = () => {
   const [streakData, setStreakData] = useState<StreakData>({
     currentStreak: 0,
     longestStreak: 0,
-    lastActiveDate: '',
-    totalDaysActive: 0
+    lastActiveDate: "",
+    totalDaysActive: 0,
   });
 
   const [metrics, setMetrics] = useState<FlowMetrics>({
     dailyScore: 0,
     weeklyAverage: 0,
-    monthlyProgress: 0
+    monthlyProgress: 0,
   });
 
   const [loading, setLoading] = useState(true);
@@ -40,8 +40,8 @@ export const FlowStreakManager: React.FC = () => {
     try {
       setLoading(true);
       const { data, error } = await supabase
-        .from('user_streaks')
-        .select('*')
+        .from("user_streaks")
+        .select("*")
         .single();
 
       if (error) throw error;
@@ -51,11 +51,11 @@ export const FlowStreakManager: React.FC = () => {
           currentStreak: data.current_streak,
           longestStreak: data.longest_streak,
           lastActiveDate: data.last_active_date,
-          totalDaysActive: data.total_days_active
+          totalDaysActive: data.total_days_active,
         });
       }
     } catch (err) {
-      setError('Failed to fetch streak data');
+      setError("Failed to fetch streak data");
       console.error(err);
     } finally {
       setLoading(false);
@@ -71,18 +71,22 @@ export const FlowStreakManager: React.FC = () => {
   useEffect(() => {
     fetchStreakData();
     const subscription = supabase
-      .channel('streak_updates')
-      .on('postgres_changes', { 
-        event: 'UPDATE', 
-        schema: 'public', 
-        table: 'user_streaks' 
-      }, payload => {
-        // Handle real-time updates
-        setStreakData(prevData => ({
-          ...prevData,
-          ...payload.new
-        }));
-      })
+      .channel("streak_updates")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "user_streaks",
+        },
+        (payload) => {
+          // Handle real-time updates
+          setStreakData((prevData) => ({
+            ...prevData,
+            ...payload.new,
+          }));
+        }
+      )
       .subscribe();
 
     return () => {
@@ -132,7 +136,7 @@ export const FlowStreakManager: React.FC = () => {
       <div className={styles.flowProgress}>
         <h3>Today's Flow</h3>
         <div className={styles.progressBar}>
-          <div 
+          <div
             className={styles.progressFill}
             style={{ width: `${metrics.dailyScore}%` }}
           />

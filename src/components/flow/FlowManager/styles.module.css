@@ -30,35 +30,35 @@
 }
 
 .startButton {
-  background: #4A9EFF;
+  background: #4a9eff;
   color: white;
 }
 
 .startButton:hover {
-  background: #3B8DE6;
+  background: #3b8de6;
   transform: translateY(-1px);
 }
 
 .endButton {
-  background: #FF4C4C;
+  background: #ff4c4c;
   color: white;
 }
 
 .endButton:hover {
-  background: #E63B3B;
+  background: #e63b3b;
   transform: translateY(-1px);
 }
 
 .dialogTitle {
   padding: 1.5rem !important;
-  background: #1A1A1A;
-  color: #FFFFFF;
+  background: #1a1a1a;
+  color: #ffffff;
   border-bottom: 1px solid #404040;
 }
 
 .dialogContent {
-  background: #1A1A1A;
-  color: #E0E0E0;
+  background: #1a1a1a;
+  color: #e0e0e0;
   padding: 1.5rem !important;
 }
 
@@ -70,14 +70,14 @@
 }
 
 .interruptionType {
-  background: #2D2D2D;
+  background: #2d2d2d;
   border: 1px solid #404040;
   border-radius: 8px;
   padding: 1rem;
   text-align: left;
   cursor: pointer;
   transition: all 0.2s ease;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .interruptionType:hover {
@@ -87,7 +87,7 @@
 
 .interruptionType.selected {
   background: rgba(74, 158, 255, 0.1);
-  border-color: #4A9EFF;
+  border-color: #4a9eff;
 }
 
 .typeHeader {
@@ -112,7 +112,7 @@
 
 .typeDescription {
   font-size: 0.875rem;
-  color: #A0A0A0;
+  color: #a0a0a0;
   margin: 0 0 0.75rem 0;
   line-height: 1.4;
 }
@@ -126,7 +126,7 @@
 }
 
 .recoveryTime::before {
-  content: '';
+  content: "";
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -136,11 +136,11 @@
 
 .noteInput {
   width: 100%;
-  background: #2D2D2D;
+  background: #2d2d2d;
   border: 1px solid #404040;
   border-radius: 6px;
   padding: 0.75rem;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 0.875rem;
   resize: vertical;
   min-height: 80px;
@@ -150,7 +150,7 @@
 
 .noteInput:focus {
   outline: none;
-  border-color: #4A9EFF;
+  border-color: #4a9eff;
 }
 
 .dialogActions {
@@ -172,7 +172,7 @@
 .cancelButton {
   background: transparent;
   border: 1px solid #404040;
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
 .cancelButton:hover {
@@ -180,13 +180,13 @@
 }
 
 .submitButton {
-  background: #4A9EFF;
+  background: #4a9eff;
   border: none;
   color: white;
 }
 
 .submitButton:hover:not(:disabled) {
-  background: #3B8DE6;
+  background: #3b8de6;
 }
 
 .submitButton:disabled {

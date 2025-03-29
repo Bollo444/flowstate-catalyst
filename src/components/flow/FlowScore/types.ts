@@ -3,13 +3,18 @@
  */
 
 // Size options for the flow score display
-export type FlowScoreSize = 'tiny' | 'small' | 'medium' | 'large';
+export type FlowScoreSize = "tiny" | "small" | "medium" | "large";
 
 // Color states for different score ranges
-export type FlowScoreColorState = 'excellent' | 'good' | 'moderate' | 'poor' | 'critical';
+export type FlowScoreColorState =
+  | "excellent"
+  | "good"
+  | "moderate"
+  | "poor"
+  | "critical";
 
 // Flow states indicating the current flow phase
-export type FlowState = 'peak' | 'flow' | 'rest' | 'building';
+export type FlowState = "peak" | "flow" | "rest" | "building";
 
 export interface BaseScoreProps {
   /** The numerical score value (0-100) */

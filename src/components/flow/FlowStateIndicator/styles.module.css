@@ -5,7 +5,7 @@
 }
 
 .indicator {
-  background: #1A1A1A;
+  background: #1a1a1a;
   border: 1px solid #404040;
   border-radius: 12px;
   padding: 1.5rem;
@@ -14,13 +14,13 @@
 }
 
 .indicator.flowing {
-  border-color: #4CAF50;
+  border-color: #4caf50;
   box-shadow: 0 0 20px rgba(76, 175, 80, 0.1);
   animation: glowPulse 2s infinite;
 }
 
 .indicator.interrupted {
-  border-color: #FF4C4C;
+  border-color: #ff4c4c;
   animation: shake 0.5s ease-in-out;
 }
 
@@ -55,7 +55,7 @@
   font-size: 2rem;
   font-weight: 600;
   line-height: 1;
-  color: var(--status-color, #E0E0E0);
+  color: var(--status-color, #e0e0e0);
 }
 
 .status {
@@ -87,7 +87,7 @@
 }
 
 .value {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -97,26 +97,26 @@
   align-items: center;
   gap: 0.75rem;
   padding: 1rem;
-  background: #2D2D2D;
+  background: #2d2d2d;
   border-radius: 8px;
   font-size: 0.875rem;
-  color: #E0E0E0;
+  color: #e0e0e0;
   animation: slideIn 0.3s ease-out;
 }
 
 .optimalTime.optimal {
   background: rgba(76, 175, 80, 0.1);
-  color: #4CAF50;
+  color: #4caf50;
 }
 
 .optimalTime.upcoming {
   background: rgba(74, 158, 255, 0.1);
-  color: #4A9EFF;
+  color: #4a9eff;
 }
 
 .optimalTime.next-day {
   background: rgba(255, 170, 76, 0.1);
-  color: #FFAA4C;
+  color: #ffaa4c;
 }
 
 .optimalTime .icon {
@@ -128,8 +128,8 @@
 .interruptButton {
   padding: 0.75rem 1rem;
   background: rgba(255, 76, 76, 0.1);
-  border: 1px solid #FF4C4C;
-  color: #FF4C4C;
+  border: 1px solid #ff4c4c;
+  color: #ff4c4c;
   border-radius: 6px;
   font-size: 0.875rem;
   cursor: pointer;
@@ -154,13 +154,16 @@
 }
 
 @keyframes shake {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
-  20%, 60% {
+  20%,
+  60% {
     transform: translateX(-5px);
   }
-  40%, 80% {
+  40%,
+  80% {
     transform: translateX(5px);
   }
 }

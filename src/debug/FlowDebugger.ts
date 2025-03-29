@@ -16,7 +16,7 @@ interface DebugContext {
 }
 
 interface FlowEvent {
-  type: 'validation_issue' | 'error' | 'performance_warning';
+  type: "validation_issue" | "error" | "performance_warning";
   message?: string;
   details?: any;
   error?: any;
@@ -35,7 +35,7 @@ class FlowDebugger {
     this.logs.push({
       timestamp: new Date(),
       event,
-      context: this.captureContext()
+      context: this.captureContext(),
     });
   }
 
@@ -45,8 +45,8 @@ class FlowDebugger {
       memory: performance.memory?.usedJSHeapSize || 0,
       performance: {
         fps: 60, // Example value
-        latency: performance.now()
-      }
+        latency: performance.now(),
+      },
     };
   }
 
@@ -54,18 +54,25 @@ class FlowDebugger {
     return {
       logs: this.logs,
       analysis: this.analyzeIssues(),
-      recommendations: this.generateRecommendations()
+      recommendations: this.generateRecommendations(),
     };
   }
 
   private analyzeIssues(): string[] {
     // Dummy implementation - replace with actual issue analysis logic
-    return ['Potential performance bottleneck in chart rendering', 'Investigate data update delays'];
+    return [
+      "Potential performance bottleneck in chart rendering",
+      "Investigate data update delays",
+    ];
   }
 
   private generateRecommendations(): string[] {
     // Dummy implementation - replace with actual recommendations
-    return ['Optimize chart rendering performance', 'Improve data update frequency', 'Check database connection stability'];
+    return [
+      "Optimize chart rendering performance",
+      "Improve data update frequency",
+      "Check database connection stability",
+    ];
   }
 }
 

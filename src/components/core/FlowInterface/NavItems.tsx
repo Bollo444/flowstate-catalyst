@@ -1,7 +1,7 @@
 // src/components/core/FlowInterface/NavItems.tsx
-import React from 'react';
-import styles from './styles.module.css'; // Assuming styles.module.css is in the same directory
-import FlowMenuItem from './FlowMenuItem'; // Import FlowMenuItem
+import React from "react";
+import styles from "./styles.module.css"; // Assuming styles.module.css is in the same directory
+import FlowMenuItem from "./FlowMenuItem"; // Import FlowMenuItem
 
 const NavItems: React.FC = () => {
   return (

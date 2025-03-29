@@ -1,64 +1,86 @@
 // src/components/dashboard/DashboardControls.tsx
-import React from 'react';
-import styles from './DashboardControls.module.css';
-import { useTeamDashboard } from '../../hooks/useTeamDashboard';
-import { MultiSelect } from '../shared/MultiSelect'; // Assuming MultiSelect component exists
+import React from "react";
+import { useTeamDashboard } from "@/hooks/useTeamDashboard"; // Corrected path
+import { MultiSelect } from "../shared/MultiSelect"; // Remove Option import
+import clsx from "clsx"; // Import clsx for conditional classes
 
-const availableMetrics = [
-  { value: 'flowScore', label: 'Flow Score' },
-  { value: 'sessions', label: 'Sessions' },
-  { value: 'activeUsers', label: 'Active Users' },
-  { value: 'achievements', label: 'Achievements' },
+interface Option { // Define Option struct locally for availableMetrics type safety
+  value: string;
+  label: string;
+}
+
+const availableMetrics: Option[] = [ // Add type annotation if MultiSelect expects typed options
+  { value: "flowScore", label: "Flow Score" },
+  { value: "sessions", label: "Sessions" },
+  { value: "activeUsers", label: "Active Users" },
+  { value: "achievements", label: "Achievements" },
 ];
 
 export const DashboardControls: React.FC = () => {
   const { state, updateDashboardState } = useTeamDashboard();
 
   return (
-    <div className={styles.controlsContainer}>
-      <div className={styles.timeframeSelector}>
-        <button 
-          className={`${styles.timeframeButton} ${
-            state.timeframe === 'day' ? styles.active : ''
-          }`}
-          onClick={() => updateDashboardState({ timeframe: 'day' })}
+    // Container: Flex layout (responsive), gap, themed background, rounded, shadow
+    <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 bg-background-light dark:bg-background-dark-secondary rounded-lg shadow-md mb-6">
+      {/* Timeframe Selector: Flex container */}
+      <div className="flex">
+        {/* Timeframe Buttons: Base styles + conditional active styles */}
+        <button
+          className={clsx(
+            "px-4 py-2 mr-2 rounded-md transition-colors duration-200 ease-in-out text-sm", // Added text-sm
+            state.timeframe === "day"
+              ? "bg-primary-light dark:bg-primary-dark text-white"
+              : "bg-background-light-secondary dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground-light dark:text-foreground-dark"
+          )}
+          onClick={() => updateDashboardState({ timeframe: "day" })}
         >
           Day
         </button>
-        <button 
-          className={`${styles.timeframeButton} ${
-            state.timeframe === 'week' ? styles.active : ''
-          }`}
-          onClick={() => updateDashboardState({ timeframe: 'week' })}
+        <button
+          className={clsx(
+            "px-4 py-2 mr-2 rounded-md transition-colors duration-200 ease-in-out text-sm", // Added text-sm
+            state.timeframe === "week"
+              ? "bg-primary-light dark:bg-primary-dark text-white"
+              : "bg-background-light-secondary dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground-light dark:text-foreground-dark"
+          )}
+          onClick={() => updateDashboardState({ timeframe: "week" })}
         >
           Week
         </button>
-        <button 
-          className={`${styles.timeframeButton} ${
-            state.timeframe === 'month' ? styles.active : ''
-          }`}
-          onClick={() => updateDashboardState({ timeframe: 'month' })}
+        <button
+          className={clsx(
+            "px-4 py-2 rounded-md transition-colors duration-200 ease-in-out text-sm", // Added text-sm
+            state.timeframe === "month"
+              ? "bg-primary-light dark:bg-primary-dark text-white"
+              : "bg-background-light-secondary dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground-light dark:text-foreground-dark"
+          )}
+          onClick={() => updateDashboardState({ timeframe: "month" })}
         >
           Month
         </button>
       </div>
 
-      <div className={styles.metricSelector}>
-        {/* Replace MultiSelect with actual MultiSelect component */}
-        <select multiple>
-          {availableMetrics.map(metric => (
-            <option key={metric.value} value={metric.value}>{metric.label}</option>
-          ))}
-        </select>
+      {/* Metric Selector: Use MultiSelect component */}
+      <div className="min-w-[200px]">
+        <MultiSelect
+          options={availableMetrics}
+          value={state.selectedMetrics} // Correct prop name to 'value'
+          onChange={(selected) => updateDashboardState({ selectedMetrics: selected })}
+          placeholder="Select Metrics"
+        />
       </div>
 
-      <div className={styles.viewToggle}>
+      {/* View Toggle Button: Themed background and text */}
+      <div>
         <button
-          onClick={() => updateDashboardState({ 
-            viewMode: state.viewMode === 'detailed' ? 'summary' : 'detailed' 
-          })}
+          className="px-4 py-2 rounded-md bg-background-light-secondary dark:bg-background-dark hover:bg-gray-200 dark:hover:bg-gray-700 text-foreground-light dark:text-foreground-dark transition-colors duration-200 ease-in-out text-sm" // Added text-sm
+          onClick={() =>
+            updateDashboardState({
+              viewMode: state.viewMode === "detailed" ? "summary" : "detailed",
+            })
+          }
         >
-          {state.viewMode === 'detailed' ? 'Show Summary' : 'Show Details'}
+          {state.viewMode === "detailed" ? "Show Summary" : "Show Details"}
         </button>
       </div>
     </div>

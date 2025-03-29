@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabaseClient';
-import { TeamMemberStatus } from '../types/database';
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
+import { TeamMemberStatus } from "../types/database";
 
 export interface TeamDataResult {
   teamMembers: TeamMemberStatus[];
@@ -12,7 +12,7 @@ export const useTeamData = (userId: string): TeamDataResult => {
   const [result, setResult] = useState<TeamDataResult>({
     teamMembers: [],
     loading: true,
-    error: null
+    error: null,
   });
 
   useEffect(() => {
@@ -20,9 +20,9 @@ export const useTeamData = (userId: string): TeamDataResult => {
       try {
         // Get user's team ID first
         const { data: userData, error: userError } = await supabase
-          .from('users')
-          .select('team_id')
-          .eq('id', userId)
+          .from("users")
+          .select("team_id")
+          .eq("id", userId)
           .single();
 
         if (userError) throw userError;
@@ -30,15 +30,16 @@ export const useTeamData = (userId: string): TeamDataResult => {
           setResult({
             teamMembers: [],
             loading: false,
-            error: null
+            error: null,
           });
           return;
         }
 
         // Get team member statuses
         const { data: teamMembers, error: teamError } = await supabase
-          .from('team_member_status')
-          .select(`
+          .from("team_member_status")
+          .select(
+            `
             *,
             user:users (
               id,
@@ -46,21 +47,22 @@ export const useTeamData = (userId: string): TeamDataResult => {
               full_name,
               avatar_url
             )
-          `)
-          .eq('team_id', userData.team_id);
+          `
+          )
+          .eq("team_id", userData.team_id);
 
         if (teamError) throw teamError;
 
         setResult({
           teamMembers: teamMembers as TeamMemberStatus[],
           loading: false,
-          error: null
+          error: null,
         });
       } catch (error) {
-        setResult(prev => ({
+        setResult((prev) => ({
           ...prev,
           loading: false,
-          error: error as Error
+          error: error as Error,
         }));
       }
     };
@@ -71,19 +73,19 @@ export const useTeamData = (userId: string): TeamDataResult => {
       setResult({
         teamMembers: [],
         loading: false,
-        error: null
+        error: null,
       });
     }
 
     // Subscribe to real-time updates
     const teamStatusSubscription = supabase
-      .channel('team-status-changes')
+      .channel("team-status-changes")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: '*',
-          schema: 'public',
-          table: 'team_member_status'
+          event: "*",
+          schema: "public",
+          table: "team_member_status",
         },
         () => {
           // Refresh team data when status changes

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { ForgotPassword } from '@/components/auth/ForgotPassword';
-import { useSupabase } from '@/lib/supabaseClient';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { ForgotPassword } from "@/components/auth/ForgotPassword";
+import { useSupabase } from "@/lib/supabaseClient";
 
 export default function ForgotPasswordPage() {
   const router = useRouter();
@@ -11,7 +11,7 @@ export default function ForgotPasswordPage() {
 
   useEffect(() => {
     if (session) {
-      router.push('/');
+      router.push("/");
     }
   }, [session, router]);
 

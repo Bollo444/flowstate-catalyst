@@ -1,4 +1,13 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 interface Metric {
   name: string;
@@ -16,7 +25,10 @@ const formatYAxis = (tickItem: number) => {
   return tickItem.toFixed(2);
 };
 
-export const MetricsChart: React.FC<MetricsChartProps> = ({ metrics, data }) => {
+export const MetricsChart: React.FC<MetricsChartProps> = ({
+  metrics,
+  data,
+}) => {
   const chartData = data.map((entry) => {
     const formattedEntry: { [key: string]: string | number } = {};
     metrics.forEach((metric) => {
@@ -54,7 +66,7 @@ export const MetricsChart: React.FC<MetricsChartProps> = ({ metrics, data }) => 
           <Bar
             key={`bar-${index}`}
             dataKey={entry.name}
-            fill={entry.color || '#8884d8'}
+            fill={entry.color || "#8884d8"}
             name={entry.name}
           />
         ))}

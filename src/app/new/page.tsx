@@ -1,13 +1,9 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
 const NewPage = () => {
-  return (
-    <div>
-      New Page
-    </div>
-  );
+  return <div>New Page</div>;
 };
 
 export default NewPage;

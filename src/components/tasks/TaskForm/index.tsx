@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Task } from '@/services/taskFlow';
-import { useFlowContext } from '@/context/FlowContext';
-import { TaskFlowService } from '@/services/taskFlow';
-import { Clock, AlertCircle, Zap } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
-import styles from './styles.module.css';
+import React, { useState, useEffect } from "react";
+import { Task } from "@/services/taskFlow";
+import { useFlowContext } from "@/context/FlowContext";
+import { TaskFlowService } from "@/services/taskFlow";
+import { Clock, AlertCircle, Zap } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import styles from "./styles.module.css";
 
 // Priority ranges: 0-33 = low, 34-66 = medium, 67-100 = high
 const PRIORITY_RANGES = {
   low: 25,
   medium: 50,
-  high: 75
+  high: 75,
 } as const;
 
 type PriorityLevel = keyof typeof PRIORITY_RANGES;
@@ -32,24 +32,32 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   teamId,
   initialData,
   onSubmit,
-  onCancel
+  onCancel,
 }) => {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [description, setDescription] = useState(initialData?.description || '');
+  const [title, setTitle] = useState(initialData?.title || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
   const [priorityLevel, setPriorityLevel] = useState<PriorityLevel>(
-    initialData?.priority 
-      ? initialData.priority > 66 ? 'high'
-        : initialData.priority > 33 ? 'medium'
-        : 'low'
-      : 'medium'
+    initialData?.priority
+      ? initialData.priority > 66
+        ? "high"
+        : initialData.priority > 33
+          ? "medium"
+          : "low"
+      : "medium"
   );
   const [dueDate, setDueDate] = useState(
-    initialData?.dueDate ? new Date(initialData.dueDate).toISOString().split('T')[0] : ''
+    initialData?.dueDate
+      ? new Date(initialData.dueDate).toISOString().split("T")[0]
+      : ""
   );
   const [estimatedDuration, setEstimatedDuration] = useState(
     initialData?.estimatedDuration || 30
   );
-  const [isFlowOptimal, setIsFlowOptimal] = useState(initialData?.flowOptimal || false);
+  const [isFlowOptimal, setIsFlowOptimal] = useState(
+    initialData?.flowOptimal || false
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { flowState } = useFlowContext();
   const { toast } = useToast();
@@ -57,27 +65,27 @@ export const TaskForm: React.FC<TaskFormProps> = ({
   const [contextCost, setContextCost] = useState(0);
   const [flowAdvice, setFlowAdvice] = useState<{
     message: string;
-    type: 'success' | 'warning' | 'info';
-  }>({ message: '', type: 'info' });
+    type: "success" | "warning" | "info";
+  }>({ message: "", type: "info" });
 
   useEffect(() => {
-    const cost = TaskFlowService.calculateContextSwitch('', title, flowState);
+    const cost = TaskFlowService.calculateContextSwitch("", title, flowState);
     setContextCost(cost);
 
-    if (flowState.status === 'peak') {
+    if (flowState.status === "peak") {
       setFlowAdvice({
-        message: 'Great time to tackle this task! Flow state is optimal.',
-        type: 'success'
+        message: "Great time to tackle this task! Flow state is optimal.",
+        type: "success",
       });
-    } else if (flowState.status === 'flow') {
+    } else if (flowState.status === "flow") {
       setFlowAdvice({
-        message: 'Good flow state for task execution.',
-        type: 'info'
+        message: "Good flow state for task execution.",
+        type: "info",
       });
     } else if (cost > 0.3) {
       setFlowAdvice({
-        message: 'High context switch cost. Consider similar tasks first.',
-        type: 'warning'
+        message: "High context switch cost. Consider similar tasks first.",
+        type: "warning",
       });
     }
   }, [title, flowState]);
@@ -98,19 +106,19 @@ export const TaskForm: React.FC<TaskFormProps> = ({
         contextCost,
         userId,
         teamId,
-        status: 'active',
+        status: "active",
         projectId,
         createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        updatedAt: new Date().toISOString(),
       };
 
       await onSubmit(taskData);
       toast({
-        title: initialData ? 'Task updated' : 'Task created',
-        description: 'The task has been saved successfully.',
+        title: initialData ? "Task updated" : "Task created",
+        description: "The task has been saved successfully.",
       });
     } catch (error) {
-      console.error('Failed to save task:', error);
+      console.error("Failed to save task:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -163,7 +171,9 @@ export const TaskForm: React.FC<TaskFormProps> = ({
             max={180}
             step={5}
             value={String(estimatedDuration)}
-            onChange={(e) => setEstimatedDuration(parseInt(e.target.value, 10) || 30)}
+            onChange={(e) =>
+              setEstimatedDuration(parseInt(e.target.value, 10) || 30)
+            }
             className={styles.input}
             required
           />
@@ -218,7 +228,11 @@ export const TaskForm: React.FC<TaskFormProps> = ({
           disabled={isSubmitting || !title.trim()}
           className={styles.submitButton}
         >
-          {isSubmitting ? 'Saving...' : initialData ? 'Update Task' : 'Create Task'}
+          {isSubmitting
+            ? "Saving..."
+            : initialData
+              ? "Update Task"
+              : "Create Task"}
         </button>
         <button
           type="button"
