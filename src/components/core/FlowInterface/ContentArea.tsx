@@ -1,16 +1,14 @@
 // src/components/core/FlowInterface/ContentArea.tsx
 import React from "react";
-import { AnimatePresence, motion } from "framer-motion"; // Removed Variants import
-import FlowDashboard from "../dashboard/FlowDashboard";
-import TeamView from "../team/TeamView";
-import { useFlowStore } from "../../stores/flowStore"; // Corrected store path
+import { AnimatePresence, motion } from "framer-motion";
+import FlowDashboard from "@/components/dashboard/FlowDashboard"; // Use path alias
+import { useFlowStore } from "@/stores/flowStore"; // Use path alias
 
 interface ContentAreaProps {
   className?: string;
 }
 
 const flowAnimations = {
-  // Removed explicit Variants type annotation
   initial: { opacity: 0, x: -20 },
   animate: { opacity: 1, x: 0 },
   exit: { opacity: 0, x: 20 },
@@ -34,7 +32,7 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ className }) => {
           </motion.div>
         )}
 
-        {activeView === "team" && ( // Corrected animation props
+        {activeView === "team" && (
           <motion.div
             key="team"
             variants={flowAnimations}

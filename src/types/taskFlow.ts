@@ -2,6 +2,11 @@
 import { FlowStatus, TaskStatus as DbTaskStatus } from "./database"; 
 
 // Internal Task type using camelCase convention
+export interface TaskCompletionMetrics {
+  progress?: number; // Example: Percentage completion 0-100
+  // Potentially add other relevant metrics later, e.g., timeSpent, subtask counts
+}
+
 export interface Task {
   id: string;
   title: string;
@@ -14,7 +19,7 @@ export interface Task {
   contextCost?: number;
   completed?: boolean;
   progress?: number;
-  completionMetrics?: any; // TODO: Define a proper interface
+  completionMetrics?: TaskCompletionMetrics;
   dependencies?: string[]; 
   estimatedDuration: number; // camelCase
   // Add optional DB-related fields if needed internally, ensure they are camelCase

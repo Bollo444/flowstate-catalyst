@@ -1,16 +1,21 @@
 import { supabase } from "../../lib/supabaseClient";
-// Ensure TeamMemberStatus is exported from database types, or import from appropriate source
-// Assuming TeamMemberStatus includes flowState and focusPreferences
-import { Task, TeamMemberStatus } from "../../types/database";
+// Import Task, TeamMemberStatus and DB FlowState
+import {
+  Task,
+  TeamMemberStatus,
+  FlowStatus, // Needed for FlowStateDb.status type check below
+  FlowState as DbFlowState, // Alias DB state
+  Profile, // Import Profile type if used within TeamMemberStatus joins
+  FocusPreferences, // Import FocusPreferences type if used within TeamMemberStatus joins
+} from "../../types/database";
 import {
   TaskFlowMetrics,
   TaskUpdate,
   TaskFlowSession,
   TaskPriorityScore,
   TaskAssignmentMatch,
-} from "../../types/taskFlow"; // Removed OptimalTaskWindow as it seems not exported
+} from "../../types/taskFlow";
 
-// Define interface outside the class if potentially used elsewhere
 interface TaskWithPriority {
   task: Task;
   priority: TaskPriorityScore;
@@ -29,10 +34,49 @@ interface DependencyAnalysis {
   criticalPath: boolean;
 }
 
-// Placeholder for predictTaskSuccess function (should be defined or imported properly)
-function predictTaskSuccess(task: Task, flowState: any): number {
-  console.warn("predictTaskSuccess: Placeholder implementation used");
-  return 0.8; // Always return high success for now
+/**
+ * Predicts the likelihood of successfully completing a task given the current flow state.
+ * @param task The task to predict success for.
+ * @param flowStateDb The user's current database flow state (from flow_states table) or null.
+ * @returns A prediction score between 0.1 and 0.95.
+ */
+function predictTaskSuccess(
+  task: Task,
+  flowStateDb: DbFlowState | null
+): number {
+  if (!flowStateDb) {
+    // If no flow state available, return a neutral prediction
+    console.warn(
+      "predictTaskSuccess: No flow state available, returning neutral prediction."
+    );
+    return 0.5;
+  }
+
+  // Normalize flow score (0-1)
+  const normalizedFlowScore = flowStateDb.score / 100;
+
+  // Simplified complexity estimation (0-1) - based on description length and maybe priority
+  const descriptionLengthFactor = Math.min(
+    (task.description?.length || 0) / 500, // Normalize over 500 chars
+    1
+  );
+  // Lower priority tasks might be slightly less likely to be completed successfully in flow?
+  const priorityFactor = (100 - task.priority) / 100;
+  const estimatedComplexity = Math.min(
+    descriptionLengthFactor * 0.6 + priorityFactor * 0.1, // Reduced weight for priority
+    1
+  );
+
+  // Base success rate adjusted by flow
+  let successRate = 0.6 + normalizedFlowScore * 0.3; // More impact from flow score
+
+  // Adjust based on complexity (higher complexity reduces success more significantly)
+  successRate -= estimatedComplexity * 0.3;
+
+  // Clamp the result between 0.1 (minimum chance) and 0.95 (maximum chance)
+  const finalRate = Math.max(0.1, Math.min(successRate, 0.95));
+  // console.log(`predictTaskSuccess for Task ${task.id}: Flow=${normalizedFlowScore.toFixed(2)}, Complexity=${estimatedComplexity.toFixed(2)}, Rate=${finalRate.toFixed(2)}`);
+  return finalRate;
 }
 
 export class TaskFlowManager {
@@ -46,111 +90,140 @@ export class TaskFlowManager {
    */
   async calculateTaskPriority(
     task: Task,
-    userFlowState: TeamMemberStatus
+    userFlowState: TeamMemberStatus // This is the DB type, potentially with joined data
   ): Promise<TaskPriorityScore> {
-    const cacheKey = `${task.id}-${this.userId}`; // Unique key for cache
+    const cacheKey = `${task.id}-${this.userId}`;
     if (this.taskPriorityCache.has(cacheKey)) {
-      return this.taskPriorityCache.get(cacheKey)!; // Return cached value if available
+      return this.taskPriorityCache.get(cacheKey)!;
     }
 
     const factors: TaskPriorityFactors = {
       urgency: this.calculateUrgency(task),
-      // Correcting comparison: Assuming task.priority is number based on database.ts
-      importance: task.priority >= 67 ? 1 : task.priority >= 34 ? 0.6 : 0.3,
+      importance: task.priority / 100, // Normalize priority
       flowAlignment: this.calculateFlowAlignment(task, userFlowState),
       complexity: this.estimateComplexity(task),
     };
 
-    // Simple weighted sum for now, adjust weights as needed
+    // Weighted sum
     const score =
-      factors.urgency * 0.3 +
-      factors.importance * 0.3 +
-      factors.flowAlignment * 0.2 +
-      (1 - factors.complexity) * 0.2;
+      factors.urgency * 0.4 +
+      factors.importance * 0.2 +
+      factors.flowAlignment * 0.3 +
+      (1 - factors.complexity) * 0.1; // Less penalty for complexity here as it's separate
     const priorityScore = {
-      score: Math.min(Math.max(score, 0), 1) * 100,
+      score: Math.min(Math.max(score, 0), 1) * 100, // Scale to 0-100
       factors,
-    }; // Scale to 0-100
+    };
 
-    this.taskPriorityCache.set(cacheKey, priorityScore); // Store in cache
+    this.taskPriorityCache.set(cacheKey, priorityScore);
     return priorityScore;
   }
 
   async planWorkSession(
     duration: number = this.OPTIMAL_SESSION_LENGTH,
-    userFlowState: TeamMemberStatus
+    userFlowState: TeamMemberStatus // Pass the DB type
   ): Promise<Task[]> {
     const tasks = await this.getAvailableTasks();
+    if (!tasks.length) return [];
+
+    // Fetch current flow state separately to ensure it's up-to-date
+    const { data: currentFlowStateDb, error: flowStateError } = await supabase
+      .from("flow_states")
+      .select("*")
+      .eq("user_id", this.userId)
+      .maybeSingle(); // Use maybeSingle to handle non-existent state gracefully
+
+    if (flowStateError && flowStateError.code !== "PGRST116") {
+      // Ignore if no state exists yet ('PGRST116': No rows found)
+      console.error(
+        "Error fetching current flow state for planning:",
+        flowStateError
+      );
+    }
+
     const taskPriorities = await this.calculateTaskPriorities(
       tasks,
-      userFlowState
+      userFlowState // Pass full TeamMemberStatus here as it might contain joined data used elsewhere
     );
 
-    return this.optimizeTaskSequence(taskPriorities, duration, userFlowState);
+    // Pass fetched state (which might be null if error or no row)
+    return this.optimizeTaskSequence(
+      taskPriorities,
+      duration,
+      currentFlowStateDb // Can be null
+    );
   }
 
   private async getAvailableTasks(): Promise<Task[]> {
     const { data: tasks, error } = await supabase
       .from("tasks")
       .select("*")
-      .eq("user_id", this.userId) // Corrected column name? Check RLS setup. Assuming user_id exists.
-      .in("status", ["active"]); // Corrected status values based on TaskStatus type
+      .eq("user_id", this.userId)
+      .in("status", ["active"]); // Filter for active tasks
 
     if (error) {
       console.error("Error fetching available tasks:", error);
       return [];
     }
-    return tasks || [];
+    // Explicitly cast to Task[] or return empty array
+    return (tasks as Task[] | null) ?? [];
   }
 
   private async calculateTaskPriorities(
     tasks: Task[],
     userFlowState: TeamMemberStatus
   ): Promise<TaskWithPriority[]> {
-    return Promise.all(
-      tasks.map(async (task) => ({
-        task,
-        priority: await this.calculateTaskPriority(task, userFlowState),
-      }))
+    // Use Promise.all to calculate priorities concurrently
+    const priorities = await Promise.all(
+      tasks.map((task) => this.calculateTaskPriority(task, userFlowState))
     );
+    // Combine tasks with their calculated priorities
+    return tasks.map((task, index) => ({
+      task,
+      priority: priorities[index],
+    }));
   }
 
+  // Updated to accept DbFlowState | null
   private optimizeTaskSequence(
     taskPriorities: TaskWithPriority[],
     duration: number,
-    userFlowState: TeamMemberStatus
+    currentFlowStateDb: DbFlowState | null // Use DB type, allow null
   ): Task[] {
     let remainingTime = duration;
     const sequence: Task[] = [];
+    // Sort tasks by calculated priority score (descending)
     const sortedTasks = [...taskPriorities].sort(
       (a, b) => b.priority.score - a.priority.score
     );
 
     for (const { task } of sortedTasks) {
-      // Use estimated_duration, provide default if null/undefined
-      const taskDuration = task.estimated_duration ?? 30;
-      if (remainingTime < taskDuration) continue;
+      const taskDuration = this.estimateTaskDuration(task); // Use estimated or calculated duration
+      if (remainingTime < taskDuration) continue; // Skip if not enough time
 
-      // Placeholder usage - assumes flowState is part of TeamMemberStatus
-      // Ensure flowState exists on userFlowState before accessing score
-      const currentFlowState = userFlowState.flowState;
-      const predictedSuccess = predictTaskSuccess(task, currentFlowState);
-      if (predictedSuccess > 0.7) {
+      // Predict success based on current flow state (can be null)
+      const predictedSuccess = predictTaskSuccess(task, currentFlowStateDb);
+
+      // Add task to sequence if predicted success is above threshold
+      if (predictedSuccess >= 0.6) {
+        // Example threshold
         sequence.push(task);
         remainingTime -= taskDuration;
+        if (remainingTime <= 0) break; // Stop if time runs out
       }
     }
 
     return sequence;
   }
 
-  // --- Moved Methods ---
-
   private calculateUrgency(task: Task): number {
-    if (!task.due_date) return 0.5;
+    if (!task.due_date) return 0.5; // Neutral if no due date
 
     const now = new Date();
     const due = new Date(task.due_date);
+    // Ensure due date is valid before calculating difference
+    if (isNaN(due.getTime())) return 0.5;
+
     const daysUntilDue =
       (due.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
 
@@ -161,110 +234,88 @@ export class TaskFlowManager {
     return 0.3; // Due later
   }
 
+  // Note: userState might need casting if flowState/focusPreferences are optional joined props
   private calculateFlowAlignment(
     task: Task,
-    userState: TeamMemberStatus
+    userState: TeamMemberStatus // Requires potentially joined data
   ): number {
-    // Assuming flowState structure within TeamMemberStatus, adjust if different
-    const flowScore = (userState.flowState?.score ?? 50) / 100;
-    // Assuming focusPreferences structure within TeamMemberStatus, adjust if different
-    const isOptimalTime =
-      userState.focusPreferences?.preferredFocusHours.includes(
-        new Date().getHours()
-      ) ?? false;
+    // Cast to access joined properties, assuming they might exist
+    const stateWithDetails = userState as any;
+    // Prefer joined flow_state if available
+    const flowStateDb = stateWithDetails.flowState as DbFlowState | null;
+    const flowScore = (flowStateDb?.score ?? 50) / 100; // Default to 50 if no state
+
+    // Prefer joined focusPreferences if available
+    const focusPrefs =
+      stateWithDetails.focusPreferences as FocusPreferences | null;
+    const preferredHours = focusPrefs?.preferredFocusHours ?? []; // Default to empty array
+    const isOptimalTime = preferredHours.includes(new Date().getHours());
 
     const complexity = this.estimateComplexity(task);
+    // Alignment: higher flow aligns better with higher complexity
     const complexityAlignment =
-      flowScore >= 0.7
-        ? complexity // High flow = good for complex tasks
-        : 1 - complexity; // Low flow = better for simple tasks
+      flowScore * complexity + (1 - flowScore) * (1 - complexity);
 
-    // Weighted average
-    return (
-      flowScore * 0.4 + (isOptimalTime ? 0.3 : 0) + complexityAlignment * 0.3
+    // Weighted average: Give flow score and optimal time higher importance
+    return Math.min(
+      Math.max(
+        // Clamp between 0 and 1
+        flowScore * 0.5 + (isOptimalTime ? 0.3 : 0) + complexityAlignment * 0.2,
+        0
+      ),
+      1
     );
   }
 
   private estimateComplexity(task: Task): number {
-    // Normalize factors to be between 0 and 1-ish before applying weights
+    // Normalize factors to be between 0 and 1 before applying weights
     const descriptionLengthFactor = Math.min(
-      (task.description?.length || 0) / 1000,
+      (task.description?.length || 0) / 1000, // Normalize over 1000 chars
       1
-    ); // Cap at 1000 chars influence
-    // 'dependencies' does not exist on Task type derived from DB schema
-    const dependencyCountFactor = 0;
-    // 'progress' does not exist on Task type derived from DB schema
-    const progressFactor = 0;
+    );
+    // Placeholder for dependency factor - requires DB changes or assumptions
+    const dependencyCountFactor = 0; // Assume 0 until dependencies are tracked
+    // Estimate progress factor from completion_metrics if available
+    let progressFactor = 0;
+    // Safely access potentially nested property, assume number or null
+    const metrics = task.completion_metrics as {
+      progress?: number | null;
+    } | null;
+    if (metrics && typeof metrics.progress === "number") {
+      progressFactor = Math.min(Math.max(metrics.progress / 100, 0), 1);
+    }
 
-    // Weighted sum, adjust weights as needed
+    // Complexity increases with description length and dependencies, decreases with progress
     return Math.min(
-      descriptionLengthFactor * 0.3 +
-        dependencyCountFactor * 0.4 +
-        progressFactor * 0.3,
-      1 // Ensure complexity score doesn't exceed 1
+      descriptionLengthFactor * 0.4 +
+        dependencyCountFactor * 0.4 + // Assign weight even if 0 for future
+        (1 - progressFactor) * 0.2, // Higher progress reduces complexity contribution
+      1
     );
   }
 
   private async analyzeDependencies(task: Task): Promise<DependencyAnalysis> {
-    // 'dependencies' does not exist on Task type derived from DB schema
+    // Placeholder implementation
     console.warn(
-      "analyzeDependencies: 'dependencies' property missing on Task type. Returning empty analysis."
+      "analyzeDependencies: Not implemented. Requires 'dependencies' field/table."
     );
-    return {
-      blockedBy: [],
-      blocking: [],
-      criticalPath: false,
-    };
-    /* 
-    // Original logic commented out due to missing 'dependencies' property
-    if (!task.dependencies?.length) return {
-      blockedBy: [],
-      blocking: [],
-      criticalPath: false
-    };
-
-    try {
-      const { data: dependentTasks, error } = await supabase
-        .from('tasks')
-        .select('id, status, progress') // Select id as well
-        .in('id', task.dependencies);
-
-      if (error) throw error;
-        
-      if (!dependentTasks?.length) return {
-        blockedBy: [],
-        blocking: [],
-        criticalPath: false
-      };
-
-      const blockedByIds = dependentTasks
-         .filter(t => t.status !== 'completed')
-         .map(t => t.id); // Map to IDs
-
-      const allDependenciesMet = blockedByIds.length === 0;
-
-      // Simplified critical path logic: true if all dependencies are met
-      return {
-        blockedBy: blockedByIds,
-        blocking: [], // Need logic to find tasks that depend on this one
-        criticalPath: allDependenciesMet 
-      };
-    } catch (error) {
-      console.error('Failed to analyze dependencies:', error);
-      return {
-        blockedBy: [],
-        blocking: [],
-        criticalPath: false
-      };
-    }
-    */
+    return { blockedBy: [], blocking: [], criticalPath: false };
+    // Original logic requires a 'dependencies' field on the Task type/table
   }
 
   private estimateTaskDuration(task: Task): number {
+    // Use provided estimate if available and valid
+    if (
+      typeof task.estimated_duration === "number" &&
+      task.estimated_duration > 0
+    ) {
+      return task.estimated_duration;
+    }
+    // Otherwise, estimate based on complexity
     const complexity = this.estimateComplexity(task);
-    const baseTime = 30; // Base time in minutes
-    // Duration increases with complexity, capped potentially
-    return Math.round(baseTime * (1 + complexity * 2)); // Example: complexity scales duration up to 3x base
+    const baseTime = 15; // Base time in minutes for simplest task
+    // Duration increases with complexity, e.g., up to 2 hours for max complexity
+    return Math.round(baseTime + complexity * (120 - baseTime));
   }
 
   /**
@@ -272,7 +323,7 @@ export class TaskFlowManager {
    */
   async suggestTaskAssignments(
     tasks: Task[],
-    teamMembers: TeamMemberStatus[]
+    teamMembers: TeamMemberStatus[] // Accepts array of DB status type
   ): Promise<TaskAssignmentMatch[]> {
     const assignments: TaskAssignmentMatch[] = [];
 
@@ -281,23 +332,33 @@ export class TaskFlowManager {
 
       const memberScores = await Promise.all(
         teamMembers.map(async (member) => {
-          // Add null checks for member properties
-          const flowAlignment = this.calculateFlowAlignment(task, member);
-          const workloadScore = await this.assessWorkload(member.user_id);
+          // Assume user details and flow state might be joined onto TeamMemberStatus
+          const memberWithDetails = member as any; // Cast for potential joined data
+          const currentFlowState =
+            memberWithDetails.flowState as DbFlowState | null; // Use DB state type
+
+          const flowAlignment = this.calculateFlowAlignment(task, member); // Pass the potentially joined member status
+          const workloadScore = await this.assessWorkload(member.user_id); // 1 = low load/available
           const expertiseScore = await this.assessExpertise(
             member.user_id,
             task
           );
 
+          // Weighted average for assignment suitability
+          const overallScore =
+            flowAlignment * 0.4 +
+            workloadScore * 0.3 + // Use availability score directly (1=available)
+            expertiseScore * 0.3;
+
           return {
             userId: member.user_id,
-            score: (flowAlignment + workloadScore + expertiseScore) / 3,
-            flowScore: member.flowState?.score ?? 0, // Add null check
-            workloadScore,
-            expertiseScore,
+            score: Math.min(Math.max(overallScore, 0), 1) * 100, // Normalized 0-100
+            flowScore: currentFlowState?.score ?? 0, // Use joined flow score or default
+            workloadScore: workloadScore, // Represents availability (1 = free)
+            expertiseScore: expertiseScore,
             reasons: this.generateAssignmentReasons(
               flowAlignment,
-              workloadScore,
+              workloadScore, // Pass availability score
               expertiseScore
             ),
           };
@@ -309,10 +370,11 @@ export class TaskFlowManager {
         const bestMatch = memberScores.reduce((best, current) =>
           (current.score ?? 0) > (best.score ?? 0) ? current : best
         );
-        // Add taskId to the match result before pushing
         assignments.push({ taskId: task.id, ...bestMatch });
       }
     }
+    // Optionally sort assignments by best score first
+    assignments.sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
     return assignments;
   }
 
@@ -321,36 +383,80 @@ export class TaskFlowManager {
    */
   async updateTaskFlowStatus(session: TaskFlowSession): Promise<void> {
     try {
-      // 'flow_metrics' doesn't exist on the Task type based on the schema.
-      // Need to decide how/where to store this data, e.g., in completion_metrics (jsonb).
-      console.warn(
-        "updateTaskFlowStatus: Attempting to update non-existent 'flow_metrics'. Adjusting to use 'completion_metrics'."
+      console.log(
+        "updateTaskFlowStatus: Updating 'completion_metrics' with session flow data."
       );
 
-      const updates: Partial<Task>[] = session.tasks.map((taskId) => {
-        const existingMetrics = {}; // Fetch existing metrics if needed, for now start fresh
+      // Prepare updates for all tasks in the session
+      const updatePromises = (session.tasks ?? []).map(async (taskId) => {
+        // Fetch current metrics first to merge
+        const { data: currentTask, error: fetchError } = await supabase
+          .from("tasks")
+          .select("completion_metrics")
+          .eq("id", taskId)
+          .eq("user_id", this.userId) // Ensure user owns task
+          .maybeSingle(); // Use maybeSingle to handle task not found gracefully
+
+        if (fetchError && fetchError.code !== "PGRST116") {
+          // Ignore "not found" errors if task was deleted mid-session
+          console.error(
+            `Failed to fetch task ${taskId} metrics before update:`,
+            fetchError
+          );
+          return null; // Indicate failure for this task
+        }
+
+        // Ensure existingMetrics is an object, safely handling null/undefined
+        const existingMetrics =
+          (currentTask?.completion_metrics as Record<string, any>) ?? {};
+
         const flowMetricsData = {
           focus_duration: this.calculateFocusDuration(session),
           interruptions: session.interruptions,
           completion_time: session.end_time
             ? (new Date(session.end_time).getTime() -
                 new Date(session.start_time).getTime()) /
-              1000
+              1000 // seconds
             : null,
           flow_score: session.flow_score,
           productivity_score: this.calculateProductivityScore(session),
+          last_session_updated_at: new Date().toISOString(), // Add timestamp
         };
-        return {
-          id: taskId,
-          completion_metrics: { ...existingMetrics, ...flowMetricsData }, // Store in completion_metrics
+
+        // Merge new metrics under a 'flowMetrics' key
+        const updatedCompletionMetrics = {
+          ...existingMetrics,
+          flowMetrics: flowMetricsData,
         };
+
+        return supabase
+          .from("tasks")
+          .update({
+            completion_metrics: updatedCompletionMetrics,
+            // Optionally update task status if needed
+            // status: session.completed_tasks?.includes(taskId) ? 'completed' : 'active',
+            updated_at: new Date().toISOString(),
+          })
+          .eq("id", taskId)
+          .eq("user_id", this.userId); // Ensure user owns the task being updated
       });
 
-      const { error } = await supabase.from("tasks").upsert(updates); // Upsert based on ID
+      const results = await Promise.all(
+        updatePromises.filter((p) => p !== null) // Filter out null promises from fetch failures
+      );
 
-      if (error) throw error;
+      results.forEach((result) => {
+        if (result && result.error) {
+          // Log errors but don't necessarily throw to allow other tasks to update
+          console.error(
+            "Partial failure during updateTaskFlowStatus update:",
+            result.error
+          );
+        }
+      });
     } catch (error) {
       console.error("Failed to update task flow status:", error);
+      // Consider re-throwing or specific error handling
     }
   }
 
@@ -358,16 +464,16 @@ export class TaskFlowManager {
     try {
       const { count, error } = await supabase
         .from("tasks")
-        .select("*", { count: "exact", head: true }) // More efficient count
-        .eq("user_id", userId) // Corrected column name? Assuming user_id
-        .in("status", ["active"]); // Use 'active' based on TaskStatus
+        .select("*", { count: "exact", head: true }) // Efficient count
+        .eq("user_id", userId)
+        .in("status", ["active"]); // Use valid TaskStatus values
 
       if (error) throw error;
 
       const activeTaskCount = count ?? 0;
-      // Score decreases as task count increases, maxing out reduction at 10 tasks
-      const workloadScore = 1 - Math.min(activeTaskCount / 10, 1);
-      return workloadScore;
+      // Score represents availability: 1 = low load, 0 = high load
+      const loadFactor = Math.min(activeTaskCount / 5, 1); // Example: load maxes out at 5 tasks
+      return 1 - loadFactor; // Inverted: Higher score means more available
     } catch (error) {
       console.error("Failed to assess workload:", error);
       return 0.5; // Default neutral score on error
@@ -377,34 +483,43 @@ export class TaskFlowManager {
   private async assessExpertise(userId: string, task: Task): Promise<number> {
     try {
       // Search for similar completed tasks by the user based on title keywords
-      const keywords = task.title.split(" ").slice(0, 3); // Use first few words
+      const keywords = task.title
+        .split(" ")
+        .filter((k) => k.length > 2) // Filter short words
+        .slice(0, 3); // Use first few meaningful words
+
+      if (keywords.length === 0) return 0.5; // Neutral score if no keywords
+
       let query = supabase
         .from("tasks")
         .select("completion_metrics") // Only select needed data
-        .eq("user_id", userId) // Corrected column name? Assuming user_id
+        .eq("user_id", userId)
         .eq("status", "completed");
 
-      // Add fuzzy title matching if possible, else basic like
-      // Supabase might not directly support advanced fuzzy matching like pg_trgm easily here
-      keywords.forEach((keyword: string) => {
-        // Ensure keyword is not empty before adding LIKE clause
-        if (keyword) {
-          query = query.like("title", `%${keyword}%`);
-        }
-      });
+      // Build OR condition for keywords for broader matching
+      const keywordConditions = keywords
+        .map((keyword) => `title.ilike.%${keyword}%`) // Use case-insensitive LIKE
+        .join(","); // Join conditions with OR logic
 
-      const { data: completedSimilar, error } = await query.limit(20); // Limit results
+      query = query.or(keywordConditions);
+
+      const { data: completedSimilar, error } = await query.limit(10); // Limit results
 
       if (error) throw error;
       if (!completedSimilar?.length) return 0.5; // Neutral score if no similar tasks found
 
       // Assess quality/efficiency of past similar tasks based on completion_metrics
       const successfulTasks = completedSimilar.filter((t) => {
-        const metrics = t.completion_metrics as any; // Cast completion_metrics for now
+        // Safely access nested properties
+        const metrics = t.completion_metrics as Record<string, any> | null; // Let TS infer
+        const flowMetrics = metrics?.flowMetrics as Record<string, any> | null;
+        if (!flowMetrics) return false; // Need flowMetrics data
         // Define "successful": e.g., few interruptions
-        return metrics && (metrics.interruptions ?? 10) < 5; // Example criteria
+        const interruptionsOk = (flowMetrics.interruptions ?? 10) < 3; // Example threshold
+        return interruptionsOk; // Add more criteria if needed
       });
 
+      // Expertise score based on the proportion of successfully completed similar tasks
       return successfulTasks.length / completedSimilar.length;
     } catch (error) {
       console.error("Failed to assess expertise:", error);
@@ -413,15 +528,15 @@ export class TaskFlowManager {
   }
 
   private calculateFocusDuration(session: TaskFlowSession): number {
-    if (!session.end_time) return 0;
+    if (!session.end_time) return 0; // Session hasn't ended
 
     const totalDurationMs =
       new Date(session.end_time).getTime() -
       new Date(session.start_time).getTime();
     const totalDurationMin = totalDurationMs / (1000 * 60);
 
-    // Assume average interruption takes 5 mins - adjust as needed
-    const interruptionTime = (session.interruptions || 0) * 5;
+    // Assume average interruption takes 5 mins - adjust based on actual recovery time if available
+    const interruptionTime = (session.interruptions || 0) * 5; // Placeholder
     return Math.max(0, totalDurationMin - interruptionTime);
   }
 
@@ -450,16 +565,21 @@ export class TaskFlowManager {
 
   private generateAssignmentReasons(
     flowAlignment: number,
-    workloadScore: number,
+    availabilityScore: number, // Renamed from workloadScore for clarity
     expertiseScore: number
   ): string[] {
     const reasons: string[] = [];
 
-    if (flowAlignment > 0.7) reasons.push("High flow state compatibility");
-    if (workloadScore > 0.7) reasons.push("Optimal current workload");
-    if (expertiseScore > 0.7)
-      reasons.push("Strong track record with similar tasks");
-    if (reasons.length === 0) reasons.push("Balanced assignment"); // Default reason
+    if (flowAlignment > 0.7) reasons.push("High flow alignment");
+    if (availabilityScore > 0.8) {
+      reasons.push("Low current workload"); // High score = available
+    } else if (availabilityScore < 0.3) {
+      reasons.push("High current workload");
+    }
+    if (expertiseScore > 0.7) {
+      reasons.push("Strong expertise in similar tasks");
+    }
+    if (reasons.length === 0) reasons.push("Balanced assignment factors"); // Default reason
 
     return reasons;
   }

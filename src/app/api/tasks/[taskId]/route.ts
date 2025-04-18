@@ -1,17 +1,7 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-
-// Placeholder data - replace with actual database logic
-// NOTE: This is a simplified example. In a real app, you'd fetch/update data
-// in a database, and the 'tasks' array would likely live in a shared service or module.
-// For this example, we'll re-declare it, but be aware this won't share state
-// with the '/api/tasks' route handler without proper state management/DB.
-let tasks = [
-  { id: "1", title: "Implement Task API", status: "in-progress" },
-  { id: "2", title: "Design UI Mockups", status: "todo" },
-];
-// This nextId is also separate from the one in the other file in this example
-// let nextId = 3; // Unused variable
+import { NextResponse, type NextRequest } from "next/server";
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { Task as DbTask } from "@/types/database"; // Import DB task type
 
 interface RouteParams {
   params: { taskId: string };
@@ -19,27 +9,62 @@ interface RouteParams {
 
 /**
  * GET /api/tasks/{taskId}
- * Retrieves a specific task by its ID.
+ * Retrieves a specific task by its ID, ensuring the user owns it.
  */
-export async function GET(_request: NextRequest, { params }: RouteParams) {
-  // Prefixed unused request
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  const supabase = createRouteHandlerClient({ cookies });
+  const { taskId } = params;
+
   try {
-    const { taskId } = params;
-    console.log(`GET /api/tasks/${taskId} called`);
+    // 1. Get authenticated user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
-    // In a real app, fetch this from a database
-    const task = tasks.find((t) => t.id === taskId);
+    if (authError || !user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    console.log(`GET /api/tasks/${taskId} called by user: ${user.id}`);
 
-    if (!task) {
+    // 2. Fetch task from DB, ensuring user_id matches
+    const { data: task, error: dbError } = await supabase
+      .from("tasks")
+      .select("*")
+      .eq("id", taskId)
+      .eq("user_id", user.id) // Ensure user owns the task
+      .single(); // Expecting one or zero results
+
+    if (dbError) {
+      // 'PGRST116' is the code for 'No rows found' in PostgREST
+      if (dbError.code === "PGRST116") {
+        console.log(
+          `GET /api/tasks/${taskId}: Task not found or not owned by user ${user.id}`
+        );
+        return NextResponse.json(
+          { message: "Task not found" },
+          { status: 404 }
+        );
+      }
+      console.error(`GET /api/tasks/${taskId}: DB Error`, dbError);
       return NextResponse.json(
-        { message: "Not Found: Task not found" },
-        { status: 404 }
+        { message: "Database Error", error: dbError.message },
+        { status: 500 }
       );
     }
 
+    if (!task) {
+      // This case might be redundant due to .single() throwing error, but good practice
+      console.log(
+        `GET /api/tasks/${taskId}: Task not found (post-query) for user ${user.id}`
+      );
+      return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    }
+
+    // 3. Return task
     return NextResponse.json(task);
   } catch (error) {
-    console.error(`Error fetching task ${params.taskId}:`, error);
+    console.error(`GET /api/tasks/${taskId}: General Error`, error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }
@@ -49,54 +74,108 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
 
 /**
  * PUT /api/tasks/{taskId}
- * Updates an existing task (replaces the entire task).
- * Consider using PATCH for partial updates.
+ * Updates an existing task (replaces specified fields). Use PATCH for partial updates.
  */
 export async function PUT(request: NextRequest, { params }: RouteParams) {
-  try {
-    const { taskId } = params;
-    const body = await request.json();
-    console.log(`PUT /api/tasks/${taskId} called with body:`, body);
+  const supabase = createRouteHandlerClient({ cookies });
+  const { taskId } = params;
 
-    // Basic validation (expand later)
-    if (
-      !body.title ||
-      typeof body.title !== "string" ||
-      !body.status ||
-      typeof body.status !== "string"
-    ) {
+  try {
+    // 1. Get authenticated user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    console.log(`PUT /api/tasks/${taskId} called by user: ${user.id}`);
+
+    // 2. Parse request body
+    const body = await request.json();
+    console.log(`PUT /api/tasks/${taskId}: Request body:`, body);
+
+    // 3. Basic validation
+    // For PUT, arguably all non-meta fields should be provided for a full replace.
+    // However, we'll implement it like PATCH for flexibility. Use PATCH method instead for standard partial updates.
+    if (!body || typeof body !== "object" || Object.keys(body).length === 0) {
       return NextResponse.json(
-        { message: "Bad Request: Title and status are required" },
+        { message: "Bad Request: Missing update data" },
         { status: 400 }
       );
     }
 
-    // In a real app, update this in a database
-    const taskIndex = tasks.findIndex((t) => t.id === taskId);
+    // 4. Prepare update data (only include fields present in the body)
+    const updateData: Partial<DbTask> = {};
+    // Map allowed fields from body to updateData
+    const allowedFields: (keyof DbTask)[] = [
+      "title",
+      "description",
+      "status",
+      "priority",
+      "flow_optimal",
+      "context_cost",
+      "estimated_duration",
+      "completed",
+      "team_id",
+      "project_id",
+      "due_date",
+      "completion_metrics",
+    ];
 
-    if (taskIndex === -1) {
+    for (const key of allowedFields) {
+      if (body[key] !== undefined) {
+        (updateData as any)[key] = body[key];
+      }
+    }
+    updateData.updated_at = new Date().toISOString(); // Always update timestamp
+
+    // 5. Update task in DB, ensuring user_id matches
+    const { data: updatedTask, error: dbError } = await supabase
+      .from("tasks")
+      .update(updateData)
+      .eq("id", taskId)
+      .eq("user_id", user.id) // Ensure user owns the task
+      .select()
+      .single();
+
+    if (dbError) {
+      // Check if the error is due to the task not being found (or not owned)
+      if (dbError.code === "PGRST116" || dbError.details?.includes("0 rows")) {
+        console.log(
+          `PUT /api/tasks/${taskId}: Task not found or not owned by user ${user.id}`
+        );
+        return NextResponse.json(
+          { message: "Task not found" },
+          { status: 404 }
+        );
+      }
+      console.error(`PUT /api/tasks/${taskId}: DB Error`, dbError);
       return NextResponse.json(
-        { message: "Not Found: Task not found" },
-        { status: 404 }
+        { message: "Database Error", error: dbError.message },
+        { status: 500 }
       );
     }
 
-    const updatedTask = {
-      ...tasks[taskIndex], // Keep original ID
-      title: body.title,
-      status: body.status,
-      // Update other fields as necessary
-    };
+    if (!updatedTask) {
+      console.error(
+        `PUT /api/tasks/${taskId}: Update returned no data (unexpected).`
+      );
+      // This might indicate an issue if the update should have returned data
+      return NextResponse.json(
+        { message: "Update failed to return data" },
+        { status: 500 }
+      );
+    }
 
-    tasks[taskIndex] = updatedTask;
-    console.log("Task updated:", updatedTask);
-
+    // 6. Return updated task
+    console.log(`PUT /api/tasks/${taskId}: Task updated:`, updatedTask);
     return NextResponse.json(updatedTask);
   } catch (error: any) {
-    console.error(`Error updating task ${params.taskId}:`, error);
+    console.error(`PUT /api/tasks/${taskId}: General Error`, error);
     if (error instanceof SyntaxError) {
       return NextResponse.json(
-        { message: "Bad Request: Invalid JSON format" },
+        { message: "Invalid JSON format" },
         { status: 400 }
       );
     }
@@ -108,36 +187,66 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 }
 
 /**
- * DELETE /api/tasks/{taskId}
- * Deletes a specific task by its ID.
+ * PATCH /api/tasks/{taskId}
+ * Partially updates an existing task.
  */
-export async function DELETE(_request: NextRequest, { params }: RouteParams) {
-  // Prefixed unused request
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
+  // Implementation is identical to PUT in this case, as PUT was implemented partially.
+  // In a strict REST sense, PUT should replace, PATCH should partially update.
+  // Forwarding to PUT handler for this implementation.
+  return PUT(request, { params });
+}
+
+/**
+ * DELETE /api/tasks/{taskId}
+ * Deletes a specific task by its ID, ensuring the user owns it.
+ */
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+  const supabase = createRouteHandlerClient({ cookies });
+  const { taskId } = params;
+
   try {
-    const { taskId } = params;
-    console.log(`DELETE /api/tasks/${taskId} called`);
+    // 1. Get authenticated user
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    console.log(`DELETE /api/tasks/${taskId} called by user: ${user.id}`);
 
-    // In a real app, delete this from a database
-    const initialLength = tasks.length;
-    tasks = tasks.filter((t) => t.id !== taskId);
+    // 2. Delete task from DB, ensuring user_id matches
+    const { error: dbError, count } = await supabase
+      .from("tasks")
+      .delete({ count: "exact" }) // Request count of deleted rows
+      .eq("id", taskId)
+      .eq("user_id", user.id); // Ensure user owns the task
 
-    if (tasks.length === initialLength) {
+    if (dbError) {
+      console.error(`DELETE /api/tasks/${taskId}: DB Error`, dbError);
       return NextResponse.json(
-        { message: "Not Found: Task not found" },
-        { status: 404 }
+        { message: "Database Error", error: dbError.message },
+        { status: 500 }
       );
     }
 
-    console.log(`Task ${taskId} deleted`);
-    // Typically, a DELETE request returns 204 No Content on success
-    return new NextResponse(null, { status: 204 });
+    // Check if any row was actually deleted
+    if (count === 0) {
+      console.log(
+        `DELETE /api/tasks/${taskId}: Task not found or not owned by user ${user.id}`
+      );
+      return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    }
+
+    // 3. Return success (No Content)
+    console.log(`DELETE /api/tasks/${taskId}: Task deleted successfully`);
+    return new NextResponse(null, { status: 204 }); // Standard success response for DELETE
   } catch (error) {
-    console.error(`Error deleting task ${params.taskId}:`, error);
+    console.error(`DELETE /api/tasks/${taskId}: General Error`, error);
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }
     );
   }
 }
-
-// Note: PATCH implementation would be similar to PUT but would only update fields present in the request body.

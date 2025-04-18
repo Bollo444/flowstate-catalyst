@@ -1,6 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
-// Ensure all necessary types are imported
-import { FlowState, ActivityMetrics, SessionSummary } from "../types/flow";
+// Import FlowState (alias for FlowState from types/flow) and ActivityMetrics
+import {
+  FlowState, // Using the type defined in types/flow
+  ActivityMetrics,
+  SessionSummary,
+} from "../types/flow";
 import { FlowSessionService } from "../services/FlowSessionService";
 import { FlowCalculator } from "../services/flowCalculator";
 import {
@@ -9,139 +13,170 @@ import {
   startMetricsTracking,
   stopMetricsTracking,
 } from "../utils/metricsUtils";
+import { FlowStatus } from "@/types/database"; // For initial state status typing
+
+// Use the FlowState from types/flow for initial state here
+const initialFlowState: FlowState = {
+  score: 0,
+  status: "rest" as FlowStatus, // Use the enum for type safety
+  activeTime: 0,
+  interruptions: 0,
+  taskCompletions: 0,
+};
+
+const initialMetrics: ActivityMetrics = {
+  activeTime: 0,
+  interruptions: 0,
+  taskCompletions: 0,
+  contextSwitches: 0,
+  interruptedTime: 0,
+  dayProgress: getDayProgress(),
+  lastBreakTime: undefined,
+};
 
 export function useFlowState() {
-  // Initialize FlowState with 'rest' status
-  const [flowState, setFlowState] = useState<FlowState>({
-    score: 0,
-    status: "rest",
-    activeTime: 0,
-    interruptions: 0,
-    taskCompletions: 0,
-  });
-
-  // Initialize ActivityMetrics, including interruptions and interruptedTime
-  const [metrics, setMetrics] = useState<ActivityMetrics>({
-    activeTime: 0,
-    interruptions: 0,
-    taskCompletions: 0,
-    contextSwitches: 0,
-    interruptedTime: 0,
-    dayProgress: getDayProgress(),
-    lastBreakTime: undefined,
-  });
-
-  // Keep track of session start time locally within the hook if needed for summary
+  const [flowState, setFlowState] = useState<FlowState>(initialFlowState);
+  const [metrics, setMetrics] = useState<ActivityMetrics>(initialMetrics);
   const [sessionStartTime, setSessionStartTime] = useState<number | null>(null);
+  // isLoadingUser removed as userId is handled internally by service
 
   const startFlowSession = useCallback(async () => {
     try {
+      // Corrected: Call start without arguments
       const sessionInfo = await FlowSessionService.start();
-      setFlowState(sessionInfo.initialState);
-      setSessionStartTime(Date.now()); // Record start time locally
+      setFlowState(sessionInfo.initialState); // Set state directly from service
+      setSessionStartTime(Date.now());
+      // Reset metrics based on service initial state
+      setMetrics({
+        ...initialMetrics,
+        activeTime: sessionInfo.initialState.activeTime || 0,
+        interruptions: sessionInfo.initialState.interruptions || 0,
+        taskCompletions: sessionInfo.initialState.taskCompletions || 0,
+      });
       startMetricsTracking();
     } catch (error) {
       console.error("Failed to start flow session:", error);
-      // Optionally set an error state
     }
-  }, []);
+  }, []); // No dependencies needed now
 
   const endFlowSession = useCallback(async () => {
     try {
-      // Retrieve session info from localStorage to get ID and potentially start time
-      const sessionDataString = localStorage.getItem("activeFlowSession"); // Use hardcoded key
+      const sessionDataString = localStorage.getItem("activeFlowSession");
       const sessionData = sessionDataString
         ? JSON.parse(sessionDataString)
         : {};
       const sessionId = sessionData?.id || "unknown-session";
+      // Note: userId verification might be needed before ending unknown session
 
-      // Construct summary. Use locally tracked startTime or fallback
       const startTimeForSummary = sessionStartTime
         ? new Date(sessionStartTime)
         : new Date(sessionData?.startTime || Date.now());
+
+      const finalMetrics = calculateCurrentMetrics(metrics); // Get latest metrics
+
       const summary: SessionSummary = {
         startTime: startTimeForSummary,
-        transitions: [], // Placeholder: This needs actual transition data tracked during the session
-        taskCompletions: flowState.taskCompletions,
+        transitions: [], // Placeholder
+        taskCompletions: finalMetrics.taskCompletions, // Use final metrics
       };
 
       await FlowSessionService.end(sessionId, summary);
 
-      setFlowState((prev) => ({ ...prev, status: "rest" })); // Set to 'rest' after ending
-      setSessionStartTime(null); // Clear local start time
+      setFlowState((prev) => ({ ...prev, status: "rest" })); // Reset status
+      setSessionStartTime(null);
       stopMetricsTracking();
     } catch (error) {
       console.error("Failed to end flow session:", error);
-      // Even if ending fails, update local state to reflect inactive status
+      // Reset local state even on failure
       setFlowState((prev) => ({ ...prev, status: "rest" }));
       setSessionStartTime(null);
       stopMetricsTracking();
     }
-  }, [flowState.taskCompletions, sessionStartTime]); // Add sessionStartTime to dependency array
+  }, [sessionStartTime, metrics]);
 
   const recordInterruption = useCallback(
     async (type: string, recoveryTime: number) => {
       try {
-        const updatedState = await FlowSessionService.recordInterruption(
-          type,
-          recoveryTime
-        );
-        setFlowState(updatedState);
-        // Update metrics locally based on the interruption
-        // Note: recordInterruption service method currently updates localStorage mock state,
-        // but ideally it should only update DB, and this hook updates its local state.
-        // For now, we also update metrics locally.
-        setMetrics((prev) => ({
-          ...prev,
-          interruptions: prev.interruptions + 1,
-          // Assuming recoveryTime is in milliseconds, convert to minutes for interruptedTime?
-          interruptedTime: prev.interruptedTime + recoveryTime / 60000,
-        }));
+        // Corrected: Call service method without userId
+        const updatedStateFromService: FlowState =
+          await FlowSessionService.recordInterruption(type, recoveryTime);
+
+        setFlowState(updatedStateFromService); // Update state from service response
+
+        // Update metrics based on the NEW state from service
+        setMetrics((prev) => {
+          const updatedInterruptedTime =
+            prev.interruptedTime + recoveryTime / 60000; // Assuming ms
+          const updatedMetrics: ActivityMetrics = {
+            ...prev,
+            interruptions:
+              updatedStateFromService.interruptions ?? prev.interruptions + 1, // Use service value or increment
+            interruptedTime: updatedInterruptedTime,
+            taskCompletions:
+              updatedStateFromService.taskCompletions ?? prev.taskCompletions, // Use value from service response
+            activeTime: updatedStateFromService.activeTime ?? prev.activeTime, // Use value from service response
+            // Ensure all properties from ActivityMetrics are present
+            contextSwitches: prev.contextSwitches, // Keep previous value if not updated
+            dayProgress: prev.dayProgress, // Keep previous value
+            lastBreakTime: prev.lastBreakTime, // Keep previous value
+          };
+          return updatedMetrics;
+        });
       } catch (error) {
         console.error("Failed to record interruption:", error);
       }
     },
-    []
+    [] // No direct dependencies needed
   );
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout | null = null;
 
+    // Only run interval logic if the session is active
     if (flowState.status !== "rest") {
-      // Check against 'rest' instead of 'inactive'
       intervalId = setInterval(() => {
-        // Use functional update for setMetrics to ensure we use the latest metrics state
         setMetrics((prevMetrics) => {
           const updatedMetrics = calculateCurrentMetrics(prevMetrics);
-
           const newScore = FlowCalculator.calculateFlowScore(updatedMetrics);
           const newStatus = FlowCalculator.determineFlowStatus(
             newScore,
             updatedMetrics
           );
 
-          // Also use functional update for setFlowState
-          setFlowState((prevFlowState) => ({
-            ...prevFlowState,
-            score: newScore,
-            status: newStatus,
-            activeTime: updatedMetrics.activeTime,
-          }));
+          setFlowState((prevFlowState) => {
+            // Update state using the fields available in the imported FlowState type
+            if (
+              prevFlowState.score !== newScore ||
+              prevFlowState.status !== newStatus ||
+              prevFlowState.activeTime !== updatedMetrics.activeTime ||
+              prevFlowState.interruptions !== updatedMetrics.interruptions || // Check metrics too
+              prevFlowState.taskCompletions !== updatedMetrics.taskCompletions
+            ) {
+              return {
+                score: newScore,
+                status: newStatus,
+                activeTime: updatedMetrics.activeTime,
+                interruptions: updatedMetrics.interruptions, // Update state from metrics
+                taskCompletions: updatedMetrics.taskCompletions, // Update state from metrics
+              };
+            }
+            return prevFlowState;
+          });
 
-          return updatedMetrics; // Return the updated metrics for the state
+          return updatedMetrics;
         });
       }, 60000); // Update every minute
     }
 
     return () => {
       if (intervalId) {
-        clearInterval(intervalId); // Clear interval on cleanup or status change to 'rest'
+        clearInterval(intervalId);
       }
     };
-  }, [flowState.status]); // Rerun effect when status changes
+  }, [flowState.status]); // Rerun effect only when status changes
 
   return {
-    flowState,
+    flowState, // This is FlowState from types/flow.ts
     metrics,
     startFlowSession,
     endFlowSession,
